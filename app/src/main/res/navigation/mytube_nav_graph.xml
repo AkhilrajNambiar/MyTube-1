@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mytube_nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.mytube.UI.Fragments.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_videoActivity"
+            app:destination="@id/videoActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="com.example.mytube.UI.Fragments.NotificationsFragment"
+        android:label="fragment_notifications"
+        tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/libraryFragment"
+        android:name="com.example.mytube.UI.Fragments.LibraryFragment"
+        android:label="fragment_library"
+        tools:layout="@layout/fragment_library" >
+        <action
+            android:id="@+id/action_libraryFragment_to_videoActivity"
+            app:destination="@id/videoActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/subscriptionsFragment"
+        android:name="com.example.mytube.UI.Fragments.SubscriptionsFragment"
+        android:label="fragment_subscriptions"
+        tools:layout="@layout/fragment_subscriptions" >
+        <action
+            android:id="@+id/action_subscriptionsFragment_to_videoActivity"
+            app:destination="@id/videoActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/videoActivity"
+        android:name="com.example.mytube.UI.VideoActivity"
+        android:label="activity_video"
+        tools:layout="@layout/activity_video" />
+    <activity
+        android:id="@+id/searchActivity"
+        android:name="com.example.mytube.UI.SearchActivity"
+        android:label="activity_search"
+        tools:layout="@layout/activity_search" />
+    <fragment
+        android:id="@+id/searchResultsFragment"
+        android:name="com.example.mytube.UI.Fragments.SearchResultsFragment"
+        android:label="fragment_search_results"
+        tools:layout="@layout/fragment_search_results" />
+</navigation>

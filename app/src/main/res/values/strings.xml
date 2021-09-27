@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">MyTube</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home">Home</string>
+    <string name="notif">Notifications</string>
+    <string name="subs">Subscriptions</string>
+    <string name="library">Library</string>
+    <string name="video_subtitle">%s . %s views . %d %s</string>
+    <string name="recent">just now</string>
+    <string name="go_back">Go back to Home screen</string>
+    <string name="search_mytube">Search Mytube</string>
+    <plurals name="dayCount">
+        <item quantity="one"> day ago</item>
+        <item quantity="other"> days ago</item>
+    </plurals>
+    <plurals name="hourCount">
+        <item quantity="one"> hour ago</item>
+        <item quantity="other"> hours ago</item>
+    </plurals>
+    <plurals name="minCount">
+        <item quantity="one"> minute ago</item>
+        <item quantity="other"> minutes ago</item>
+    </plurals>
+    <plurals name="secondCount">
+        <item quantity="one"> second ago</item>
+        <item quantity="other"> seconds ago</item>
+    </plurals>
+    <plurals name="weekCount">
+        <item quantity="one"> week ago</item>
+        <item quantity="other"> weeks ago</item>
+    </plurals>
+    <plurals name="monthCount">
+        <item quantity="one"> month ago</item>
+        <item quantity="other"> months ago</item>
+    </plurals>
+    <plurals name="yearCount">
+        <item quantity="one"> year ago</item>
+        <item quantity="other"> years ago</item>
+    </plurals>
+</resources>
