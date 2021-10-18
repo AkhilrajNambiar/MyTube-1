@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -29,7 +30,6 @@ class SearchedHistoryAdapter: RecyclerView.Adapter<SearchedHistoryAdapter.Search
                 val intent = Intent(itemView.context, SearchResultsActivity::class.java)
                 intent.putExtra("searchQuery", item.searchQuery)
                 itemView.context.startActivity(intent)
-                Log.d("searched", item.searchQuery)
             }
         }
 

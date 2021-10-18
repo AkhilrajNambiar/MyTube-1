@@ -6,13 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".UI.VideoActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+        android:id="@+id/youtube_player_view"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Video Activity"
+        app:showFullScreenButton="true"
+        app:showYouTubeButton="false"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

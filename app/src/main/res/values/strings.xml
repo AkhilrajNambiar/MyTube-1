@@ -10,6 +10,10 @@
     <string name="recent">just now</string>
     <string name="go_back">Go back to Home screen</string>
     <string name="search_mytube">Search Mytube</string>
+    <string name="playlists">Playlists</string>
+    <string name="video_options">Video options</string>
+    <string name="replay_video_10">Replay video by 10 seconds</string>
+    <string name="fast_forward_video_10">Fast forward by 10 seconds</string>
     <plurals name="dayCount">
         <item quantity="one"> day ago</item>
         <item quantity="other"> days ago</item>

@@ -30,9 +30,9 @@
     </fragment>
     <fragment
         android:id="@+id/subscriptionsFragment"
-        android:name="com.example.mytube.UI.Fragments.SubscriptionsFragment"
+        android:name="com.example.mytube.UI.Fragments.PlaylistsFragment"
         android:label="fragment_subscriptions"
-        tools:layout="@layout/fragment_subscriptions" >
+        tools:layout="@layout/fragment_playlists" >
         <action
             android:id="@+id/action_subscriptionsFragment_to_videoActivity"
             app:destination="@id/videoActivity" />

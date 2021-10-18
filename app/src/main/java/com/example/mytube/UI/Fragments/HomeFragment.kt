@@ -42,12 +42,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         viewModel.videosList.observe(viewLifecycleOwner, Observer { resource ->
             when(resource) {
                 is Resource.Success -> {
+                    Log.d("searched", "Videos waala is running in HomeFrag")
                     hideProgressBar(progressBar)
                     resource.data?.let { videoResponse ->
                         if (viewModel.nextPageId != videoResponse.nextPageToken) {
                             viewModel.nextPageId = videoResponse.nextPageToken
                             viewModel.videos.addAll(videoResponse.items)
-//                            videoResponse.items.forEach { viewModel.getChannel(it.snippet.channelId) }
                             Log.d("Channels", viewModel.channels.toString())
                             videosAdapter.differ.submitList(viewModel.videos.toList())
                             Log.d("Videos", viewModel.videos.toString())
@@ -59,10 +59,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     }
                 }
                 is Resource.Error -> {
+                    Log.d("searched", "Videos waala is running in HomeFrag")
                     hideProgressBar(progressBar)
                     Log.e("Videos", resource.message.toString())
                 }
                 is Resource.Loading -> {
+                    Log.d("searched", "Videos waala is running in HomeFrag")
                     showProgressBar(progressBar)
                 }
             }
@@ -72,14 +74,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             when (resource) {
                 is Resource.Success -> {
                     resource.data?.let { channels ->
+                        Log.d("searched", "Channel waala is running in HomeFrag")
                         viewModel.channels.set(channels.items[0].id, channels.items[0])
 //                        videosAdapter.differ.submitList(viewModel.videos.toList())
                     }
                 }
                 is Resource.Error -> {
+                    Log.d("searched", "Channel waala is running in HomeFrag")
                     Log.e("Channels", resource.message.toString())
                 }
                 is Resource.Loading -> {
+                    Log.d("searched", "Channel waala is running in HomeFrag")
                     Log.d("Channels", "Waiting")
                 }
             }
@@ -118,7 +123,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             val totaltItems = manager.itemCount
             val scrolledItems = manager.findFirstVisibleItemPosition()
             if (isScrolling && totaltItems == currentItems + scrolledItems && !isLoading && viewModel.videos.size <= 200) {
-                viewModel.getNextVideos()
+                lifecycleScope.launch {
+                    viewModel.getNextVideos()
+                }
                 isScrolling = false
             }
             else {
@@ -131,16 +138,35 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onResume() {
         super.onResume()
-        Log.d("Videos", "onResume called")
+        Log.d("searched", "HomeFragment onResume called")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("searched", "HomeFragment Start called")
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        Log.d("searched", "HomeFragment onCreateView called")
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onPause() {
         super.onPause()
-        Log.d("Videos", "onPause called")
+        Log.d("searched", "HomeFragment onPause called")
     }
 
     override fun onStop() {
         super.onStop()
-        Log.d("Videos", "onStop called")
+        Log.d("searched", "HomeFragment onStop called")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d("searched", "HomeFragment onDestroyView called")
     }
 }

@@ -19,13 +19,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mytube.R
-import com.example.mytube.UI.SearchResultsActivity
+import com.example.mytube.UI.SearchedVideosViewModel
 import com.example.mytube.UI.VideoActivity
 import com.example.mytube.UI.VideosViewModel
 import com.example.mytube.models.AboutVideo
 import com.example.mytube.util.VideoViewsFormatter.Companion.viewsFormatter
 
-class VideosAdapter(val viewModel: VideosViewModel): RecyclerView.Adapter<VideosAdapter.VideosViewHolder>() {
+class SearchedVideosAdapter(val viewModel: SearchedVideosViewModel): RecyclerView.Adapter<SearchedVideosAdapter.VideosViewHolder>() {
 
     inner class VideosViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val image = itemView.findViewById<ImageView>(R.id.video_thumbnail)
@@ -72,16 +72,16 @@ class VideosAdapter(val viewModel: VideosViewModel): RecyclerView.Adapter<Videos
             else if (time.containsKey("years")) {
                 subtitle.text = context.getString(R.string.video_subtitle, video.snippet.channelTitle, views, time.get("years"), context.resources.getQuantityString(R.plurals.yearCount, time.get("years")!!.toInt()))
             }
-            Log.d("Channels", viewModel.channels.get(video.snippet.channelId)?.snippet?.thumbnails?.medium?.url.toString())
-            if (viewModel.channels.containsKey(video.snippet.channelId)) {
+            Log.d("Channels", viewModel.searchedResultchannels.get(video.snippet.channelId)?.snippet?.thumbnails?.medium?.url.toString())
+            if (viewModel.searchedResultchannels.containsKey(video.snippet.channelId)) {
                 Glide.with(itemView)
-                    .load(viewModel.channels.get(video.snippet.channelId)?.snippet?.thumbnails?.medium?.url)
+                    .load(viewModel.searchedResultchannels.get(video.snippet.channelId)?.snippet?.thumbnails?.medium?.url)
                     .into(channelLogo)
             }
             else {
-                viewModel.getChannel(video.snippet.channelId)
+                viewModel.getSearchedResultChannel(video.snippet.channelId)
                 Glide.with(itemView)
-                    .load(viewModel.channels.get(video.snippet.channelId)?.snippet?.thumbnails?.medium?.url)
+                    .load(viewModel.searchedResultchannels.get(video.snippet.channelId)?.snippet?.thumbnails?.medium?.url)
                     .placeholder(R.drawable.loading)
                     .into(channelLogo)
             }

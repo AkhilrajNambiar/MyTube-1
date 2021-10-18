@@ -15,7 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:cardElevation="5dp">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/searchBar"
             android:layout_width="match_parent"
             android:layout_height="56dp"
@@ -26,35 +26,39 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_go_back"
-                android:layout_weight="1"
                 android:padding="5dp"
                 android:contentDescription="@string/go_back"
                 android:clickable="true"
-                android:focusable="true"/>
+                android:focusable="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <EditText
                 android:id="@+id/search_box"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="4"
                 android:inputType="text"
                 android:hint="@string/search_mytube"
                 android:autofillHints="false"
                 android:layout_marginHorizontal="5dp"
                 android:paddingHorizontal="5dp"
-                android:imeOptions="actionSearch"/>
+                android:imeOptions="actionSearch"
+                app:layout_constraintStart_toEndOf="@id/ivGoback"
+                app:layout_constraintEnd_toStartOf="@id/ivSearch"
+                app:layout_constraintTop_toTopOf="parent"/>
 
 
             <ImageView
                 android:id="@+id/ivSearch"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:src="@drawable/ic_search"
                 android:contentDescription="@string/search_mytube"
-                android:padding="5dp" />
+                android:padding="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
     <androidx.recyclerview.widget.RecyclerView

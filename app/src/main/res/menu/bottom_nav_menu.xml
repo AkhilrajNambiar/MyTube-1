@@ -9,7 +9,7 @@
         android:icon="@drawable/ic_notifications"/>
 
     <item android:id="@+id/subscriptionsFragment"
-        android:title="@string/subs"
+        android:title="@string/playlists"
         android:icon="@drawable/ic_subscriptions"/>
 
     <item android:id="@+id/libraryFragment"

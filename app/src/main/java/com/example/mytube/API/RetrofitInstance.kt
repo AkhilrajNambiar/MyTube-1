@@ -32,8 +32,6 @@ class RetrofitInstance {
         }
 
         // This will be called by the repository whenever we want to use it
-        val api by lazy {
-            retrofit.create(VideosApi::class.java)
-        }
+        val api = retrofit.create(VideosApi::class.java)
     }
 }

@@ -29,48 +29,39 @@ class VideosViewModel(private val repository: VideosRepository) : ViewModel(){
     private var _channelResponse = MutableLiveData<Resource<ChannelDetails>>()
     val channelResponse: LiveData<Resource<ChannelDetails>> = _channelResponse
 
-    private var _searchResults = MutableLiveData<Resource<VideosList>>()
-    val searchResults: LiveData<Resource<VideosList>> = _searchResults
 
     var nextPageId: String = ""
-    var nextSearchPageId: String = ""
     val videos = mutableListOf<AboutVideo>()
-    val searchedVideos = mutableListOf<AboutVideo>()
     val channels = mutableMapOf<String, Channels>()
 
     init {
+        Log.d("searched","videos viewModel starts")
         getPopularVideos()
     }
 
     // Network calls
     fun getPopularVideos() = viewModelScope.launch(Dispatchers.IO) {
+        Log.d("searched", "getPopularVideos is running")
         _videosList.postValue(Resource.Loading())
         val response = repository.getMostPopularVideos()
         _videosList.postValue(handlePopularVideosResponse(response))
+        Log.d("searched", "getPopularVideos has finished running")
     }
 
     fun getNextVideos() = viewModelScope.launch(Dispatchers.IO) {
+        Log.d("searched", "getNextVideos is running")
         _videosList.postValue(Resource.Loading())
         val response = repository.getNextVideos(nextPageId)
         _videosList.postValue(handlePopularVideosResponse(response))
-    }
-
-    fun getSearchResults(q: String) = viewModelScope.launch(Dispatchers.IO) {
-        _searchResults.postValue(Resource.Loading())
-        val response = repository.getSearchResults(q)
-        _searchResults.postValue(handlePopularVideosResponse(response))
-    }
-
-    fun getNextSearchResults(q: String) = viewModelScope.launch(Dispatchers.IO) {
-        _searchResults.postValue(Resource.Loading())
-        val response = repository.getNextSearchResults(q, nextSearchPageId)
-        _searchResults.postValue(handlePopularVideosResponse(response))
+        Log.d("searched", "getNextVideos has finished running")
     }
 
     fun getChannel(channelId: String) = viewModelScope.launch(Dispatchers.IO) {
+        Log.d("searched", "getChannels is running")
         _channelResponse.postValue(Resource.Loading())
         val response = repository.getChannel(channelId)
         _channelResponse.postValue(handleChannelResponse(response))
+        Log.d("searched", "getChannels has finished running")
     }
 
     private fun handlePopularVideosResponse(
@@ -96,68 +87,16 @@ class VideosViewModel(private val repository: VideosRepository) : ViewModel(){
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun findMillisDifference(str1: String) : Map<String, Int>{
-        // Converting the Time in string form to Time in LocalDateTime form
-        val publishedTime = LocalDateTime.parse(str1.slice(0 until str1.length - 1))
-        // Getting the current Time
-        val time1 = Calendar.getInstance()
-        // Converting the current time to Milliseconds
-        val milliseconds = time1.timeInMillis
-        // Converting the publishedTime to Milliseconds
-        val millis2 = publishedTime.atOffset(ZoneOffset.UTC).toInstant().toEpochMilli()
-        val difference = (milliseconds - millis2).toString()
-        if(difference.length <= 3) return mapOf("seconds" to 0)
-        else if(difference.length == 4) return mapOf("seconds" to difference[0].code)
-        val milliStart = difference.length - 3
-        val seconds = difference.slice(0 until milliStart).toLong()
-        val sec = seconds % 60
-        val mins = (seconds / 60) % 60
-        val hrs = (seconds / 3600) % 24
-        val days = (seconds / (3600 * 24)) % 7
-        val weeks = (seconds / (3600 * 24 * 7)) % 4
-        val months = (seconds / (3600 * 24 * 30)) % 12
-        val years = seconds / (3600 * 24 * 30 * 12)
-        if(years.toInt() == 0) {
-            if(months.toInt() == 0) {
-                if(weeks.toInt() == 0) {
-                    if(days.toInt() == 0) {
-                        if(hrs.toInt() == 0) {
-                            if(mins.toInt() == 0) {
-                                return mapOf("seconds" to seconds.toInt())
-                            }
-                            else {
-                                return mapOf("minutes" to mins.toInt())
-                            }
-                        }
-                        else {
-                            return mapOf("hours" to hrs.toInt())
-                        }
-                    }
-                    else {
-                        return mapOf("days" to days.toInt())
-                    }
-                }
-                else {
-                    return mapOf("weeks" to weeks.toInt())
-                }
-            }
-            else {
-                return mapOf("months" to months.toInt())
-            }
-        }
-        else {
-            return mapOf("years" to years.toInt())
-        }
-    }
+    fun findMillisDifference(time: String) = repository.findMillisDifference(time)
 
     // Database operations
     fun getSearchHistory() = repository.getSearchHistory()
 
-    fun insertSearchItem(item: String) = viewModelScope.launch (Dispatchers.IO){
+    fun insertSearchItem(item: String) = viewModelScope.launch {
         repository.insertSearchedItem(item)
     }
 
-    fun deleteSearchItem(item: String) = viewModelScope.launch (Dispatchers.IO) {
+    fun deleteSearchItem(item: String) = viewModelScope.launch {
         repository.deleteSearchedItem(item)
     }
 }

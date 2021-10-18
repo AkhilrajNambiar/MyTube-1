@@ -66,4 +66,7 @@ dependencies {
     kapt "androidx.room:room-compiler:2.3.0"
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation "androidx.room:room-ktx:2.3.0"
+    // Open source youtube player
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
+
 }

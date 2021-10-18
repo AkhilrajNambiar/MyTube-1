@@ -4,6 +4,7 @@ import android.content.Intent
 import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var viewModel: VideosViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("searched", "MainActivity created")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -35,5 +37,30 @@ class MainActivity : AppCompatActivity() {
         val repository: VideosRepository = VideosRepository(SearchDatabase.getSearchDatabase(this))
         val viewModelFactory = VideosViewModelProviderFactory(repository)
         viewModel = ViewModelProvider(this,viewModelFactory).get(VideosViewModel::class.java)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("searched", "MainActivity started")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("searched", "Mainactivity resumed")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("searched", "MainActivity paused")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("searched", "MainActivity stopped")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("searched", "MainActivity destroyed")
     }
 }

@@ -46,18 +46,23 @@ class SearchActivity : AppCompatActivity() {
 
         val searchBar = findViewById<EditText>(R.id.search_box)
         val searchBtn = findViewById<ImageView>(R.id.ivSearch)
+        // To allow searching when the user clicks on the search button
         searchBtn.setOnClickListener {
             if (searchBar.text.toString().isNotEmpty()) {
                 viewModel.insertSearchItem(searchBar.text.toString())
                 val intent = Intent(applicationContext, SearchResultsActivity::class.java)
-                intent.putExtra("searchQuery", searchBar.text)
+                intent.putExtra("searchQuery", searchBar.text.toString())
                 startActivity(intent)
             }
         }
+        // To allow searching when the user clicks on the enter button
         searchBar.setOnKeyListener(View.OnKeyListener{v, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                 if (searchBar.text.toString().isNotEmpty()) {
                     viewModel.insertSearchItem(searchBar.text.toString())
+                    val intent = Intent(applicationContext, SearchResultsActivity::class.java)
+                    intent.putExtra("searchQuery", searchBar.text.toString())
+                    startActivity(intent)
                 }
                 return@OnKeyListener true
             }

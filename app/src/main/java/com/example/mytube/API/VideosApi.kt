@@ -1,6 +1,7 @@
 package com.example.mytube.API
 
 import com.example.mytube.models.ChannelDetails
+import com.example.mytube.models.SearchedVideosList
 import com.example.mytube.models.VideosList
 import com.example.mytube.util.Constants.Companion.API_KEY
 import retrofit2.Response
@@ -28,13 +29,11 @@ interface VideosApi {
         @Query("key") key: String = API_KEY): Response<VideosList>
 
     @GET("videos")
-    suspend fun getPreviousVideosList(
-        @Query("part") partSnippet: String,
-        @Query("part") partStats: String,
-        @Query("chart") chart: String,
-        @Query("pageToken") previousPageId: String,
-        @Query("maxResults") maxResults:Int,
-        @Query("key") key: String): Response<VideosList>
+    suspend fun getVideoDetails(
+        @Query("part") partSnippet: String = "snippet",
+        @Query("part") partStats: String = "statistics",
+        @Query("id") id: String,
+        @Query("key") key: String = API_KEY): Response<VideosList>
 
     @GET("channels")
     suspend fun getChannelFromId(
@@ -49,7 +48,7 @@ interface VideosApi {
         @Query("q") searchQuery: String,
         @Query("type") type: String = "video",
         @Query("key") key: String = API_KEY
-    ) : Response<VideosList>
+    ) : Response<SearchedVideosList>
 
     @GET("search")
     suspend fun getNextSearchResults(
@@ -58,5 +57,5 @@ interface VideosApi {
         @Query("type") type: String = "video",
         @Query("pageToken") pageToken: String,
         @Query("key") key: String = API_KEY
-    ) : Response<VideosList>
+    ) : Response<SearchedVideosList>
 }
