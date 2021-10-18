@@ -78,13 +78,21 @@ data class ChannelSnippet(
     val thumbnails: ThumbnailSizes
 )
 
+data class ChannelStats(
+    var viewCount: Long,
+    var subscriberCount: Long,
+    var hiddenSubscriberCount: Boolean,
+    var videoCount: Long
+)
+
 data class ChannelDetails(
     val items: List<Channels>
 )
 
 data class Channels(
     var id: String = "",
-    val snippet: ChannelSnippet
+    val snippet: ChannelSnippet,
+    val statistics: ChannelStats
 )
 
 data class SearchedVideoId(

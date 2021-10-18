@@ -37,7 +37,8 @@ interface VideosApi {
 
     @GET("channels")
     suspend fun getChannelFromId(
-        @Query("part") part: String = "snippet",
+        @Query("part") part1: String = "snippet",
+        @Query("part") part2: String = "statistics",
         @Query("id") id: String,
         @Query("key") key: String = API_KEY
     ): Response<ChannelDetails>
