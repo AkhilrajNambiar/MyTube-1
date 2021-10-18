@@ -18,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.Dispatcher
 import retrofit2.Response
+import java.lang.Exception
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.*
@@ -36,7 +37,12 @@ class VideosViewModel(private val repository: VideosRepository) : ViewModel(){
 
     init {
         Log.d("searched","videos viewModel starts")
-        getPopularVideos()
+        try {
+            getPopularVideos()
+        }
+        catch (e:Exception) {
+            Log.e("MainVideoScreen", e.stackTraceToString())
+        }
     }
 
     // Network calls
@@ -58,9 +64,14 @@ class VideosViewModel(private val repository: VideosRepository) : ViewModel(){
 
     fun getChannel(channelId: String) = viewModelScope.launch(Dispatchers.IO) {
         Log.d("searched", "getChannels is running")
-        _channelResponse.postValue(Resource.Loading())
-        val response = repository.getChannel(channelId)
-        _channelResponse.postValue(handleChannelResponse(response))
+        try {
+            _channelResponse.postValue(Resource.Loading())
+            val response = repository.getChannel(channelId)
+            _channelResponse.postValue(handleChannelResponse(response))
+        }
+        catch (e:Exception) {
+            Log.e("MainVideoScreen", e.stackTraceToString())
+        }
         Log.d("searched", "getChannels has finished running")
     }
 

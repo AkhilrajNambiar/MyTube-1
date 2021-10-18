@@ -79,7 +79,12 @@ class VideosAdapter(val viewModel: VideosViewModel): RecyclerView.Adapter<Videos
                     .into(channelLogo)
             }
             else {
-                viewModel.getChannel(video.snippet.channelId)
+                try {
+                    viewModel.getChannel(video.snippet.channelId)
+                }
+                catch (e:Exception) {
+                    Log.e("MainVideoScreen", e.stackTraceToString())
+                }
                 Glide.with(itemView)
                     .load(viewModel.channels.get(video.snippet.channelId)?.snippet?.thumbnails?.medium?.url)
                     .placeholder(R.drawable.loading)

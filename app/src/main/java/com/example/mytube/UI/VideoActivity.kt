@@ -115,7 +115,16 @@ class VideoActivity : AppCompatActivity() {
                     resource.data?.let { channelResponse ->
                         Glide.with(this).load(channelResponse.items[0].snippet.thumbnails.medium?.url).into(channelLogo)
                         channelTitle.text = channelResponse.items[0].snippet.title
-                        channelSubs.text = resources.getString(R.string.subscribers, VideoViewsFormatter.viewsFormatter((channelResponse.items[0].statistics.subscriberCount).toString()))
+                        val subs = channelResponse.items[0].statistics.subscriberCount
+                        if (subs > 0) {
+                            channelSubs.text = resources.getString(
+                                R.string.subscribers,
+                                VideoViewsFormatter.viewsFormatter((subs).toString())
+                            )
+                        }
+                        else {
+                            channelSubs.text = ""
+                        }
                     }
                 }
                 is Resource.Error -> {

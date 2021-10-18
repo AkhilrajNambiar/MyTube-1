@@ -79,10 +79,10 @@ data class ChannelSnippet(
 )
 
 data class ChannelStats(
-    var viewCount: Long,
-    var subscriberCount: Long,
-    var hiddenSubscriberCount: Boolean,
-    var videoCount: Long
+    var viewCount: Long = 0,
+    var subscriberCount: Long = 0,
+    var hiddenSubscriberCount: Boolean = false,
+    var videoCount: Long = 0
 )
 
 data class ChannelDetails(
