@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/drawable/ic_baseline_videocam_24.xml" value="0.16203703703703703" />
+        <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout-land/video_item.xml" value="0.16" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/activity_main.xml" value="0.15670289855072464" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/activity_search.xml" value="0.15" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/activity_search_results.xml" value="0.1644021739130435" />

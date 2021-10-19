@@ -28,6 +28,7 @@ class SearchedVideosViewModel(private val repository: VideosRepository, private 
     var nextSearchPageId: String = ""
     val searchedVideos = mutableListOf<AboutSearchVideo>()
     val searchedVideoDetails = mutableListOf<AboutVideo>()
+    var searchedVideoIds = mutableListOf<String>()
     val searchedResultchannels = mutableMapOf<String, Channels>()
 
     init {

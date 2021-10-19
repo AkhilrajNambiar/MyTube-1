@@ -104,8 +104,9 @@ class SearchResultsActivity : AppCompatActivity() {
                 is Resource.Success -> {
                     hideProgressBar(progressBar)
                     resource.data?.let { videoResponse ->
-                        if (!viewModel.searchedVideoDetails.contains(videoResponse.items[0])) {
+                        if (!viewModel.searchedVideoIds.contains(videoResponse.items[0].id)) {
                             viewModel.searchedVideoDetails.add(videoResponse.items[0])
+                            viewModel.searchedVideoIds.add(videoResponse.items[0].id)
                         }
                         Log.d("searched", "added ${viewModel.searchedVideoDetails.toList()}")
                         videosAdapter.differ.submitList(viewModel.searchedVideoDetails.toList())
