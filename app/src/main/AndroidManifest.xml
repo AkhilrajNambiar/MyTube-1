@@ -19,7 +19,8 @@
             android:exported="true" />
         <activity
             android:name=".UI.VideoActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name=".UI.MainActivity"
             android:exported="true">

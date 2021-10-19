@@ -6,15 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".UI.VideoActivity">
 
-    <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+<!--    <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView-->
+<!--        android:id="@+id/youtube_player_view"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:showFullScreenButton="true"-->
+<!--        app:showYouTubeButton="false"-->
+<!--        app:useWebUi="false"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"/>-->
+
+    <fragment
         android:id="@+id/youtube_player_view"
+        android:name="com.google.android.youtube.player.YouTubePlayerFragment"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:showFullScreenButton="true"
-        app:showYouTubeButton="false"
-        app:useWebUi="false"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="225dp"
+        android:tag="customYoutubePlayerView"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <LinearLayout
@@ -34,7 +44,7 @@
 
             <TextView
                 android:id="@+id/video_title_in_video_screen"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:textSize="18sp"
@@ -42,6 +52,7 @@
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/description_dropdown"
                 tools:text="Hello everybody" />
 
             <ImageView
@@ -95,7 +106,10 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_weight="1"
-                android:gravity="center">
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless">
 
                 <ImageView
                     android:id="@+id/like_image"
@@ -119,7 +133,10 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_weight="1"
-                android:gravity="center">
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless">
 
                 <ImageView
                     android:id="@+id/dislike_image"
@@ -143,7 +160,10 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_weight="1"
-                android:gravity="center">
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:background="?attr/selectableItemBackgroundBorderless">
 
                 <ImageView
                     android:id="@+id/share_image"
@@ -168,7 +188,10 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_weight="1"
-                android:gravity="center">
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:background="?attr/selectableItemBackgroundBorderless">
 
                 <ImageView
                     android:id="@+id/download_image"
@@ -193,7 +216,10 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_weight="1"
-                android:gravity="center">
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless">
 
                 <ImageView
                     android:id="@+id/save_image"
@@ -269,6 +295,18 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="Channel Name"/>
+
+                <TextView
+                    android:id="@+id/channel_name_if_subs_hidden"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     tools:text="Channel Name"/>
 
                 <TextView

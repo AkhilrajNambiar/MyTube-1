@@ -17,14 +17,19 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.mytube.R
 import com.example.mytube.adapters.VideosAdapter
 import com.example.mytube.db.SearchDatabase
 import com.example.mytube.models.AboutVideo
 import com.example.mytube.repository.VideosRepository
+import com.example.mytube.util.Constants.Companion.API_KEY
 import com.example.mytube.util.Resource
 import com.example.mytube.util.VideoViewsFormatter
+import com.google.android.youtube.player.YouTubeBaseActivity
+import com.google.android.youtube.player.YouTubeInitializationResult
+import com.google.android.youtube.player.YouTubePlayerFragment
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
@@ -34,10 +39,11 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.ui.menu.MenuItem
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.ui.views.YouTubePlayerSeekBar
 
-class VideoActivity : AppCompatActivity() {
+class VideoActivity : AppCompatActivity(), com.google.android.youtube.player.YouTubePlayer.OnInitializedListener{
 
     lateinit var viewModel: VideosViewModel
     lateinit var videosAdapter: VideosAdapter
+    lateinit var video: AboutVideo
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
@@ -46,7 +52,7 @@ class VideoActivity : AppCompatActivity() {
         setContentView(R.layout.activity_video)
         var startTime = 0f
 
-        val video: AboutVideo = intent.getBundleExtra("video")?.getSerializable("video") as AboutVideo
+        video= intent.getBundleExtra("video")?.getSerializable("video") as AboutVideo
         Log.d("videoPlayer", video.toString())
 
         val repository: VideosRepository = VideosRepository(SearchDatabase.getSearchDatabase(this))
@@ -70,60 +76,65 @@ class VideoActivity : AppCompatActivity() {
         videoDislikes.text = VideoViewsFormatter.viewsFormatter((video.statistics.dislikeCount).toString())
 
         // The youtube player initialization and customization
-        val youtubePlayerView: YouTubePlayerView = findViewById(R.id.youtube_player_view)
-        lifecycle.addObserver(youtubePlayerView)
+        val youtubePlayerFragment: YouTubePlayerFragment = fragmentManager.findFragmentById(R.id.youtube_player_view) as YouTubePlayerFragment
+//        lifecycle.addObserver(youtubePlayerView)
+        youtubePlayerFragment.initialize(API_KEY, this)
 
-        youtubePlayerView.addYouTubePlayerListener(AbstractPlayerListener(video.id, startTime, this))
-        val playerUIController = youtubePlayerView.getPlayerUiController()
-        playerUIController.showMenuButton(true)
-        val menu = playerUIController.getMenu()
-        menu?.addItem(MenuItem("Save to PlayList", onClickListener = View.OnClickListener {
-            TODO()
-        }))
-        menu?.addItem(MenuItem("Save to Watch Later", onClickListener = View.OnClickListener {
-            TODO()
-        }))
-        menu?.addItem(MenuItem("Download Video", onClickListener = View.OnClickListener {
-            TODO()
-        }))
-        menu?.addItem(MenuItem("Share", onClickListener = View.OnClickListener {
-            val intent = Intent(Intent.ACTION_SEND)
-            intent.type = "text/plain"
-            intent.putExtra(Intent.EXTRA_TEXT, "https://www.youtube.com/watch?v=${video.id}")
-            try {
-//                 If sharing apps like whatsapp and gmail are available
-                startActivity(intent)
-            }
-            catch (e: ActivityNotFoundException) {
-                // else go to google playstore for downloading whatsapp in this case
-                val intent2 = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.whatsapp"))
-                startActivity(intent2)
-            }
-        }))
+
+//        youtubePlayerView.addYouTubePlayerListener(AbstractPlayerListener(video.id, startTime, this))
+//        val playerUIController = youtubePlayerView.getPlayerUiController()
+//        playerUIController.showMenuButton(true)
+//        val menu = playerUIController.getMenu()
+//        menu?.addItem(MenuItem("Save to PlayList", onClickListener = View.OnClickListener {
+//            TODO()
+//        }))
+//        menu?.addItem(MenuItem("Save to Watch Later", onClickListener = View.OnClickListener {
+//            TODO()
+//        }))
+//        menu?.addItem(MenuItem("Download Video", onClickListener = View.OnClickListener {
+//            TODO()
+//        }))
+//        menu?.addItem(MenuItem("Share", onClickListener = View.OnClickListener {
+//            val intent = Intent(Intent.ACTION_SEND)
+//            intent.type = "text/plain"
+//            intent.putExtra(Intent.EXTRA_TEXT, "https://www.youtube.com/watch?v=${video.id}")
+//            try {
+////                 If sharing apps like whatsapp and gmail are available
+//                startActivity(intent)
+//            }
+//            catch (e: ActivityNotFoundException) {
+//                // else go to google playstore for downloading whatsapp in this case
+//                val intent2 = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.whatsapp"))
+//                startActivity(intent2)
+//            }
+//        }))
     }
 
     override fun onResume() {
         super.onResume()
 
+
         val channelLogo = findViewById<ImageView>(R.id.channel_logo)
         val channelTitle = findViewById<TextView>(R.id.channel_name)
         val channelSubs = findViewById<TextView>(R.id.channel_subscribers)
+        val channelTitleWithHiddenSubs = findViewById<TextView>(R.id.channel_name_if_subs_hidden)
 
         viewModel.channelResponse.observe(this, Observer { resource ->
             when(resource) {
                 is Resource.Success -> {
                     resource.data?.let { channelResponse ->
                         Glide.with(this).load(channelResponse.items[0].snippet.thumbnails.medium?.url).into(channelLogo)
-                        channelTitle.text = channelResponse.items[0].snippet.title
                         val subs = channelResponse.items[0].statistics.subscriberCount
-                        if (subs > 0) {
+                        val hideSubs = channelResponse.items[0].statistics.hiddenSubscriberCount
+                        if (!hideSubs) {
+                            channelTitle.text = channelResponse.items[0].snippet.title
                             channelSubs.text = resources.getString(
                                 R.string.subscribers,
                                 VideoViewsFormatter.viewsFormatter((subs).toString())
                             )
                         }
                         else {
-                            channelSubs.text = ""
+                            channelTitleWithHiddenSubs.text = channelResponse.items[0].snippet.title
                         }
                     }
                 }
@@ -135,6 +146,21 @@ class VideoActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    override fun onInitializationSuccess(
+        provider: com.google.android.youtube.player.YouTubePlayer.Provider?,
+        player: com.google.android.youtube.player.YouTubePlayer?,
+        wasRestored: Boolean
+    ) {
+        player?.loadVideo(video.id)
+    }
+
+    override fun onInitializationFailure(
+        p0: com.google.android.youtube.player.YouTubePlayer.Provider?,
+        p1: YouTubeInitializationResult?
+    ) {
+        TODO("Not yet implemented")
     }
 }
 

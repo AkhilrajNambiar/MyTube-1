@@ -68,7 +68,8 @@
                     android:layout_weight="1"
                     android:importantForAccessibility="no"
                     android:clickable="true"
-                    android:focusable="true"/>
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"/>
 
                 <ImageView
                     android:id="@+id/account"
