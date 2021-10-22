@@ -8,12 +8,17 @@
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/activity_main.xml" value="0.15670289855072464" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/activity_search.xml" value="0.15" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/activity_search_results.xml" value="0.1644021739130435" />
-        <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/activity_video.xml" value="0.22" />
+        <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/activity_video.xml" value="0.25" />
+        <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/comment_item.xml" value="0.25" />
+        <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/comment_reply_item.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/fragment_comments.xml" value="0.22" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/fragment_home.xml" value="0.16" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/fragment_library.xml" value="0.151268115942029" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/fragment_notifications.xml" value="0.151268115942029" />
+        <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/fragment_replies.xml" value="0.22" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/fragment_search_results.xml" value="0.1644021739130435" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/fragment_subscriptions.xml" value="0.151268115942029" />
+        <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/fragment_video_data.xml" value="0.25" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/fragment_video_view.xml" value="0.20380434782608695" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/search_history_item.xml" value="0.1" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/video_item.xml" value="0.151268115942029" />

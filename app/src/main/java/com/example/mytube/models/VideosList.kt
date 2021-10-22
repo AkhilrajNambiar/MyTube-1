@@ -2,6 +2,7 @@ package com.example.mytube.models
 
 import androidx.lifecycle.LiveData
 import com.squareup.moshi.Json
+import org.w3c.dom.Comment
 import java.io.Serializable
 
 data class VideosList(
@@ -99,3 +100,28 @@ data class SearchedVideoId(
     val kind: String,
     val videoId: String
 ): Serializable
+
+
+data class CommentSnippet(
+    val videoId: String,
+    val textDisplay: String,
+    val textOriginal: String,
+    val authorDisplayName: String,
+    val authorProfileImageUrl: String,
+    val authorChannelId: AuthorChannelId
+)
+
+data class YoutubeComment(
+    val id: String,
+    val snippet: CommentSnippet,
+    var canRate: Boolean = false,
+    var likeCount: Int = 0,
+    var publishedAt: String = "",
+    var updatedAt: String = ""
+)
+
+data class SingleComment(
+    val videoId: String,
+    val topLevelComment: YoutubeComment
+)
+

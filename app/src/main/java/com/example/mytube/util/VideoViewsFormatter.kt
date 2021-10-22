@@ -42,13 +42,13 @@ class VideoViewsFormatter {
             }
         }
 
-        fun timeFormatter(time: Map<String, Int>, view: TextView, context: Context) {
+        fun timeFormatter(time: Map<String, Int>, context: Context): String {
             if (time.containsKey("seconds")){
-                if (time["seconds"] == 0)  view.text = context.resources.getString(
+                if (time["seconds"] == 0)  return context.resources.getString(
                     R.string.recent
                 )
                 else {
-                    view.text = context.getString(
+                    return context.getString(
                         R.string.video_published_time,
                         time["seconds"],
                         context.resources.getQuantityString(
@@ -58,7 +58,7 @@ class VideoViewsFormatter {
                 }
             }
             else if (time.containsKey("minutes")) {
-                view.text = context.getString(
+                return context.getString(
                     R.string.video_published_time,
                     time["minutes"],
                     context.resources.getQuantityString(
@@ -67,7 +67,7 @@ class VideoViewsFormatter {
                 )
             }
             else if (time.containsKey("hours")) {
-                view.text = context.getString(
+                return context.getString(
                     R.string.video_published_time,
                     time["hours"],
                     context.resources.getQuantityString(
@@ -75,7 +75,7 @@ class VideoViewsFormatter {
                 )
             }
             else if (time.containsKey("days")) {
-                view.text = context.getString(
+                return context.getString(
                     R.string.video_published_time,
                     time["days"],
                     context.resources.getQuantityString(
@@ -83,7 +83,7 @@ class VideoViewsFormatter {
                 )
             }
             else if (time.containsKey("weeks")) {
-                view.text = context.getString(
+                return context.getString(
                     R.string.video_published_time,
                     time["weeks"],
                     context.resources.getQuantityString(
@@ -91,7 +91,7 @@ class VideoViewsFormatter {
                 )
             }
             else if (time.containsKey("months")) {
-                view.text = context.getString(
+                return context.getString(
                     R.string.video_published_time,
                     time["months"],
                     context.resources.getQuantityString(
@@ -99,13 +99,14 @@ class VideoViewsFormatter {
                 )
             }
             else if (time.containsKey("years")) {
-                view.text = context.getString(
+                return context.getString(
                     R.string.video_published_time,
                     time["years"],
                     context.resources.getQuantityString(
                         R.plurals.yearCount, time["years"]!!.toInt())
                 )
             }
+            return ""
         }
     }
 }

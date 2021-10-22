@@ -1,8 +1,6 @@
 package com.example.mytube.API
 
-import com.example.mytube.models.ChannelDetails
-import com.example.mytube.models.SearchedVideosList
-import com.example.mytube.models.VideosList
+import com.example.mytube.models.*
 import com.example.mytube.util.Constants.Companion.API_KEY
 import retrofit2.Response
 import retrofit2.http.GET
@@ -14,7 +12,7 @@ interface VideosApi {
         @Query("part") partSnippet: String = "snippet",
         @Query("part") partStats: String = "statistics",
         @Query("chart") chart: String = "mostPopular",
-        @Query("regionCode") country: String = "in",
+        @Query("regionCode") country: String = listOf("us","in","gb").random(),
         @Query("maxResults") maxResults:Int = 5,
         @Query("key") key: String = API_KEY): Response<VideosList>
 
@@ -23,7 +21,7 @@ interface VideosApi {
         @Query("part") partSnippet: String = "snippet",
         @Query("part") partStats: String = "statistics",
         @Query("chart") chart: String = "mostPopular",
-        @Query("regionCode") country: String = "in",
+        @Query("regionCode") country: String = listOf("us","in","gb").random(),
         @Query("pageToken") nextPageId: String,
         @Query("maxResults") maxResults:Int = 5,
         @Query("key") key: String = API_KEY): Response<VideosList>
@@ -59,4 +57,21 @@ interface VideosApi {
         @Query("pageToken") pageToken: String,
         @Query("key") key: String = API_KEY
     ) : Response<SearchedVideosList>
+
+    @GET("commentThreads")
+    suspend fun getCommentsForVideo(
+        @Query("part") partSnippet: String = "snippet",
+        @Query("maxResults") totalResults: Int = 100,
+        @Query("order") order:String = "relevance",
+        @Query("videoId") videoId: String,
+        @Query("key") key: String = API_KEY
+    ) : Response<CommentThreadsList>
+
+    @GET("comments")
+    suspend fun getCommentReplies(
+        @Query("part") partSnippet: String = "snippet",
+        @Query("maxResults") totalResults: Int = 100,
+        @Query("parentId") parentCommentId: String,
+        @Query("key") key: String = API_KEY
+    ) : Response<CommentRepliesList>
 }

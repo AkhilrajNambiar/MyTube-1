@@ -16,9 +16,9 @@
         <ImageView
             android:id="@+id/video_thumbnail"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="200dp"
             android:importantForAccessibility="no"
-            android:scaleType="fitXY" />
+            android:scaleType="centerCrop" />
 
         <LinearLayout
             android:id="@+id/video_text"

@@ -21,13 +21,17 @@ class VideosRepository(val db: SearchDatabase) {
 
     suspend fun getNextSearchResults(query: String, nextPageId: String) = api.getNextSearchResults(searchQuery = query, pageToken = nextPageId)
 
+    suspend fun getVideoDetails(id: String) = api.getVideoDetails(id = id)
+
+    suspend fun getCommentsForVideo(videoId: String) = api.getCommentsForVideo(videoId = videoId)
+
+    suspend fun getCommentReplies(parentComment: String) = api.getCommentReplies(parentCommentId = parentComment)
+
     suspend fun insertSearchedItem(item: String) = db.getDao().insert(SearchItem(item))
 
     suspend fun deleteSearchedItem(item: String) = db.getDao().delete(SearchItem(item))
 
     fun getSearchHistory() = db.getDao().getAllSearchedItems()
-
-    suspend fun getVideoDetails(id: String) = api.getVideoDetails(id = id)
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun findMillisDifference(str1: String) : Map<String, Int>{

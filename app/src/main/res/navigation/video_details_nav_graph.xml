@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/video_details_nav_graph.xml"
+    app:startDestination="@id/videoDataFragment">
+
+    <fragment
+        android:id="@+id/videoDataFragment"
+        android:name="com.example.mytube.UI.Fragments.VideoDataFragment"
+        android:label="fragment_video_data"
+        tools:layout="@layout/fragment_video_data" >
+        <action
+            android:id="@+id/action_videoDataFragment_to_commentsFragment"
+            app:destination="@id/commentsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/commentsFragment"
+        android:name="com.example.mytube.UI.Fragments.CommentsFragment"
+        android:label="fragment_comments"
+        tools:layout="@layout/fragment_comments" >
+        <action
+            android:id="@+id/action_commentsFragment_to_videoDataFragment"
+            app:destination="@id/videoDataFragment" />
+        <action
+            android:id="@+id/action_commentsFragment_to_repliesFragment"
+            app:destination="@id/repliesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/repliesFragment"
+        android:name="com.example.mytube.UI.Fragments.RepliesFragment"
+        android:label="fragment_replies"
+        tools:layout="@layout/fragment_replies" >
+        <action
+            android:id="@+id/action_repliesFragment_to_commentsFragment"
+            app:destination="@id/commentsFragment" />
+        <argument
+            android:name="comment"
+            app:argType="com.example.mytube.models.Item" />
+        <action
+            android:id="@+id/action_repliesFragment_to_videoDataFragment"
+            app:destination="@id/videoDataFragment" />
+    </fragment>
+</navigation>

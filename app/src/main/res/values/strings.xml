@@ -22,6 +22,7 @@
     <string name="share">Share</string>
     <string name="subscribe">subscribe</string>
     <string name="comments">Comments</string>
+    <string name="commenting_username_and_posted_date">%s . %s</string>
     <plurals name="dayCount">
         <item quantity="one"> day ago</item>
         <item quantity="other"> days ago</item>
@@ -51,4 +52,8 @@
         <item quantity="other"> years ago</item>
     </plurals>
     <string name="subscribers">%s subscribers</string>
+    <string name="replies">%s REPLIES</string>
+    <string name="filter_comments">Filter comments</string>
+    <string name="close_comments">close comments</string>
+    <string name="replies_label">Replies</string>
 </resources>

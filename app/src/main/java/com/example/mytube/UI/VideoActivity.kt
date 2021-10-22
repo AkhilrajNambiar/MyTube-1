@@ -12,14 +12,18 @@ import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.ImageView
+import android.widget.MediaController
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.mytube.R
+import com.example.mytube.UI.Fragments.VideoDataFragment
 import com.example.mytube.adapters.VideosAdapter
 import com.example.mytube.db.SearchDatabase
 import com.example.mytube.models.AboutVideo
@@ -38,19 +42,20 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.You
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.ui.menu.MenuItem
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.ui.views.YouTubePlayerSeekBar
+import java.lang.Exception
 
 class VideoActivity : AppCompatActivity(), com.google.android.youtube.player.YouTubePlayer.OnInitializedListener{
 
     lateinit var viewModel: VideosViewModel
     lateinit var videosAdapter: VideosAdapter
     lateinit var video: AboutVideo
+    lateinit var navController: NavController
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_video)
-        var startTime = 0f
 
         video= intent.getBundleExtra("video")?.getSerializable("video") as AboutVideo
         Log.d("videoPlayer", video.toString())
@@ -60,25 +65,31 @@ class VideoActivity : AppCompatActivity(), com.google.android.youtube.player.You
         viewModel = ViewModelProvider(this,viewModelFactory).get(VideosViewModel::class.java)
         videosAdapter = VideosAdapter(viewModel)
 
-        viewModel.getChannel(video.snippet.channelId)
+        try {
+            viewModel.getChannel(video.snippet.channelId)
+            viewModel.getCommentsForVideo(videoId = video.id)
+        }
+        catch (e: Exception) {
+            Log.e("videoData", e.stackTraceToString())
+        }
 
-        val videoViews = findViewById<TextView>(R.id.video_views)
-        val videoPublishedDate = findViewById<TextView>(R.id.video_published_date)
-        val videoLikes = findViewById<TextView>(R.id.like_text)
-        val videoDislikes = findViewById<TextView>(R.id.dislike_text)
-        val videoTitle = findViewById<TextView>(R.id.video_title_in_video_screen)
-
-        videoTitle.text = video.snippet.title
-        videoViews.text = "${VideoViewsFormatter.viewsFormatter((video.statistics.viewCount).toString())} views . "
-        val videoPublishedTime = viewModel.findMillisDifference(video.snippet.publishedAt)
-        VideoViewsFormatter.timeFormatter(videoPublishedTime, videoPublishedDate, this).toString()
-        videoLikes.text = VideoViewsFormatter.viewsFormatter((video.statistics.likeCount).toString())
-        videoDislikes.text = VideoViewsFormatter.viewsFormatter((video.statistics.dislikeCount).toString())
 
         // The youtube player initialization and customization
         val youtubePlayerFragment: YouTubePlayerFragment = fragmentManager.findFragmentById(R.id.youtube_player_view) as YouTubePlayerFragment
 //        lifecycle.addObserver(youtubePlayerView)
         youtubePlayerFragment.initialize(API_KEY, this)
+
+        try {
+            val videoDataFragment = VideoDataFragment()
+            videoDataFragment.arguments?.putSerializable("video", video)
+        }
+        catch (e: Exception) {
+            Log.e("videoData", e.stackTraceToString())
+        }
+
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.video_data_nav_host) as NavHostFragment
+        navController = navHostFragment.navController
+
 
 
 //        youtubePlayerView.addYouTubePlayerListener(AbstractPlayerListener(video.id, startTime, this))
@@ -108,44 +119,6 @@ class VideoActivity : AppCompatActivity(), com.google.android.youtube.player.You
 //                startActivity(intent2)
 //            }
 //        }))
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-
-        val channelLogo = findViewById<ImageView>(R.id.channel_logo)
-        val channelTitle = findViewById<TextView>(R.id.channel_name)
-        val channelSubs = findViewById<TextView>(R.id.channel_subscribers)
-        val channelTitleWithHiddenSubs = findViewById<TextView>(R.id.channel_name_if_subs_hidden)
-
-        viewModel.channelResponse.observe(this, Observer { resource ->
-            when(resource) {
-                is Resource.Success -> {
-                    resource.data?.let { channelResponse ->
-                        Glide.with(this).load(channelResponse.items[0].snippet.thumbnails.medium?.url).into(channelLogo)
-                        val subs = channelResponse.items[0].statistics.subscriberCount
-                        val hideSubs = channelResponse.items[0].statistics.hiddenSubscriberCount
-                        if (!hideSubs) {
-                            channelTitle.text = channelResponse.items[0].snippet.title
-                            channelSubs.text = resources.getString(
-                                R.string.subscribers,
-                                VideoViewsFormatter.viewsFormatter((subs).toString())
-                            )
-                        }
-                        else {
-                            channelTitleWithHiddenSubs.text = channelResponse.items[0].snippet.title
-                        }
-                    }
-                }
-                is Resource.Error -> {
-                    Log.e("videoScreen", resource.message.toString())
-                }
-                is Resource.Loading -> {
-                    Log.d("videoScreen", "Loading")
-                }
-            }
-        })
     }
 
     override fun onInitializationSuccess(

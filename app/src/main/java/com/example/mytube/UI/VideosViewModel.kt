@@ -8,10 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mytube.db.SearchItem
-import com.example.mytube.models.AboutVideo
-import com.example.mytube.models.ChannelDetails
-import com.example.mytube.models.Channels
-import com.example.mytube.models.VideosList
+import com.example.mytube.models.*
 import com.example.mytube.repository.VideosRepository
 import com.example.mytube.util.Resource
 import kotlinx.coroutines.Dispatchers
@@ -30,10 +27,17 @@ class VideosViewModel(private val repository: VideosRepository) : ViewModel(){
     private var _channelResponse = MutableLiveData<Resource<ChannelDetails>>()
     val channelResponse: LiveData<Resource<ChannelDetails>> = _channelResponse
 
+    private var _commentResponse = MutableLiveData<Resource<CommentThreadsList>>()
+    val commentResponse: LiveData<Resource<CommentThreadsList>> = _commentResponse
+
+    private var _commentRepliesResponse = MutableLiveData<Resource<CommentRepliesList>>()
+    val commentRepliesResponse: LiveData<Resource<CommentRepliesList>> = _commentRepliesResponse
 
     var nextPageId: String = ""
     val videos = mutableListOf<AboutVideo>()
     val channels = mutableMapOf<String, Channels>()
+    var commentsForVideo = mutableListOf<Item>()
+    var commentReplies = MutableLiveData<MutableList<ItemX>>()
 
     init {
         Log.d("searched","videos viewModel starts")
@@ -75,6 +79,28 @@ class VideosViewModel(private val repository: VideosRepository) : ViewModel(){
         Log.d("searched", "getChannels has finished running")
     }
 
+    fun getCommentsForVideo(videoId: String) = viewModelScope.launch(Dispatchers.IO) {
+        try {
+            _commentResponse.postValue(Resource.Loading())
+            val response = repository.getCommentsForVideo(videoId)
+            _commentResponse.postValue(handleCommentResponse(response))
+        }
+        catch (e: Exception) {
+            Log.d("comments", e.stackTraceToString())
+        }
+    }
+
+    fun getCommentsReplies(parentComment: String) = viewModelScope.launch(Dispatchers.IO) {
+        try{
+            _commentRepliesResponse.postValue(Resource.Loading())
+            val response = repository.getCommentReplies(parentComment = parentComment)
+            _commentRepliesResponse.postValue(handleCommentRepliesResponse(response))
+        }
+        catch (e: Exception) {
+            Log.e("commentReplies", e.stackTraceToString())
+        }
+    }
+
     private fun handlePopularVideosResponse(
         response: Response<VideosList>
     ): Resource<VideosList>{
@@ -92,6 +118,28 @@ class VideosViewModel(private val repository: VideosRepository) : ViewModel(){
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+    private fun handleCommentResponse(
+        response: Response<CommentThreadsList>
+    ) : Resource<CommentThreadsList> {
+        if (response.isSuccessful) {
+            response.body()?.let {
+                return Resource.Success(it)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+    private fun handleCommentRepliesResponse(
+        response: Response<CommentRepliesList>
+    ) : Resource<CommentRepliesList> {
+        if (response.isSuccessful) {
+            response.body()?.let {
+                return Resource.Success(it)
             }
         }
         return Resource.Error(response.message())
