@@ -6,8 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AbsListView
-import android.widget.ProgressBar
+import android.widget.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,16 +37,31 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             addOnScrollListener(this@HomeFragment.scrollListener)
         }
         val progressBar = view.findViewById<ProgressBar>(R.id.paginationProgressBar)
+        val errorBox = view.findViewById<LinearLayout>(R.id.error_box)
+        val errorText = view.findViewById<TextView>(R.id.home_page_error)
+        val retryAfterObtainingInternet = view.findViewById<Button>(R.id.retry_homepage)
+        val partialVideosLoadedNetworkError = view.findViewById<FrameLayout>(R.id.partially_loaded_network_error)
+
+        retryAfterObtainingInternet.setOnClickListener {
+            viewModel.getPopularVideos()
+        }
 
         viewModel.videosList.observe(viewLifecycleOwner, Observer { resource ->
             when(resource) {
                 is Resource.Success -> {
                     Log.d("searched", "Videos waala is running in HomeFrag")
                     hideProgressBar(progressBar)
+                    hideErrorBox(errorBox)
+                    hidePartialError(partialVideosLoadedNetworkError)
                     resource.data?.let { videoResponse ->
                         if (viewModel.nextPageId != videoResponse.nextPageToken) {
                             viewModel.nextPageId = videoResponse.nextPageToken
-                            viewModel.videos.addAll(videoResponse.items)
+                            videoResponse.items.forEach {
+                                if (!viewModel.videoIds.contains(it.id)){
+                                    viewModel.videoIds.add(it.id)
+                                    viewModel.videos.add(it)
+                                }
+                            }
                             Log.d("Channels", viewModel.channels.toString())
                             videosAdapter.differ.submitList(viewModel.videos.toList())
                             Log.d("Videos", viewModel.videos.toString())
@@ -61,11 +75,20 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 is Resource.Error -> {
                     Log.d("searched", "Videos waala is running in HomeFrag")
                     hideProgressBar(progressBar)
+                    if (resource.message == "No Internet Connection for Next Videos!") {
+                        showPartialError(partialVideosLoadedNetworkError)
+                    }
+                    else {
+                        showErrorBox(errorBox)
+                        errorText.text = resource.message
+                    }
                     Log.e("Videos", resource.message.toString())
                 }
                 is Resource.Loading -> {
                     Log.d("searched", "Videos waala is running in HomeFrag")
                     showProgressBar(progressBar)
+                    hideErrorBox(errorBox)
+                    hidePartialError(partialVideosLoadedNetworkError)
                 }
             }
         })
@@ -101,6 +124,20 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun showProgressBar(bar: ProgressBar){
         bar.visibility = View.VISIBLE
         isLoading = true
+    }
+
+    private fun showErrorBox(errorBox: LinearLayout) {
+        errorBox.visibility = View.VISIBLE
+    }
+
+    private fun hideErrorBox(errorBox: LinearLayout) {
+        errorBox.visibility = View.INVISIBLE
+    }
+    private fun showPartialError(error: FrameLayout) {
+        error.visibility = View.VISIBLE
+    }
+    private fun hidePartialError(error: FrameLayout) {
+        error.visibility = View.INVISIBLE
     }
 
     var isScrolling: Boolean = false

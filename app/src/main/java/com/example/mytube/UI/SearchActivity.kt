@@ -27,7 +27,7 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
 
         val repository = VideosRepository(SearchDatabase.getSearchDatabase(this))
-        val viewModelFactory = VideosViewModelProviderFactory(repository)
+        val viewModelFactory = VideosViewModelProviderFactory(application, repository)
         viewModel = ViewModelProvider(this,viewModelFactory).get(VideosViewModel::class.java)
 
         val recyclerView = findViewById<RecyclerView>(R.id.searched_terms)

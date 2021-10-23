@@ -62,7 +62,7 @@ class VideoActivity : AppCompatActivity(), com.google.android.youtube.player.You
         Log.d("videoPlayer", video.toString())
 
         val repository: VideosRepository = VideosRepository(SearchDatabase.getSearchDatabase(this))
-        val viewModelFactory = VideosViewModelProviderFactory(repository)
+        val viewModelFactory = VideosViewModelProviderFactory(application, repository)
         viewModel = ViewModelProvider(this,viewModelFactory).get(VideosViewModel::class.java)
 
         videosAdapter = VideosAdapter(viewModel)

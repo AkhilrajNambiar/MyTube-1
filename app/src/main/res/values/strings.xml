@@ -60,4 +60,7 @@
     <string name="likes">Likes</string>
     <string name="views">Views</string>
     <string name="description">Description</string>
+    <string name="retry">Retry</string>
+    <string name="network_error">Network error image</string>
+    <string name="partial_network_error">Partially Loaded videos error</string>
 </resources>

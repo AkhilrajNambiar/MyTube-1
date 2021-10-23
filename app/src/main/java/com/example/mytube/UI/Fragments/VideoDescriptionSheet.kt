@@ -40,7 +40,8 @@ class VideoDescriptionSheet(private val video: AboutVideo): BottomSheetDialogFra
         val videoTitle = view.findViewById<TextView>(R.id.video_title_in_description_sheet)
         val likeCount = view.findViewById<TextView>(R.id.description_like_count)
         val viewCount = view.findViewById<TextView>(R.id.description_view_count)
-        val videoAddedDate = view.findViewById<TextView>(R.id.added_year)
+        val videoAddedYear = view.findViewById<TextView>(R.id.added_year)
+        val videoAddedDayAndMonth = view.findViewById<TextView>(R.id.added_date_and_month)
         val channelName = view.findViewById<TextView>(R.id.channel_name_in_description_box)
         val channelLogo = view.findViewById<ImageView>(R.id.channel_logo_in_description_box)
         val videoDescription = view.findViewById<TextView>(R.id.video_description)
@@ -49,7 +50,8 @@ class VideoDescriptionSheet(private val video: AboutVideo): BottomSheetDialogFra
         videoTitle.text = video.snippet.title
         likeCount.text = VideoViewsFormatter.viewsFormatter(video.statistics.likeCount.toString())
         viewCount.text = VideoViewsFormatter.viewsFormatter(video.statistics.viewCount.toString())
-        videoAddedDate.text = VideoViewsFormatter.timeFormatter(viewModel.findMillisDifference(video.snippet.publishedAt), requireContext())
+        videoAddedYear.text = VideoViewsFormatter.returnYearFromDate(video.snippet.publishedAt).toString()
+        videoAddedDayAndMonth.text = "${VideoViewsFormatter.returnDayFromDate(video.snippet.publishedAt)} ${VideoViewsFormatter.returnMonthFromDate(video.snippet.publishedAt)}"
         channelName.text = video.snippet.channelTitle
         videoDescription.text = video.snippet.description
 
@@ -57,7 +59,7 @@ class VideoDescriptionSheet(private val video: AboutVideo): BottomSheetDialogFra
             // close the bottom sheet
             dismiss()
         }
-        
+
         viewModel.channelResponse.observe(viewLifecycleOwner, Observer { resource ->
             when(resource) {
                 is Resource.Success -> {

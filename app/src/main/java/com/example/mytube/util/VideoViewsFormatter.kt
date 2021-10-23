@@ -1,9 +1,12 @@
 package com.example.mytube.util
 
 import android.content.Context
+import android.os.Build
 import android.view.View
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import com.example.mytube.R
+import java.time.LocalDateTime
 
 class VideoViewsFormatter {
     companion object {
@@ -108,5 +111,23 @@ class VideoViewsFormatter {
             }
             return ""
         }
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun returnDayFromDate(string: String): Int {
+            val date = LocalDateTime.parse(string.slice(0 until string.length-1))
+            return date.dayOfMonth
+        }
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun returnMonthFromDate(string: String): String {
+            val date = LocalDateTime.parse(string.slice(0 until string.length - 1))
+            return date.month.toString()
+        }
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun returnYearFromDate(string: String): Int {
+            val date = LocalDateTime.parse(string.slice(0 until string.length - 1))
+            return date.year
+        }
+
     }
 }

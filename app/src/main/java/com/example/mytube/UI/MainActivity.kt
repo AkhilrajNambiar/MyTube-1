@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val repository: VideosRepository = VideosRepository(SearchDatabase.getSearchDatabase(this))
-        val viewModelFactory = VideosViewModelProviderFactory(repository)
+        val viewModelFactory = VideosViewModelProviderFactory(application,repository)
         viewModel = ViewModelProvider(this,viewModelFactory).get(VideosViewModel::class.java)
     }
 

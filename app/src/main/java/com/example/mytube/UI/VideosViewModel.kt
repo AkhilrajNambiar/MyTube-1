@@ -1,26 +1,33 @@
 package com.example.mytube.UI
 
+import android.app.Application
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import com.example.mytube.MytubeApplication
 import com.example.mytube.db.SearchItem
 import com.example.mytube.models.*
 import com.example.mytube.repository.VideosRepository
 import com.example.mytube.util.Resource
+import com.google.android.youtube.player.internal.e
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.Dispatcher
 import retrofit2.Response
+import java.io.IOException
 import java.lang.Exception
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.*
 
-class VideosViewModel(private val repository: VideosRepository) : ViewModel(){
+class VideosViewModel(
+    app: Application,
+    private val repository: VideosRepository
+) : AndroidViewModel(app){
     private var _videosList = MutableLiveData<Resource<VideosList>>()
     val videosList: LiveData<Resource<VideosList>> = _videosList
 
@@ -35,58 +42,71 @@ class VideosViewModel(private val repository: VideosRepository) : ViewModel(){
 
     var nextPageId: String = ""
     val videos = mutableListOf<AboutVideo>()
+    val videoIds = mutableListOf<String>()
     val channels = mutableMapOf<String, Channels>()
     var commentsForVideo = mutableListOf<Item>()
     var commentReplies = MutableLiveData<MutableList<ItemX>>()
 
     init {
-        Log.d("searched","videos viewModel starts")
-        try {
-            getPopularVideos()
-        }
-        catch (e:Exception) {
-            Log.e("MainVideoScreen", e.stackTraceToString())
-        }
+        getPopularVideos()
     }
 
     // Network calls
     fun getPopularVideos() = viewModelScope.launch(Dispatchers.IO) {
-        Log.d("searched", "getPopularVideos is running")
+        _videosList.postValue(Resource.Loading())
         try {
-            _videosList.postValue(Resource.Loading())
-            val response = repository.getMostPopularVideos()
-            _videosList.postValue(handlePopularVideosResponse(response))
+            if (hasInternetConnection()) {
+                val response = repository.getMostPopularVideos()
+                _videosList.postValue(handlePopularVideosResponse(response))
+            }
+            else {
+                _videosList.postValue(Resource.Error("No Internet Connection!"))
+            }
         }
-        catch (e: Exception) {
-            Log.e("searched", e.stackTraceToString())
+        catch (t: Throwable) {
+            when(t) {
+                is IOException -> _videosList.postValue(Resource.Error("IOException occured!"))
+                else -> _videosList.postValue(Resource.Error("Conversion Error!"))
+            }
         }
-        Log.d("searched", "getPopularVideos has finished running")
     }
 
     fun getNextVideos() = viewModelScope.launch(Dispatchers.IO) {
-        Log.d("searched", "getNextVideos is running")
+        _videosList.postValue(Resource.Loading())
         try {
-            _videosList.postValue(Resource.Loading())
-            val response = repository.getNextVideos(nextPageId)
-            _videosList.postValue(handlePopularVideosResponse(response))
+            if (hasInternetConnection()) {
+                val response = repository.getNextVideos(nextPageId)
+                _videosList.postValue(handlePopularVideosResponse(response))
+            }
+            else {
+                _videosList.postValue(Resource.Error("No Internet Connection for Next Videos!"))
+            }
         }
-        catch (e: Exception) {
-            Log.e("searched", e.stackTraceToString())
+        catch (t: Throwable) {
+            when(t) {
+                is IOException -> _videosList.postValue(Resource.Error("IOException occured!"))
+                else -> _videosList.postValue(Resource.Error("Conversion Error!"))
+            }
         }
-        Log.d("searched", "getNextVideos has finished running")
     }
 
     fun getChannel(channelId: String) = viewModelScope.launch(Dispatchers.IO) {
-        Log.d("searched", "getChannels is running")
+        _channelResponse.postValue(Resource.Loading())
         try {
-            _channelResponse.postValue(Resource.Loading())
-            val response = repository.getChannel(channelId)
-            _channelResponse.postValue(handleChannelResponse(response))
+            if (hasInternetConnection()) {
+                val response = repository.getChannel(channelId)
+                _channelResponse.postValue(handleChannelResponse(response))
+            }
+            else {
+                _channelResponse.postValue(Resource.Error("No Internet Connection!"))
+            }
         }
-        catch (e:Exception) {
-            Log.e("MainVideoScreen", e.stackTraceToString())
+        catch (t: Throwable) {
+            when(t) {
+                is IOException -> _channelResponse.postValue(Resource.Error("IOException occured!"))
+                else -> _channelResponse.postValue(Resource.Error("Conversion Error!"))
+            }
         }
-        Log.d("searched", "getChannels has finished running")
     }
 
     fun getCommentsForVideo(videoId: String) = viewModelScope.launch(Dispatchers.IO) {
@@ -167,5 +187,32 @@ class VideosViewModel(private val repository: VideosRepository) : ViewModel(){
 
     fun deleteSearchItem(item: String) = viewModelScope.launch {
         repository.deleteSearchedItem(item)
+    }
+
+    private fun hasInternetConnection(): Boolean {
+        val connectivityManager = getApplication<MytubeApplication>().getSystemService(
+            Context.CONNECTIVITY_SERVICE
+        ) as ConnectivityManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val activeNetwork = connectivityManager.activeNetwork ?: return false
+            val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
+            return when {
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                else -> false
+            }
+        }
+        else {
+            connectivityManager.activeNetworkInfo?.run {
+                return when(type) {
+                    ConnectivityManager.TYPE_WIFI -> true
+                    ConnectivityManager.TYPE_ETHERNET -> true
+                    ConnectivityManager.TYPE_MOBILE -> true
+                    else -> true
+                }
+            }
+        }
+        return false
     }
 }
