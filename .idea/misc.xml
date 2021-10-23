@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/drawable/card.xml" value="0.2203125" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/drawable/ic_baseline_videocam_24.xml" value="0.16203703703703703" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout-land/video_item.xml" value="0.16" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/activity_main.xml" value="0.15670289855072464" />
@@ -21,6 +22,7 @@
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/fragment_video_data.xml" value="0.25" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/fragment_video_view.xml" value="0.20380434782608695" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/search_history_item.xml" value="0.1" />
+        <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/video_description_sheet.xml" value="0.15" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/video_item.xml" value="0.151268115942029" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/menu/bottom_nav_menu.xml" value="0.18645833333333334" />
       </map>

@@ -29,7 +29,7 @@ import com.example.mytube.util.VideoViewsFormatter
 
 
 class RepliesFragment : Fragment(R.layout.fragment_replies) {
-    lateinit var commentsAdapter: CommentRepliesAdapter
+    private lateinit var commentsAdapter: CommentRepliesAdapter
     lateinit var viewModel: VideosViewModel
     lateinit var comment: Item
 
@@ -109,11 +109,11 @@ class RepliesFragment : Fragment(R.layout.fragment_replies) {
             commentsAdapter.differ.submitList(it)
         })
     }
-    fun showProgressBar(bar: ProgressBar) {
+    private fun showProgressBar(bar: ProgressBar) {
         bar.visibility = View.VISIBLE
     }
 
-    fun hideProgressBar(bar: ProgressBar) {
+    private fun hideProgressBar(bar: ProgressBar) {
         bar.visibility = View.INVISIBLE
     }
 }

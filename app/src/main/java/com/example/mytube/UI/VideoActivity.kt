@@ -46,6 +46,7 @@ import java.lang.Exception
 
 class VideoActivity : AppCompatActivity(), com.google.android.youtube.player.YouTubePlayer.OnInitializedListener{
 
+    lateinit var searchedVideosViewModel: SearchedVideosViewModel
     lateinit var viewModel: VideosViewModel
     lateinit var videosAdapter: VideosAdapter
     lateinit var video: AboutVideo
@@ -63,6 +64,7 @@ class VideoActivity : AppCompatActivity(), com.google.android.youtube.player.You
         val repository: VideosRepository = VideosRepository(SearchDatabase.getSearchDatabase(this))
         val viewModelFactory = VideosViewModelProviderFactory(repository)
         viewModel = ViewModelProvider(this,viewModelFactory).get(VideosViewModel::class.java)
+
         videosAdapter = VideosAdapter(viewModel)
 
         try {

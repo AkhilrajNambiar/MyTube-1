@@ -46,8 +46,10 @@ data class VideoSnippet(
     val publishedAt: String,
     val channelId: String,
     val title: String,
+    val description: String,
     val thumbnails: ThumbnailSizes,
     val channelTitle: String,
+    var tags: List<String> = listOf()
 ): Serializable
 
 data class ThumbnailSizes(

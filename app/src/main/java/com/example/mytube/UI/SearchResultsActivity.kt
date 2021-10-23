@@ -8,18 +8,14 @@ import android.view.View
 import android.widget.AbsListView
 import android.widget.ImageView
 import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mytube.R
 import com.example.mytube.adapters.SearchedVideosAdapter
-import com.example.mytube.adapters.VideosAdapter
 import com.example.mytube.db.SearchDatabase
 import com.example.mytube.repository.VideosRepository
 import com.example.mytube.util.Resource
-import kotlinx.coroutines.launch
 
 class SearchResultsActivity : AppCompatActivity() {
     lateinit var viewModel: SearchedVideosViewModel
@@ -171,9 +167,9 @@ class SearchResultsActivity : AppCompatActivity() {
             super.onScrolled(recyclerView, dx, dy)
             val manager = recyclerView.layoutManager as LinearLayoutManager
             val currentItems = manager.childCount
-            val totaltItems = manager.itemCount
+            val totalItems = manager.itemCount
             val scrolledItems = manager.findFirstVisibleItemPosition()
-            if (isScrolling && totaltItems == currentItems + scrolledItems && !isLoading && viewModel.searchedVideos.size <= 1_000_000) {
+            if (isScrolling && totalItems == currentItems + scrolledItems && !isLoading && viewModel.searchedVideos.size <= 1_000_000) {
                 viewModel.getNextSearchResults(searchQuery)
                 isScrolling = false
             } else {

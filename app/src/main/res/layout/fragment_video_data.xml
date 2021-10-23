@@ -20,7 +20,10 @@
             android:id="@+id/video_title_and_description_dropdown"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground">
 
             <TextView
                 android:id="@+id/video_title_in_video_screen"
@@ -30,6 +33,9 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/description_dropdown"
@@ -42,6 +48,9 @@
                 android:src="@drawable/ic_dropdown"
                 android:contentDescription="@string/open_dropdown"
                 android:padding="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
@@ -49,7 +58,10 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/video_views_and_time"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
             android:layout_height="wrap_content">
 
             <TextView
@@ -58,6 +70,9 @@
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:layout_marginStart="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="some views "/>
@@ -67,6 +82,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground"
                 app:layout_constraintStart_toEndOf="@id/video_views"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text=". some date"/>

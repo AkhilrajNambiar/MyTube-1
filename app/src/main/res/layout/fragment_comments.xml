@@ -15,8 +15,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="8dp">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/comments_count_label2"
@@ -42,7 +41,8 @@
             <ImageView
                 android:id="@+id/filter_comments"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingVertical="16dp"
                 android:src="@drawable/ic_filter"
                 android:layout_weight="1"
                 android:contentDescription="@string/filter_comments"
@@ -54,8 +54,10 @@
             <ImageView
                 android:id="@+id/close_comments"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingVertical="16dp"
                 android:src="@drawable/ic_close"
+                android:layout_weight="1"
                 android:contentDescription="@string/close_comments"
                 android:clickable="true"
                 android:focusable="true"

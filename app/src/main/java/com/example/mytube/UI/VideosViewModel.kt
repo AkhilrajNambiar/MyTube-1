@@ -52,17 +52,27 @@ class VideosViewModel(private val repository: VideosRepository) : ViewModel(){
     // Network calls
     fun getPopularVideos() = viewModelScope.launch(Dispatchers.IO) {
         Log.d("searched", "getPopularVideos is running")
-        _videosList.postValue(Resource.Loading())
-        val response = repository.getMostPopularVideos()
-        _videosList.postValue(handlePopularVideosResponse(response))
+        try {
+            _videosList.postValue(Resource.Loading())
+            val response = repository.getMostPopularVideos()
+            _videosList.postValue(handlePopularVideosResponse(response))
+        }
+        catch (e: Exception) {
+            Log.e("searched", e.stackTraceToString())
+        }
         Log.d("searched", "getPopularVideos has finished running")
     }
 
     fun getNextVideos() = viewModelScope.launch(Dispatchers.IO) {
         Log.d("searched", "getNextVideos is running")
-        _videosList.postValue(Resource.Loading())
-        val response = repository.getNextVideos(nextPageId)
-        _videosList.postValue(handlePopularVideosResponse(response))
+        try {
+            _videosList.postValue(Resource.Loading())
+            val response = repository.getNextVideos(nextPageId)
+            _videosList.postValue(handlePopularVideosResponse(response))
+        }
+        catch (e: Exception) {
+            Log.e("searched", e.stackTraceToString())
+        }
         Log.d("searched", "getNextVideos has finished running")
     }
 

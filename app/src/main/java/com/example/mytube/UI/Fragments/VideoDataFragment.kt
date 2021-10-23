@@ -17,10 +17,15 @@ import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mytube.R
+import com.example.mytube.UI.SearchedVideosViewModel
 import com.example.mytube.UI.VideoActivity
 import com.example.mytube.UI.VideosViewModel
+import com.example.mytube.adapters.SearchedVideosAdapter
+import com.example.mytube.adapters.VideosAdapter
 import com.example.mytube.models.AboutVideo
 import com.example.mytube.util.Resource
 import com.example.mytube.util.VideoViewsFormatter
@@ -29,6 +34,7 @@ import com.google.android.youtube.player.internal.c
 class VideoDataFragment : Fragment(R.layout.fragment_video_data) {
 
     lateinit var viewModel: VideosViewModel
+    lateinit var relatedVideosAdapter: SearchedVideosAdapter
     lateinit var video: AboutVideo
 
     override fun onCreateView(
@@ -53,6 +59,8 @@ class VideoDataFragment : Fragment(R.layout.fragment_video_data) {
         val videoDislikes = view.findViewById<TextView>(R.id.dislike_text)
         val videoTitle = view.findViewById<TextView>(R.id.video_title_in_video_screen)
         val shareVideo = view.findViewById<LinearLayout>(R.id.share_video)
+        val dropdown = view.findViewById<ImageView>(R.id.description_dropdown)
+        val relatedVideos = view.findViewById<RecyclerView>(R.id.related_videos_recycler_view)
 
         videoTitle.text = video.snippet.title
         videoViews.text = "${VideoViewsFormatter.viewsFormatter((video.statistics.viewCount).toString())} views . "
@@ -73,6 +81,33 @@ class VideoDataFragment : Fragment(R.layout.fragment_video_data) {
                 val intent2 = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.whatsapp"))
                 startActivity(intent2)
             }
+        }
+
+
+        /*
+        * Opening the description dropdown sheet
+        * */
+
+        val videoTitleAndDropdown = view.findViewById<ConstraintLayout>(R.id.video_title_and_description_dropdown)
+        videoTitleAndDropdown.setOnClickListener {
+            VideoDescriptionSheet(video).show(childFragmentManager, "videoDescription")
+        }
+        val videoViewsAndTime = view.findViewById<ConstraintLayout>(R.id.video_views_and_time)
+        videoViewsAndTime.setOnClickListener {
+            VideoDescriptionSheet(video).show(childFragmentManager, "videoDescription")
+        }
+
+        videoTitle.setOnClickListener {
+            VideoDescriptionSheet(video).show(childFragmentManager, "videoDescription")
+        }
+        dropdown.setOnClickListener {
+            VideoDescriptionSheet(video).show(childFragmentManager, "videoDescription")
+        }
+        videoPublishedDate.setOnClickListener {
+            VideoDescriptionSheet(video).show(childFragmentManager, "videoDescription")
+        }
+        videoViews.setOnClickListener {
+            VideoDescriptionSheet(video).show(childFragmentManager, "videoDescription")
         }
 
         val channelLogo = view.findViewById<ImageView>(R.id.channel_logo)
@@ -133,5 +168,7 @@ class VideoDataFragment : Fragment(R.layout.fragment_video_data) {
                 }
             }
         })
+
+
     }
 }

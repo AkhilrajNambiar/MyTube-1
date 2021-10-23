@@ -18,11 +18,11 @@ import com.example.mytube.util.VideoViewsFormatter
 
 class CommentRepliesAdapter(val viewModel: VideosViewModel): RecyclerView.Adapter<CommentRepliesAdapter.CommentReplyViewHolder>() {
 
-    inner class CommentReplyViewHolder(val itemView: View): RecyclerView.ViewHolder(itemView) {
-        val userPicture = itemView.findViewById<ImageView>(R.id.comment_reply_user_picture)
-        val replyPostedDateAndName = itemView.findViewById<TextView>(R.id.user_name_and_posted_date_reply)
-        val body = itemView.findViewById<TextView>(R.id.comment_reply_body)
-        val likeCount = itemView.findViewById<TextView>(R.id.reply_like_count)
+    inner class CommentReplyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+        private val userPicture = itemView.findViewById<ImageView>(R.id.comment_reply_user_picture)
+        private val replyPostedDateAndName = itemView.findViewById<TextView>(R.id.user_name_and_posted_date_reply)
+        private val body = itemView.findViewById<TextView>(R.id.comment_reply_body)
+        private val likeCount = itemView.findViewById<TextView>(R.id.reply_like_count)
 
         @RequiresApi(Build.VERSION_CODES.O)
         fun bind(reply: ItemX) {

@@ -56,4 +56,8 @@
     <string name="filter_comments">Filter comments</string>
     <string name="close_comments">close comments</string>
     <string name="replies_label">Replies</string>
+    <string name="close_description">Close description</string>
+    <string name="likes">Likes</string>
+    <string name="views">Views</string>
+    <string name="description">Description</string>
 </resources>

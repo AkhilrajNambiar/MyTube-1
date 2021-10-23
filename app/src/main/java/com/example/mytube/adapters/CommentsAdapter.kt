@@ -23,14 +23,14 @@ import com.example.mytube.models.ItemX
 import com.example.mytube.util.VideoViewsFormatter
 
 class CommentsAdapter(private val viewModel: VideosViewModel): RecyclerView.Adapter<CommentsAdapter.CommentViewHolder>() {
-    inner class CommentViewHolder(private val itemView: View): RecyclerView.ViewHolder(itemView) {
-        val userImage = itemView.findViewById<ImageView>(R.id.comment_user_picture)
-        val userNameAndPostedDate = itemView.findViewById<TextView>(R.id.user_name_and_posted_date)
-        val commentBody = itemView.findViewById<TextView>(R.id.comment_body)
-        val commentLikes = itemView.findViewById<TextView>(R.id.like_count)
-        val commentReplies1 = itemView.findViewById<TextView>(R.id.replies_count)
-        val commentReplies2: TextView = itemView.findViewById<TextView>(R.id.move_to_replies)
-        val commentCard = itemView.findViewById<ConstraintLayout>(R.id.comment_card)
+    inner class CommentViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+        private val userImage = itemView.findViewById<ImageView>(R.id.comment_user_picture)
+        private val userNameAndPostedDate = itemView.findViewById<TextView>(R.id.user_name_and_posted_date)
+        private val commentBody = itemView.findViewById<TextView>(R.id.comment_body)
+        private val commentLikes = itemView.findViewById<TextView>(R.id.like_count)
+        private val commentReplies1 = itemView.findViewById<TextView>(R.id.replies_count)
+        private val commentReplies2 = itemView.findViewById<TextView>(R.id.move_to_replies)
+        private val commentCard = itemView.findViewById<ConstraintLayout>(R.id.comment_card)
         @RequiresApi(Build.VERSION_CODES.O)
         fun bind(comment: Item) {
             Glide.with(itemView).load(comment.snippet.topLevelComment.snippet.authorProfileImageUrl).into(userImage)
@@ -41,6 +41,11 @@ class CommentsAdapter(private val viewModel: VideosViewModel): RecyclerView.Adap
             commentReplies1.text = VideoViewsFormatter.viewsFormatter(comment.snippet.totalReplyCount.toString())
             commentReplies2.text = itemView.context.resources.getString(R.string.replies, VideoViewsFormatter.viewsFormatter(comment.snippet.totalReplyCount.toString()))
             commentCard.setOnClickListener {
+                viewModel.getCommentsReplies(comment.snippet.topLevelComment.id)
+                val action = CommentsFragmentDirections.actionCommentsFragmentToRepliesFragment(comment = comment)
+                itemView.findNavController().navigate(action)
+            }
+            commentReplies2.setOnClickListener {
                 viewModel.getCommentsReplies(comment.snippet.topLevelComment.id)
                 val action = CommentsFragmentDirections.actionCommentsFragmentToRepliesFragment(comment = comment)
                 itemView.findNavController().navigate(action)

@@ -12,7 +12,7 @@ interface VideosApi {
         @Query("part") partSnippet: String = "snippet",
         @Query("part") partStats: String = "statistics",
         @Query("chart") chart: String = "mostPopular",
-        @Query("regionCode") country: String = listOf("us","in","gb").random(),
+        @Query("regionCode") country: String = listOf("us","in").random(),
         @Query("maxResults") maxResults:Int = 5,
         @Query("key") key: String = API_KEY): Response<VideosList>
 
@@ -21,7 +21,7 @@ interface VideosApi {
         @Query("part") partSnippet: String = "snippet",
         @Query("part") partStats: String = "statistics",
         @Query("chart") chart: String = "mostPopular",
-        @Query("regionCode") country: String = listOf("us","in","gb").random(),
+        @Query("regionCode") country: String = listOf("us","in").random(),
         @Query("pageToken") nextPageId: String,
         @Query("maxResults") maxResults:Int = 5,
         @Query("key") key: String = API_KEY): Response<VideosList>
