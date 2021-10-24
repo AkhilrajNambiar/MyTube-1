@@ -31,7 +31,7 @@ class SearchActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this,viewModelFactory).get(VideosViewModel::class.java)
 
         val recyclerView = findViewById<RecyclerView>(R.id.searched_terms)
-        searchAdapter = SearchedHistoryAdapter()
+        searchAdapter = SearchedHistoryAdapter(viewModel)
         recyclerView.apply {
             adapter = searchAdapter
             layoutManager = LinearLayoutManager(this@SearchActivity)

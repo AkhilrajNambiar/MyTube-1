@@ -5,9 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.AbsListView
-import android.widget.ImageView
-import android.widget.ProgressBar
+import android.widget.*
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,7 +31,7 @@ class SearchResultsActivity : AppCompatActivity() {
 //        searchQuery = intent.getStringExtra("searchQuery").toString()
 
         val repository = VideosRepository(SearchDatabase.getSearchDatabase(this))
-        val viewModelFactory = SearchedVideosViewModelProviderFactory(repository, searchQuery)
+        val viewModelFactory = SearchedVideosViewModelProviderFactory(application, repository, searchQuery)
         viewModel = ViewModelProvider(this,viewModelFactory).get(SearchedVideosViewModel::class.java)
 
         Log.d("searched", "initialised viewModel")
@@ -50,10 +48,18 @@ class SearchResultsActivity : AppCompatActivity() {
 
         val progressBar = findViewById<ProgressBar>(R.id.paginationProgressBar)
         val searchBtn = findViewById<ImageView>(R.id.search)
+        val errorBox = findViewById<LinearLayout>(R.id.error_box_search_results)
+        val errorText = findViewById<TextView>(R.id.search_results_page_error)
+        val partialLoadedError = findViewById<RelativeLayout>(R.id.grump_image_search_results)
+        val retryButton = findViewById<Button>(R.id.retry_search_results_page)
 
         searchBtn.setOnClickListener {
             val intent = Intent(this, SearchActivity::class.java)
             startActivity(intent)
+        }
+
+        retryButton.setOnClickListener {
+            viewModel.getSearchResults(searchQuery)
         }
 
         Log.d("searched", "started searching")
@@ -63,6 +69,8 @@ class SearchResultsActivity : AppCompatActivity() {
                 is Resource.Success -> {
                     Log.d("searched", "Started the success section!")
                     hideProgressBar(progressBar)
+                    hideErrorBox(errorBox)
+                    hidePartialLoadError(partialLoadedError)
                     resource.data?.let { videoResponse ->
                         if (viewModel.nextSearchPageId != videoResponse.nextPageToken) {
                             viewModel.nextSearchPageId = videoResponse.nextPageToken
@@ -86,10 +94,18 @@ class SearchResultsActivity : AppCompatActivity() {
                 }
                 is Resource.Error -> {
                     hideProgressBar(progressBar)
-                    Log.e("Videos", resource.message.toString())
+                    if (resource.message == "No Internet Connection for next videos!") {
+                        showPartialLoadError(partialLoadedError)
+                    }
+                    else {
+                        showErrorBox(errorBox)
+                        errorText.text = resource.message.toString()
+                    }
                 }
                 is Resource.Loading -> {
                     showProgressBar(progressBar)
+                    hideErrorBox(errorBox = errorBox)
+                    hidePartialLoadError(partialLoadedError)
                     Log.d("searched", "Loading was done")
                 }
             }
@@ -150,6 +166,22 @@ class SearchResultsActivity : AppCompatActivity() {
     private fun showProgressBar(bar: ProgressBar){
         bar.visibility = View.VISIBLE
         isLoading = true
+    }
+
+    private fun showErrorBox(errorBox: LinearLayout) {
+        errorBox.visibility = View.VISIBLE
+    }
+
+    private fun hideErrorBox(errorBox: LinearLayout) {
+        errorBox.visibility = View.INVISIBLE
+    }
+
+    private fun showPartialLoadError(partial: RelativeLayout) {
+        partial.visibility = View.VISIBLE
+    }
+
+    private fun hidePartialLoadError(partial: RelativeLayout) {
+        partial.visibility = View.INVISIBLE
     }
 
     var isScrolling = false

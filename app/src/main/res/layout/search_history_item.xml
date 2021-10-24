@@ -12,6 +12,7 @@
         android:layout_height="56dp"
         android:clickable="true"
         android:focusable="true"
+        android:background="?attr/selectableItemBackground"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
