@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("searched", "MainActivity created")
         super.onCreate(savedInstanceState)
+        setTheme(R.style.Theme_MyTube)
         setContentView(R.layout.activity_main)
 
         val bottomNavBar = findViewById<BottomNavigationView>(R.id.bottomNavigation)

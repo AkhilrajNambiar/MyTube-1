@@ -3,11 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2203125" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/drawable/card.xml" value="0.2203125" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/drawable/ic_baseline_videocam_24.xml" value="0.16203703703703703" />
+        <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/drawable/ic_launcher_background2.xml" value="0.2203125" />
+        <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/drawable/ic_splash_screen_logo.xml" value="0.2203125" />
+        <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/drawable/splash_image.xml" value="0.2203125" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout-land/video_item.xml" value="0.16" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/activity_channel_details.xml" value="0.2" />
-        <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/activity_main.xml" value="0.15670289855072464" />
+        <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/activity_search.xml" value="0.15" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/activity_search_results.xml" value="0.1644021739130435" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/activity_video.xml" value="0.25" />
@@ -36,6 +40,7 @@
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/video_options_custom.xml" value="0.25" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/menu/bottom_nav_menu.xml" value="0.18645833333333334" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/menu/video_options_menu.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2203125" />
       </map>
     </option>
   </component>

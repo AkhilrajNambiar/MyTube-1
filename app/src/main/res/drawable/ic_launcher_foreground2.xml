@@ -1,0 +1,47 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+  <group android:scaleX="0.11601563"
+      android:scaleY="0.11601563"
+      android:translateX="24.3"
+      android:translateY="24.3">
+    <group>
+      <clip-path
+          android:pathData="M0,0h512v512h-512z"/>
+      <path
+          android:pathData="M0,0h512v512h-512z"
+          android:fillColor="#00FF0000"/>
+      <path
+          android:pathData="M116,78L396,78A65,65 0,0 1,461 143L461,369A65,65 0,0 1,396 434L116,434A65,65 0,0 1,51 369L51,143A65,65 0,0 1,116 78z"
+          android:strokeWidth="1"
+          android:fillColor="#fff"
+          android:strokeColor="#00000000"/>
+      <path
+          android:pathData="M116,78.5L396,78.5A64.5,64.5 0,0 1,460.5 143L460.5,369A64.5,64.5 0,0 1,396 433.5L116,433.5A64.5,64.5 0,0 1,51.5 369L51.5,143A64.5,64.5 0,0 1,116 78.5z"
+          android:strokeWidth="1"
+          android:fillColor="#00000000"
+          android:strokeColor="#707070"/>
+      <path
+          android:pathData="M116,78L396,78A65,65 0,0 1,461 143L461,369A65,65 0,0 1,396 434L116,434A65,65 0,0 1,51 369L51,143A65,65 0,0 1,116 78z"
+          android:fillColor="#fff"/>
+      <path
+          android:pathData="M116,78L396,78A65,65 0,0 1,461 143L461,369A65,65 0,0 1,396 434L116,434A65,65 0,0 1,51 369L51,143A65,65 0,0 1,116 78z"
+          android:fillColor="#fff"/>
+      <path
+          android:pathData="M116,78.5L396,78.5A64.5,64.5 0,0 1,460.5 143L460.5,369A64.5,64.5 0,0 1,396 433.5L116,433.5A64.5,64.5 0,0 1,51.5 369L51.5,143A64.5,64.5 0,0 1,116 78.5z"
+          android:strokeWidth="1"
+          android:fillColor="#00000000"
+          android:strokeColor="#707070"/>
+      <path
+          android:pathData="M201,332.126L201,179.874L330.513,256L201,332.126Z"
+          android:fillColor="#ff0000"
+          android:strokeColor="#00000000"/>
+      <path
+          android:pathData="M329.527,256L201.5,180.748L201.5,331.252L329.527,256M331.5,256L200.5,333L200.5,179L331.5,256Z"
+          android:fillColor="#ff0000"
+          android:strokeColor="#00000000"/>
+    </group>
+  </group>
+</vector>
