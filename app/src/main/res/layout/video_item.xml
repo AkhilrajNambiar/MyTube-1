@@ -71,8 +71,11 @@
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:layout_marginTop="8dp"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginStart="8dp"
                         android:layout_marginEnd="16dp"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:scrollHorizontally="false"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/video_options"/>
@@ -84,6 +87,7 @@
                         android:layout_marginTop="8dp"
                         android:clickable="true"
                         android:focusable="true"
+                        android:background="?attr/selectableItemBackgroundBorderless"
                         android:src="@drawable/ic_video_options"
                         android:contentDescription="@string/video_options"
                         app:layout_constraintStart_toEndOf="@id/video_title"
@@ -96,7 +100,7 @@
                     android:id="@+id/video_subtitle"
                     android:textSize="11sp"
                     android:layout_marginBottom="32dp"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 

@@ -1,5 +1,7 @@
 package com.example.mytube.models
 
+import java.io.Serializable
+
 data class SnippetX(
     val authorChannelId: AuthorChannelId,
     val authorChannelUrl: String,
@@ -13,4 +15,4 @@ data class SnippetX(
     val updatedAt: String,
     val videoId: String,
     val viewerRating: String
-)
+): Serializable

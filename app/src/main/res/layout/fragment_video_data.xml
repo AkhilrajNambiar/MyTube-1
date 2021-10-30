@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/video_data_box"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".UI.Fragments.VideoDataFragment">
@@ -246,11 +248,15 @@
             android:background="@color/gray1"/>
 
         <LinearLayout
+            android:id="@+id/channel_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="center"
-            android:layout_marginVertical="8dp">
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
+            android:paddingVertical="8dp">
 
             <RelativeLayout
                 android:id="@+id/channel_image"
@@ -267,7 +273,7 @@
                     app:cardElevation="0dp">
 
                     <ImageView
-                        android:id="@+id/channel_logo"
+                        android:id="@+id/channel_logo_video_data"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:importantForAccessibility="no"
@@ -285,11 +291,14 @@
                 android:layout_gravity="center_vertical">
 
                 <TextView
-                    android:id="@+id/channel_name"
+                    android:id="@+id/channel_name_video_data"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:textColor="@color/black"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:scrollHorizontally="false"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -301,6 +310,9 @@
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:textColor="@color/black"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:scrollHorizontally="false"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -308,11 +320,11 @@
                     tools:text="Channel Name"/>
 
                 <TextView
-                    android:id="@+id/channel_subscribers"
+                    android:id="@+id/channel_subscribers_video_data"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textSize="13sp"
-                    app:layout_constraintTop_toBottomOf="@id/channel_name"
+                    app:layout_constraintTop_toBottomOf="@id/channel_name_video_data"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     tools:text="Subscribers count"/>
@@ -395,11 +407,23 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/related_videos_recycler_view"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:paddingBottom="16dp"
         app:layout_constraintTop_toBottomOf="@id/video_stats_section"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:itemCount="100"/>
+
+    <ProgressBar
+        android:id="@+id/related_videos_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/related_videos_recycler_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/related_videos_recycler_view"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

@@ -3,7 +3,7 @@
     package="com.example.mytube">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".MytubeApplication"
@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyTube">
         <activity
+            android:name=".UI.ChannelDetailsActivity"
+            android:exported="true" />
+        <activity
             android:name=".UI.SearchResultsActivity"
             android:exported="true" />
         <activity
@@ -21,8 +24,8 @@
             android:exported="true" />
         <activity
             android:name=".UI.VideoActivity"
-            android:exported="true"
-            android:configChanges="orientation|screenSize" />
+            android:configChanges="orientation|screenSize"
+            android:exported="true" />
         <activity
             android:name=".UI.MainActivity"
             android:exported="true">

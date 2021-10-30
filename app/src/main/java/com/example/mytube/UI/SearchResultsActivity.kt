@@ -78,7 +78,7 @@ class SearchResultsActivity : AppCompatActivity() {
                             viewModel.searchedVideos.forEach {
                                 viewModel.getVideoDetails(it.id.videoId)
                             }
-//                            videoResponse.items.forEach { viewModel.getChannel(it.snippet.channelId) }
+//                            videoResponse.playlistItems.forEach { viewModel.getChannel(it.playlistItemSnippet.channelId) }
 
                             Log.d(
                                 "searched",

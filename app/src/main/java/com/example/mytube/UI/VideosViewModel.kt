@@ -34,6 +34,18 @@ class VideosViewModel(
     private var _channelResponse = MutableLiveData<Resource<ChannelDetails>>()
     val channelResponse: LiveData<Resource<ChannelDetails>> = _channelResponse
 
+    private var _relatedVideoChannelResponse = MutableLiveData<Resource<ChannelDetails>>()
+    val relatedVideoChannelResponse: LiveData<Resource<ChannelDetails>> = _relatedVideoChannelResponse
+
+    private var _relatedChannelsReponse = MutableLiveData<Resource<ChannelDetails>>()
+    val relatedChannelResponse: LiveData<Resource<ChannelDetails>> = _relatedChannelsReponse
+
+    private var _relatedVideosList = MutableLiveData<Resource<SearchedVideosList>>()
+    val relatedVideosList: LiveData<Resource<SearchedVideosList>> = _relatedVideosList
+
+    private var _singleVideo = MutableLiveData<Resource<VideosList>>()
+    val singleVideo: LiveData<Resource<VideosList>> = _singleVideo
+
     private var _commentResponse = MutableLiveData<Resource<CommentThreadsList>>()
     val commentResponse: LiveData<Resource<CommentThreadsList>> = _commentResponse
 
@@ -41,8 +53,13 @@ class VideosViewModel(
     val commentRepliesResponse: LiveData<Resource<CommentRepliesList>> = _commentRepliesResponse
 
     var nextPageId: String = ""
+    var nextPageToken: String? = null
     val videos = mutableListOf<AboutVideo>()
     val videoIds = mutableListOf<String>()
+    var relatedVideos = mutableListOf<AboutSearchVideo>()
+    var relatedVideoDetails = mutableListOf<AboutVideo>()
+    var relatedVideoIds = mutableListOf<String>()
+    var relatedChannels = mutableMapOf<String, Channels>()
     val channels = mutableMapOf<String, Channels>()
     var commentsForVideo = mutableListOf<Item>()
     var commentReplies = MutableLiveData<MutableList<ItemX>>()
@@ -109,6 +126,82 @@ class VideosViewModel(
         }
     }
 
+    fun getSingleRelatedChannel(channelId: String) = viewModelScope.launch(Dispatchers.IO) {
+        _relatedVideoChannelResponse.postValue(Resource.Loading())
+        try {
+            if (hasInternetConnection()) {
+                val response = repository.getChannel(channelId)
+                _relatedVideoChannelResponse.postValue(handleChannelResponse(response))
+            }
+            else {
+                _relatedVideoChannelResponse.postValue(Resource.Error("No Internet Connection for related Video channels!"))
+            }
+        }
+        catch (t: Throwable) {
+            when(t) {
+                is IOException -> _relatedVideoChannelResponse.postValue(Resource.Error("IOException occured for related video channel!"))
+                else -> _relatedVideoChannelResponse.postValue(Resource.Error("Conversion Error for related video channel!"))
+            }
+        }
+    }
+
+    fun getRelatedChannels(channelId: String) = viewModelScope.launch(Dispatchers.IO) {
+        _relatedChannelsReponse.postValue(Resource.Loading())
+        try {
+            if (hasInternetConnection()) {
+                val response = repository.getChannel(channelId)
+                _relatedChannelsReponse.postValue(handleChannelResponse(response))
+            }
+            else {
+                _relatedChannelsReponse.postValue(Resource.Error("No Internet Connection!"))
+            }
+        }
+        catch (t: Throwable) {
+            when(t) {
+                is IOException -> _relatedChannelsReponse.postValue(Resource.Error("IOException occured!"))
+                else -> _relatedChannelsReponse.postValue(Resource.Error("Conversion Error!"))
+            }
+        }
+    }
+
+    fun getVideosRelatedToCurrentVideo(videoId: String, nextPageId: String?) = viewModelScope.launch(Dispatchers.IO) {
+        _relatedVideosList.postValue(Resource.Loading())
+        try {
+            if (hasInternetConnection()) {
+                val response = repository.getVideosRelatedToCurrentVideo(videoId, nextPageId)
+                _relatedVideosList.postValue(handleRelatedVideosResponse(response))
+            }
+            else {
+                _relatedVideosList.postValue(Resource.Error("No Internet connection for related videos"))
+            }
+        }
+        catch(t: Throwable) {
+            when(t) {
+                is IOException -> _relatedVideosList.postValue(Resource.Error("IOException for finding related videos"))
+                else -> _relatedVideosList.postValue(Resource.Error(t.stackTraceToString()))
+            }
+        }
+    }
+
+    fun getVideoDetails(id: String) = viewModelScope.launch(Dispatchers.IO) {
+        _singleVideo.postValue(Resource.Loading())
+        try {
+            if (hasInternetConnection()) {
+                val response = repository.getVideoDetails(id)
+                _singleVideo.postValue(handleSingleVideoResponse(response))
+            }
+            else {
+                _singleVideo.postValue(Resource.Error("No Internet connection for finding single video details"))
+            }
+        }
+        catch (t:Throwable) {
+            when(t) {
+                is IOException -> _singleVideo.postValue(Resource.Error("IOException for single video details"))
+                else -> _singleVideo.postValue(Resource.Error(t.stackTraceToString()))
+            }
+        }
+    }
+
     fun getCommentsForVideo(videoId: String) = viewModelScope.launch(Dispatchers.IO) {
         try {
             _commentResponse.postValue(Resource.Loading())
@@ -145,6 +238,28 @@ class VideosViewModel(
     private fun handleChannelResponse(
         response: Response<ChannelDetails>
     ): Resource<ChannelDetails>{
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+    private fun handleRelatedVideosResponse(
+        response: Response<SearchedVideosList>
+    ): Resource<SearchedVideosList>{
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+    private fun handleSingleVideoResponse(
+        response: Response<VideosList>
+    ): Resource<VideosList> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)

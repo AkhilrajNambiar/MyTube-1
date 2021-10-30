@@ -58,6 +58,26 @@ interface VideosApi {
         @Query("key") key: String = API_KEY
     ) : Response<SearchedVideosList>
 
+    @GET("search")
+    suspend fun getVideosRelatedToCurrentVideo(
+        @Query("part") partSnippet: String = "snippet",
+        @Query("q") relatedToVideoId: String,
+        @Query("type") type: String = "video",
+        @Query("pageToken") pageToken: String?,
+        @Query("key") key: String = API_KEY
+    ): Response<SearchedVideosList>
+
+    @GET("search")
+    suspend fun getPopularVideosOfChannel(
+        @Query("part") partSnippet: String = "snippet",
+        @Query("channelId") channelId: String,
+        @Query("type") type: String = "video",
+        @Query("pageToken") pageToken: String?,
+        @Query("order") orderBy: String = "viewCount",
+        @Query("maxResults") maxResults: Int = 50,
+        @Query("key") key: String = API_KEY
+    ): Response<PopularVideos>
+
     @GET("commentThreads")
     suspend fun getCommentsForVideo(
         @Query("part") partSnippet: String = "snippet",
@@ -74,4 +94,60 @@ interface VideosApi {
         @Query("parentId") parentCommentId: String,
         @Query("key") key: String = API_KEY
     ) : Response<CommentRepliesList>
+
+    @GET("channels")
+    suspend fun getCompleteChannelDetails(
+        @Query("part") partSnippet: String = "snippet",
+        @Query("part") partStatistics: String = "statistics",
+        @Query("part") partContentDetails: String = "contentDetails",
+        @Query("part") partBrandingSettings: String = "brandingSettings",
+        @Query("id") id: String,
+        @Query("key") key: String = API_KEY
+    ): Response<ChannelFullDetails>
+
+    @GET("channelSections")
+    suspend fun getChannelSections(
+        @Query("part") partSnippet: String = "snippet",
+        @Query("part") partContentDetails: String = "contentDetails",
+        @Query("channelId") channelId: String,
+        @Query("key") key: String = API_KEY
+    ): Response<ChannelSections>
+
+    @GET("playlists")
+    suspend fun getChannelPlaylists(
+        @Query("part") partSnippet: String = "snippet",
+        @Query("part") partContentDetails: String = "contentDetails",
+        @Query("maxResults") maxResults: Int = 50,
+        @Query("channelId") channelId: String,
+        @Query("key") key: String = API_KEY
+    ): Response<ChannelPlaylists>
+
+    @GET("playlistItems")
+    suspend fun getPlaylistItems(
+        @Query("part") partSnippet: String = "snippet",
+        @Query("part") partContentDetails: String = "contentDetails",
+        @Query("part") partStatus: String = "status",
+        @Query("pageToken") nextPageId: String? = null,
+        @Query("maxResults") maxResults: Int = 50,
+        @Query("playlistId") id: String,
+        @Query("key") key: String = API_KEY
+    ): Response<PlaylistItems>
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

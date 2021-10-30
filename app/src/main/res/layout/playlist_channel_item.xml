@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/channel_logo_in_channel_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            app:cardCornerRadius="50dp"
+            app:cardElevation="0dp">
+
+            <ImageView
+                android:id="@+id/channel_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:importantForAccessibility="no"
+                android:scaleType="centerCrop"
+                android:src="@drawable/youtubechannel"/>
+
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/channel_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="sans-serif-condensed"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:scrollHorizontally="false"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@id/channel_logo_in_channel_home"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Kurzgesagt - In a Nutshell" />
+
+    <TextView
+        android:id="@+id/channel_subscribers"
+        android:layout_marginStart="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/cardview_dark_background"
+        app:layout_constraintStart_toEndOf="@id/channel_logo_in_channel_home"
+        app:layout_constraintTop_toBottomOf="@id/channel_title"
+        app:layout_constraintBottom_toTopOf="@id/channel_video_count"
+        tools:text="16.5M subscribers" />
+
+    <TextView
+        android:id="@+id/channel_video_count"
+        android:layout_marginStart="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/cardview_dark_background"
+        app:layout_constraintStart_toEndOf="@id/channel_logo_in_channel_home"
+        app:layout_constraintTop_toBottomOf="@id/channel_subscribers"
+        app:layout_constraintBottom_toTopOf="@id/subscribe_this_channel"
+        tools:text="662 videos" />
+
+    <TextView
+        android:id="@+id/subscribe_this_channel"
+        android:layout_marginStart="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/red"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        android:text="@string/subscribe"
+        app:layout_constraintStart_toEndOf="@id/channel_logo_in_channel_home"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

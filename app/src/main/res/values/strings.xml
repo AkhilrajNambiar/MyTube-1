@@ -7,6 +7,7 @@
     <string name="subs">Subscriptions</string>
     <string name="library">Library</string>
     <string name="video_subtitle">%s . %s views . %d %s</string>
+    <string name="video_subtitle2">%s . %s views . %s</string>
     <string name="video_published_time">%d %s</string>
     <string name="recent">just now</string>
     <string name="go_back">Go back to Home screen</string>
@@ -63,4 +64,11 @@
     <string name="retry">Retry</string>
     <string name="network_error">Network error image</string>
     <string name="partial_network_error">Partially Loaded videos error</string>
+    <string name="save_to_playlist">Save to Playlist</string>
+    <string name="save_to_watch_later">Save to Watch Later</string>
+    <string name="download_video">Download video</string>
+    <string name="share_video">Share</string>
+    <string name="channel_banner_image">Channel Banner Image</string>
+    <string name="default_channel_description">More about this channel</string>
+    <string name="load_remaining_videos">Load remaining videos</string>
 </resources>

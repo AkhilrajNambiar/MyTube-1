@@ -10,9 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
@@ -21,9 +19,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mytube.R
+import com.example.mytube.UI.ChannelDetailsActivity
 import com.example.mytube.UI.SearchedVideosViewModel
 import com.example.mytube.UI.VideoActivity
 import com.example.mytube.UI.VideosViewModel
+import com.example.mytube.adapters.RelatedVideosAdapter
 import com.example.mytube.adapters.SearchedVideosAdapter
 import com.example.mytube.adapters.VideosAdapter
 import com.example.mytube.models.AboutVideo
@@ -34,8 +34,9 @@ import com.google.android.youtube.player.internal.c
 class VideoDataFragment : Fragment(R.layout.fragment_video_data) {
 
     lateinit var viewModel: VideosViewModel
-    lateinit var relatedVideosAdapter: SearchedVideosAdapter
+    lateinit var relatedVideosAdapter: RelatedVideosAdapter
     lateinit var video: AboutVideo
+    var totalRelatedVideos: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,6 +62,7 @@ class VideoDataFragment : Fragment(R.layout.fragment_video_data) {
         val shareVideo = view.findViewById<LinearLayout>(R.id.share_video)
         val dropdown = view.findViewById<ImageView>(R.id.description_dropdown)
         val relatedVideos = view.findViewById<RecyclerView>(R.id.related_videos_recycler_view)
+        val channelInfo = view.findViewById<LinearLayout>(R.id.channel_info)
 
         videoTitle.text = video.snippet.title
         videoViews.text = "${VideoViewsFormatter.viewsFormatter((video.statistics.viewCount).toString())} views . "
@@ -68,6 +70,23 @@ class VideoDataFragment : Fragment(R.layout.fragment_video_data) {
         videoPublishedDate.text = VideoViewsFormatter.timeFormatter(videoPublishedTime, view.context).toString()
         videoLikes.text = VideoViewsFormatter.viewsFormatter((video.statistics.likeCount).toString())
         videoDislikes.text = VideoViewsFormatter.viewsFormatter((video.statistics.dislikeCount).toString())
+
+        relatedVideosAdapter = RelatedVideosAdapter(viewModel)
+        relatedVideos.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = relatedVideosAdapter
+            addOnScrollListener(scrollListener)
+        }
+
+        // going to the channel Page
+        channelInfo.setOnClickListener {
+            val intent = Intent(requireContext(), ChannelDetailsActivity::class.java)
+            intent.putExtra("channelId", video.snippet.channelId)
+            intent.putExtra("channelTitle", video.snippet.channelTitle)
+            startActivity(intent)
+        }
+
+        // Sharing the video
         shareVideo.setOnClickListener {
             val intent = Intent(Intent.ACTION_SEND)
             intent.type = "text/plain"
@@ -110,17 +129,65 @@ class VideoDataFragment : Fragment(R.layout.fragment_video_data) {
             VideoDescriptionSheet(video).show(childFragmentManager, "videoDescription")
         }
 
-        val channelLogo = view.findViewById<ImageView>(R.id.channel_logo)
-        val channelTitle = view.findViewById<TextView>(R.id.channel_name)
-        val channelSubs = view.findViewById<TextView>(R.id.channel_subscribers)
+        val channelLogo = view.findViewById<ImageView>(R.id.channel_logo_video_data)
+        val channelTitle = view.findViewById<TextView>(R.id.channel_name_video_data)
+        val channelSubs = view.findViewById<TextView>(R.id.channel_subscribers_video_data)
         val channelTitleWithHiddenSubs = view.findViewById<TextView>(R.id.channel_name_if_subs_hidden)
         val commentsCount = view.findViewById<TextView>(R.id.comments_count)
         val goToComments = view.findViewById<ConstraintLayout>(R.id.go_to_comments)
+        val progressBar = view.findViewById<ProgressBar>(R.id.related_videos_progress_bar)
 
         goToComments.setOnClickListener {
             val action = VideoDataFragmentDirections.actionVideoDataFragmentToCommentsFragment()
             findNavController().navigate(action)
         }
+
+        viewModel.relatedVideosList.observe(viewLifecycleOwner, Observer { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    hideProgressBar(progressBar)
+                    resource.data?.let {
+                        totalRelatedVideos = it.pageInfo.totalResults
+                        if (viewModel.nextPageToken != it.nextPageToken) {
+                            viewModel.nextPageToken = it.nextPageToken
+                            viewModel.relatedVideos.addAll(it.items)
+                            viewModel.relatedVideos.forEach { video ->
+                                viewModel.getVideoDetails(video.id.videoId)
+                            }
+                        }
+                    }
+                }
+                is Resource.Error -> {
+                    hideProgressBar(progressBar)
+                    Log.e("relatedSearchVideos", resource.message.toString())
+                }
+                is Resource.Loading -> {
+                    showProgressBar(progressBar)
+                }
+            }
+        })
+
+        viewModel.singleVideo.observe(viewLifecycleOwner, Observer { resource ->
+            when(resource) {
+                is Resource.Success -> {
+                    hideProgressBar(progressBar)
+                    resource.data?.let { videoResponse ->
+                        if (!viewModel.relatedVideoIds.contains(videoResponse.items[0].id)){
+                            viewModel.relatedVideoIds.add(videoResponse.items[0].id)
+                            viewModel.relatedVideoDetails.add(videoResponse.items[0])
+                        }
+                        relatedVideosAdapter.differ.submitList(viewModel.relatedVideoDetails)
+                    }
+                }
+                is Resource.Error -> {
+                    hideProgressBar(progressBar)
+                    Log.e("relatedVideos", resource.message.toString())
+                }
+                is Resource.Loading -> {
+                    showProgressBar(progressBar)
+                }
+            }
+        })
 
         viewModel.channelResponse.observe(viewLifecycleOwner, Observer { resource ->
             when(resource) {
@@ -150,6 +217,28 @@ class VideoDataFragment : Fragment(R.layout.fragment_video_data) {
             }
         })
 
+        viewModel.relatedChannelResponse.observe(viewLifecycleOwner,
+            androidx.lifecycle.Observer { resource ->
+                when (resource) {
+                    is Resource.Success -> {
+                        resource.data?.let { channels ->
+                            viewModel.relatedChannels.set(
+                                channels.items[0].id,
+                                channels.items[0]
+                            )
+                            Log.d("searched", viewModel.relatedChannelResponse.toString())
+//                        videosAdapter.differ.submitList(viewModel.videos.toList())
+                        }
+                    }
+                    is Resource.Error -> {
+                        Log.e("Channels", resource.message.toString())
+                    }
+                    is Resource.Loading -> {
+                        Log.d("Channels", "Waiting")
+                    }
+                }
+            })
+
         viewModel.commentResponse.observe(viewLifecycleOwner, Observer { resource ->
             when(resource) {
                 is Resource.Success -> {
@@ -169,6 +258,42 @@ class VideoDataFragment : Fragment(R.layout.fragment_video_data) {
             }
         })
 
+    }
 
+    private fun hideProgressBar(bar: ProgressBar) {
+        bar.visibility = View.INVISIBLE
+        isLoading = false
+    }
+
+    private fun showProgressBar(bar: ProgressBar){
+        bar.visibility = View.VISIBLE
+        isLoading = true
+    }
+
+    var isScrolling = false
+    var isLoading = false
+
+    val scrollListener = object: RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                isScrolling = true
+            }
+        }
+
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            val manager = recyclerView.layoutManager as LinearLayoutManager
+            val currentItems = manager.childCount
+            val totalItems = manager.itemCount
+            val scrolledItems = manager.findFirstVisibleItemPosition()
+            if (isScrolling && totalItems == currentItems + scrolledItems && !isLoading && viewModel.relatedVideos.size <= totalRelatedVideos) {
+                viewModel.getVideosRelatedToCurrentVideo(video.id, viewModel.nextPageToken)
+                isScrolling = false
+            } else {
+                relatedVideosAdapter.differ.submitList(viewModel.relatedVideoDetails.toList())
+                recyclerView.setPadding(0, 0, 0, 0)
+            }
+        }
     }
 }

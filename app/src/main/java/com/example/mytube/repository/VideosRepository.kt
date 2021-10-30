@@ -27,6 +27,18 @@ class VideosRepository(val db: SearchDatabase) {
 
     suspend fun getCommentReplies(parentComment: String) = api.getCommentReplies(parentCommentId = parentComment)
 
+    suspend fun getCompleteChannelDetails(channelId: String) = api.getCompleteChannelDetails(id = channelId)
+
+    suspend fun getChannelSections(channelId: String) = api.getChannelSections(channelId = channelId)
+
+    suspend fun getChannelPlaylists(channelId: String) = api.getChannelPlaylists(channelId = channelId)
+
+    suspend fun getPlaylistItems(id: String) = api.getPlaylistItems(id = id)
+
+    suspend fun getVideosRelatedToCurrentVideo(videoId: String, nextPageId: String?) = api.getVideosRelatedToCurrentVideo(relatedToVideoId = videoId, pageToken = nextPageId)
+
+    suspend fun getPoplarVideosOfChannel(channelId: String, pageToken: String?) = api.getPopularVideosOfChannel(channelId = channelId, pageToken = pageToken)
+
     suspend fun insertSearchedItem(item: String) = db.getDao().insert(SearchItem(item))
 
     suspend fun deleteSearchedItem(item: String) = db.getDao().delete(SearchItem(item))

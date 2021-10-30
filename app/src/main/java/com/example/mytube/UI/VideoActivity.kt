@@ -46,7 +46,6 @@ import java.lang.Exception
 
 class VideoActivity : AppCompatActivity(), com.google.android.youtube.player.YouTubePlayer.OnInitializedListener{
 
-    lateinit var searchedVideosViewModel: SearchedVideosViewModel
     lateinit var viewModel: VideosViewModel
     lateinit var videosAdapter: VideosAdapter
     lateinit var video: AboutVideo
@@ -70,6 +69,7 @@ class VideoActivity : AppCompatActivity(), com.google.android.youtube.player.You
         try {
             viewModel.getChannel(video.snippet.channelId)
             viewModel.getCommentsForVideo(videoId = video.id)
+//            viewModel.getVideosRelatedToCurrentVideo(videoId = listOf(video.snippet.title, video.snippet.channelTitle).random(), null)
         }
         catch (e: Exception) {
             Log.e("videoData", e.stackTraceToString())

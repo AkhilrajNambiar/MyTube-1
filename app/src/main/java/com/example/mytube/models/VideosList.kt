@@ -26,15 +26,15 @@ data class AboutVideo(
     @Json(name = "etag")val eTag: String,
     val id: String,
     val snippet: VideoSnippet,
-    var statistics: VideoStats = VideoStats(0)
-) : Serializable
+    var statistics: VideoStats = VideoStats("")
+): Serializable
 
 data class AboutSearchVideo(
     val kind: String,
     @Json(name = "etag")val eTag: String,
     val id: SearchedVideoId,
-    val snippet: VideoSnippet,
-    var statistics: VideoStats = VideoStats(0)
+    var snippet: VideoSnippet,
+    var statistics: VideoStats = VideoStats("")
 )
 
 data class PageInformation(
@@ -67,7 +67,7 @@ data class ThumbnailFeatures(
 ): Serializable
 
 data class VideoStats(
-    var viewCount: Int,
+    var viewCount: String,
     var likeCount: Int = 0,
     var dislikeCount: Int = 0,
     var favoriteCount: Int = 0,

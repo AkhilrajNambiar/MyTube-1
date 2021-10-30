@@ -69,5 +69,6 @@ dependencies {
     implementation "androidx.room:room-ktx:2.3.0"
     // Open source youtube player
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
-
+    // Material Dialogs
+    implementation 'com.afollestad.material-dialogs:core:3.3.0'
 }

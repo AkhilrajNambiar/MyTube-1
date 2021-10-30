@@ -34,7 +34,7 @@ class CommentsAdapter(private val viewModel: VideosViewModel): RecyclerView.Adap
         @RequiresApi(Build.VERSION_CODES.O)
         fun bind(comment: Item) {
             Glide.with(itemView).load(comment.snippet.topLevelComment.snippet.authorProfileImageUrl).into(userImage)
-//            userNameAndPostedDate.text = "${comment.snippet.topLevelComment.snippet.authorDisplayName} . ${viewModel.findMillisDifference(comment.snippet.topLevelComment.updatedAt)}"
+//            userNameAndPostedDate.text = "${comment.playlistItemSnippet.topLevelComment.playlistItemSnippet.authorDisplayName} . ${viewModel.findMillisDifference(comment.playlistItemSnippet.topLevelComment.updatedAt)}"
             userNameAndPostedDate.text = itemView.context.resources.getString(R.string.commenting_username_and_posted_date, comment.snippet.topLevelComment.snippet.authorDisplayName, VideoViewsFormatter.timeFormatter(viewModel.findMillisDifference(comment.snippet.topLevelComment.snippet.updatedAt), context = itemView.context))
             commentBody.text = comment.snippet.topLevelComment.snippet.textOriginal
             commentLikes.text = VideoViewsFormatter.viewsFormatter(comment.snippet.topLevelComment.snippet.likeCount.toString())
