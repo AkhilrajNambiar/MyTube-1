@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -32,13 +33,23 @@ class RepliesFragment : Fragment(R.layout.fragment_replies) {
     private lateinit var commentsAdapter: CommentRepliesAdapter
     lateinit var viewModel: VideosViewModel
     lateinit var comment: Item
+    private lateinit var  onBackPressedCallback: OnBackPressedCallback
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        onBackPressedCallback = object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().popBackStack()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         return inflater.inflate(R.layout.fragment_replies, container, false)
     }
 
@@ -109,6 +120,13 @@ class RepliesFragment : Fragment(R.layout.fragment_replies) {
             commentsAdapter.differ.submitList(it)
         })
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        onBackPressedCallback.isEnabled = false
+        onBackPressedCallback.remove()
+    }
+
     private fun showProgressBar(bar: ProgressBar) {
         bar.visibility = View.VISIBLE
     }

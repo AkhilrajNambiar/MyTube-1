@@ -50,15 +50,19 @@ class VideoActivity : AppCompatActivity(), com.google.android.youtube.player.You
     lateinit var videosAdapter: VideosAdapter
     lateinit var video: AboutVideo
     lateinit var navController: NavController
-
+    lateinit var videoId: String
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_video)
 
-        video= intent.getBundleExtra("video")?.getSerializable("video") as AboutVideo
-        Log.d("videoPlayer", video.toString())
+//        video= intent.getBundleExtra("video")?.getSerializable("video") as AboutVideo
+//        Log.d("videoPlayer", video.toString())
+
+        videoId = intent.getStringExtra("videoId")!!
+        Log.d("videoPlayer", videoId)
+
 
         val repository: VideosRepository = VideosRepository(SearchDatabase.getSearchDatabase(this))
         val viewModelFactory = VideosViewModelProviderFactory(application, repository)
@@ -66,31 +70,14 @@ class VideoActivity : AppCompatActivity(), com.google.android.youtube.player.You
 
         videosAdapter = VideosAdapter(viewModel)
 
-        try {
-            viewModel.getChannel(video.snippet.channelId)
-            viewModel.getCommentsForVideo(videoId = video.id)
-//            viewModel.getVideosRelatedToCurrentVideo(videoId = listOf(video.snippet.title, video.snippet.channelTitle).random(), null)
-        }
-        catch (e: Exception) {
-            Log.e("videoData", e.stackTraceToString())
-        }
-
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.video_data_nav_host) as NavHostFragment
+        navController = navHostFragment.navController
 
         // The youtube player initialization and customization
         val youtubePlayerFragment: YouTubePlayerFragment = fragmentManager.findFragmentById(R.id.youtube_player_view) as YouTubePlayerFragment
 //        lifecycle.addObserver(youtubePlayerView)
         youtubePlayerFragment.initialize(API_KEY, this)
 
-        try {
-            val videoDataFragment = VideoDataFragment()
-            videoDataFragment.arguments?.putSerializable("video", video)
-        }
-        catch (e: Exception) {
-            Log.e("videoData", e.stackTraceToString())
-        }
-
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.video_data_nav_host) as NavHostFragment
-        navController = navHostFragment.navController
 
 
 
@@ -128,7 +115,7 @@ class VideoActivity : AppCompatActivity(), com.google.android.youtube.player.You
         player: com.google.android.youtube.player.YouTubePlayer?,
         wasRestored: Boolean
     ) {
-        player?.loadVideo(video.id)
+        player?.loadVideo(videoId)
     }
 
     override fun onInitializationFailure(

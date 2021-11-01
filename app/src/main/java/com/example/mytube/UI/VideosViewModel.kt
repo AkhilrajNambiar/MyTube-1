@@ -46,6 +46,9 @@ class VideosViewModel(
     private var _singleVideo = MutableLiveData<Resource<VideosList>>()
     val singleVideo: LiveData<Resource<VideosList>> = _singleVideo
 
+    private var _recyclerViewVideo = MutableLiveData<Resource<VideosList>>()
+    val recyclerViewVideo: LiveData<Resource<VideosList>> = _recyclerViewVideo
+
     private var _commentResponse = MutableLiveData<Resource<CommentThreadsList>>()
     val commentResponse: LiveData<Resource<CommentThreadsList>> = _commentResponse
 
@@ -198,6 +201,25 @@ class VideosViewModel(
             when(t) {
                 is IOException -> _singleVideo.postValue(Resource.Error("IOException for single video details"))
                 else -> _singleVideo.postValue(Resource.Error(t.stackTraceToString()))
+            }
+        }
+    }
+
+    fun getSingleRecyclerViewVideo(id: String) = viewModelScope.launch(Dispatchers.IO) {
+        _recyclerViewVideo.postValue(Resource.Loading())
+        try {
+            if (hasInternetConnection()) {
+                val response = repository.getVideoDetails(id)
+                _recyclerViewVideo.postValue(handleSingleVideoResponse(response))
+            }
+            else {
+                _recyclerViewVideo.postValue(Resource.Error("No Internet Connection to load video!"))
+            }
+        }
+        catch (t:Throwable) {
+            when(t) {
+                is IOException -> _recyclerViewVideo.postValue(Resource.Error("IOException while trying to obtain video"))
+                else -> _recyclerViewVideo.postValue(Resource.Error(t.stackTraceToString()))
             }
         }
     }

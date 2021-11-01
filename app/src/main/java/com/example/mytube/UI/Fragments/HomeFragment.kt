@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.example.mytube.R
 import com.example.mytube.UI.MainActivity
@@ -31,6 +32,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         viewModel = (activity as MainActivity).viewModel
         videosAdapter = VideosAdapter(viewModel)
         val recyclerView = view.findViewById<RecyclerView>(R.id.videos)
+        val refresher = view.findViewById<SwipeRefreshLayout>(R.id.refreshLayout)
+
+        refresher.setOnRefreshListener(object: SwipeRefreshLayout.OnRefreshListener{
+            override fun onRefresh() {
+                viewModel.videos.clear()
+                viewModel.videoIds.clear()
+                viewModel.getPopularVideos()
+                refresher.isRefreshing = false
+            }
+        })
+
         recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = videosAdapter

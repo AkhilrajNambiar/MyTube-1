@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,6 +37,7 @@ class VideoDataFragment : Fragment(R.layout.fragment_video_data) {
     lateinit var viewModel: VideosViewModel
     lateinit var relatedVideosAdapter: RelatedVideosAdapter
     lateinit var video: AboutVideo
+    lateinit var videoId: String
     var totalRelatedVideos: Int = 0
 
     override fun onCreateView(
@@ -45,14 +47,16 @@ class VideoDataFragment : Fragment(R.layout.fragment_video_data) {
     ): View? {
         viewModel = (activity as VideoActivity).viewModel
 
+        videoId = (activity as VideoActivity).videoId
+
+        viewModel.getSingleRecyclerViewVideo(videoId)
+
         return inflater.inflate(R.layout.fragment_video_data, container, false)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        video = (activity as VideoActivity).video
-        Log.d("videoData", video.toString())
 
         val videoViews = view.findViewById<TextView>(R.id.video_views)
         val videoPublishedDate = view.findViewById<TextView>(R.id.video_published_date)
@@ -64,71 +68,6 @@ class VideoDataFragment : Fragment(R.layout.fragment_video_data) {
         val relatedVideos = view.findViewById<RecyclerView>(R.id.related_videos_recycler_view)
         val channelInfo = view.findViewById<LinearLayout>(R.id.channel_info)
 
-        videoTitle.text = video.snippet.title
-        videoViews.text = "${VideoViewsFormatter.viewsFormatter((video.statistics.viewCount).toString())} views . "
-        val videoPublishedTime = viewModel.findMillisDifference(video.snippet.publishedAt)
-        videoPublishedDate.text = VideoViewsFormatter.timeFormatter(videoPublishedTime, view.context).toString()
-        videoLikes.text = VideoViewsFormatter.viewsFormatter((video.statistics.likeCount).toString())
-        videoDislikes.text = VideoViewsFormatter.viewsFormatter((video.statistics.dislikeCount).toString())
-
-        relatedVideosAdapter = RelatedVideosAdapter(viewModel)
-        relatedVideos.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = relatedVideosAdapter
-            addOnScrollListener(scrollListener)
-        }
-
-        // going to the channel Page
-        channelInfo.setOnClickListener {
-            val intent = Intent(requireContext(), ChannelDetailsActivity::class.java)
-            intent.putExtra("channelId", video.snippet.channelId)
-            intent.putExtra("channelTitle", video.snippet.channelTitle)
-            startActivity(intent)
-        }
-
-        // Sharing the video
-        shareVideo.setOnClickListener {
-            val intent = Intent(Intent.ACTION_SEND)
-            intent.type = "text/plain"
-            intent.putExtra(Intent.EXTRA_TEXT, "https://www.youtube.com/watch?v=${video.id}")
-            try {
-//                 If sharing apps like whatsapp and gmail are available
-                startActivity(intent)
-            }
-            catch (e: ActivityNotFoundException) {
-                // else go to google playstore for downloading whatsapp in this case
-                val intent2 = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.whatsapp"))
-                startActivity(intent2)
-            }
-        }
-
-
-        /*
-        * Opening the description dropdown sheet
-        * */
-
-        val videoTitleAndDropdown = view.findViewById<ConstraintLayout>(R.id.video_title_and_description_dropdown)
-        videoTitleAndDropdown.setOnClickListener {
-            VideoDescriptionSheet(video).show(childFragmentManager, "videoDescription")
-        }
-        val videoViewsAndTime = view.findViewById<ConstraintLayout>(R.id.video_views_and_time)
-        videoViewsAndTime.setOnClickListener {
-            VideoDescriptionSheet(video).show(childFragmentManager, "videoDescription")
-        }
-
-        videoTitle.setOnClickListener {
-            VideoDescriptionSheet(video).show(childFragmentManager, "videoDescription")
-        }
-        dropdown.setOnClickListener {
-            VideoDescriptionSheet(video).show(childFragmentManager, "videoDescription")
-        }
-        videoPublishedDate.setOnClickListener {
-            VideoDescriptionSheet(video).show(childFragmentManager, "videoDescription")
-        }
-        videoViews.setOnClickListener {
-            VideoDescriptionSheet(video).show(childFragmentManager, "videoDescription")
-        }
-
         val channelLogo = view.findViewById<ImageView>(R.id.channel_logo_video_data)
         val channelTitle = view.findViewById<TextView>(R.id.channel_name_video_data)
         val channelSubs = view.findViewById<TextView>(R.id.channel_subscribers_video_data)
@@ -137,10 +76,119 @@ class VideoDataFragment : Fragment(R.layout.fragment_video_data) {
         val goToComments = view.findViewById<ConstraintLayout>(R.id.go_to_comments)
         val progressBar = view.findViewById<ProgressBar>(R.id.related_videos_progress_bar)
 
-        goToComments.setOnClickListener {
-            val action = VideoDataFragmentDirections.actionVideoDataFragmentToCommentsFragment()
-            findNavController().navigate(action)
-        }
+        viewModel.recyclerViewVideo.observe(viewLifecycleOwner, Observer { resource ->
+            when(resource) {
+                is Resource.Success -> {
+                    resource.data?.let {
+                        if (it.items.isEmpty()) {
+                            Log.e("videos", it.toString())
+                        }
+                        else {
+                            video = it.items[0]
+                        }
+
+                        viewModel.getChannel(video.snippet.channelId)
+                        viewModel.getCommentsForVideo(videoId)
+                        viewModel.getVideosRelatedToCurrentVideo(videoId = listOf(video.snippet.title, video.snippet.channelTitle).random(), null)
+
+
+                        videoTitle.text = video.snippet.title
+                        videoViews.text = "${VideoViewsFormatter.viewsFormatter((video.statistics.viewCount).toString())} views . "
+                        val videoPublishedTime = viewModel.findMillisDifference(video.snippet.publishedAt)
+                        videoPublishedDate.text = VideoViewsFormatter.timeFormatter(videoPublishedTime, view.context).toString()
+                        videoLikes.text = VideoViewsFormatter.viewsFormatter((video.statistics.likeCount).toString())
+                        videoDislikes.text = VideoViewsFormatter.viewsFormatter((video.statistics.dislikeCount).toString())
+
+                        relatedVideosAdapter = RelatedVideosAdapter(viewModel)
+                        relatedVideos.apply {
+                            layoutManager = LinearLayoutManager(requireContext())
+                            adapter = relatedVideosAdapter
+                            addOnScrollListener(scrollListener)
+                        }
+                        relatedVideos.setHasFixedSize(true)
+
+                        // Use the nestedscrollview instead of recyclerview scrolling
+//                        nestedScrollView.setOnScrollChangeListener(object: NestedScrollView.OnScrollChangeListener{
+//                            override fun onScrollChange(
+//                                v: NestedScrollView,
+//                                scrollX: Int,
+//                                scrollY: Int,
+//                                oldScrollX: Int,
+//                                oldScrollY: Int
+//                            ) {
+//                                if (v.getChildAt(v.childCount - 1) != null) {
+//                                    if (scrollY >= (v.getChildAt(v.childCount - 1).measuredHeight - v.measuredHeight) && scrollY > oldScrollY){
+//                                        Log.d("relatedVideos", "scrolling is happening")
+//                                        viewModel.getVideosRelatedToCurrentVideo(video.id, viewModel.nextPageToken)
+//                                    }
+//                                }
+//                            }
+//                        })
+
+                        // going to the channel Page
+                        channelInfo.setOnClickListener {
+                            val intent = Intent(requireContext(), ChannelDetailsActivity::class.java)
+                            intent.putExtra("channelId", video.snippet.channelId)
+                            intent.putExtra("channelTitle", video.snippet.channelTitle)
+                            startActivity(intent)
+                        }
+
+                        // Sharing the video
+                        shareVideo.setOnClickListener {
+                            val intent = Intent(Intent.ACTION_SEND)
+                            intent.type = "text/plain"
+                            intent.putExtra(Intent.EXTRA_TEXT, "https://www.youtube.com/watch?v=${video.id}")
+                            try {
+//                 If sharing apps like whatsapp and gmail are available
+                                startActivity(intent)
+                            }
+                            catch (e: ActivityNotFoundException) {
+                                // else go to google playstore for downloading whatsapp in this case
+                                val intent2 = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.whatsapp"))
+                                startActivity(intent2)
+                            }
+                        }
+
+
+                        /*
+                        * Opening the description dropdown sheet
+                        * */
+
+                        val videoTitleAndDropdown = view.findViewById<ConstraintLayout>(R.id.video_title_and_description_dropdown)
+                        videoTitleAndDropdown.setOnClickListener {
+                            VideoDescriptionSheet(video).show(childFragmentManager, "videoDescription")
+                        }
+                        val videoViewsAndTime = view.findViewById<ConstraintLayout>(R.id.video_views_and_time)
+                        videoViewsAndTime.setOnClickListener {
+                            VideoDescriptionSheet(video).show(childFragmentManager, "videoDescription")
+                        }
+
+                        videoTitle.setOnClickListener {
+                            VideoDescriptionSheet(video).show(childFragmentManager, "videoDescription")
+                        }
+                        dropdown.setOnClickListener {
+                            VideoDescriptionSheet(video).show(childFragmentManager, "videoDescription")
+                        }
+                        videoPublishedDate.setOnClickListener {
+                            VideoDescriptionSheet(video).show(childFragmentManager, "videoDescription")
+                        }
+                        videoViews.setOnClickListener {
+                            VideoDescriptionSheet(video).show(childFragmentManager, "videoDescription")
+                        }
+                        goToComments.setOnClickListener {
+                            val action = VideoDataFragmentDirections.actionVideoDataFragmentToCommentsFragment()
+                            findNavController().navigate(action)
+                        }
+                    }
+                }
+                is Resource.Error -> {
+                    Log.e("videos", resource.message.toString())
+                }
+                is Resource.Loading -> {
+                    Log.d("videos", "Loading")
+                }
+            }
+        })
 
         viewModel.relatedVideosList.observe(viewLifecycleOwner, Observer { resource ->
             when (resource) {
@@ -288,6 +336,7 @@ class VideoDataFragment : Fragment(R.layout.fragment_video_data) {
             val totalItems = manager.itemCount
             val scrolledItems = manager.findFirstVisibleItemPosition()
             if (isScrolling && totalItems == currentItems + scrolledItems && !isLoading && viewModel.relatedVideos.size <= totalRelatedVideos) {
+                Log.d("relatedVideos", "scrolled out completely")
                 viewModel.getVideosRelatedToCurrentVideo(video.id, viewModel.nextPageToken)
                 isScrolling = false
             } else {

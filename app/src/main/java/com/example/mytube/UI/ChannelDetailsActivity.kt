@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.example.mytube.R
@@ -11,6 +12,7 @@ import com.example.mytube.adapters.FragmentTabsAdapter
 import com.example.mytube.db.SearchDatabase
 import com.example.mytube.models.ItemXX
 import com.example.mytube.repository.VideosRepository
+import com.example.mytube.util.Resource
 import com.google.android.material.tabs.TabLayout
 
 class ChannelDetailsActivity : AppCompatActivity() {
@@ -76,5 +78,27 @@ class ChannelDetailsActivity : AppCompatActivity() {
 
         val channelName = findViewById<TextView>(R.id.channel_name)
         channelName.text = channelTitle
+
+        viewModel.recyclerViewVideo.observe(this, Observer { resource ->
+            when(resource) {
+                is Resource.Success -> {
+                    resource.data?.let {
+                        Log.d("recyclerViewVideo", it.toString())
+//                        val intent = Intent(requireContext(), VideoActivity::class.java)
+//                        val bundle = Bundle().apply {
+//                            putSerializable("video", videoData)
+//                        }
+//                        intent.putExtra("video", bundle)
+//                        startActivity(intent)
+                    }
+                }
+                is Resource.Error -> {
+                    Log.e("recyclerViewVideo", resource.message.toString())
+                }
+                is Resource.Loading -> {
+                    Log.d("recyclerViewVideo", "Loading")
+                }
+            }
+        })
     }
 }

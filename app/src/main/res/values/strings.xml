@@ -71,4 +71,5 @@
     <string name="channel_banner_image">Channel Banner Image</string>
     <string name="default_channel_description">More about this channel</string>
     <string name="load_remaining_videos">Load remaining videos</string>
+    <string name="sort_by">Sort by</string>
 </resources>

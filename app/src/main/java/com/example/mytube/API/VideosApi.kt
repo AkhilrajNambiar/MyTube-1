@@ -127,7 +127,7 @@ interface VideosApi {
         @Query("part") partSnippet: String = "snippet",
         @Query("part") partContentDetails: String = "contentDetails",
         @Query("part") partStatus: String = "status",
-        @Query("pageToken") nextPageId: String? = null,
+        @Query("pageToken") nextPageId: String?,
         @Query("maxResults") maxResults: Int = 50,
         @Query("playlistId") id: String,
         @Query("key") key: String = API_KEY

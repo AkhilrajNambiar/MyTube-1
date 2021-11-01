@@ -168,7 +168,7 @@ class ChannelHomeFragment : Fragment(R.layout.fragment_channel_home) {
                         }
                         val recentUploads: List<ChannelHomePlaylistItem> = playListItems.map { videoItem ->
                             ChannelHomePlaylistItem(
-                                videoId = videoItem.id,
+                                videoId = videoItem.contentDetails.videoId,
                                 videoThumbnailUrl = videoItem.snippet.thumbnails.high.url,
                                 videoTitle = videoItem.snippet.title,
                                 videoPostedTime = videoItem.snippet.publishedAt

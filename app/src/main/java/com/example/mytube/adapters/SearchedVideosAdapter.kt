@@ -42,10 +42,11 @@ class SearchedVideosAdapter(val viewModel: SearchedVideosViewModel): RecyclerVie
             val views = viewsFormatter(video.statistics.viewCount.toString())
             videoCard.setOnClickListener {
                 val intent = Intent(itemView.context, VideoActivity::class.java)
-                val bundle = Bundle().apply {
-                    putSerializable("video", video)
-                }
-                intent.putExtra("video", bundle)
+//                val bundle = Bundle().apply {
+//                    putSerializable("video", video)
+//                }
+//                intent.putExtra("video", bundle)
+                intent.putExtra("videoId", video.id)
                 itemView.context.startActivity(intent)
             }
             if (time.containsKey("seconds")){

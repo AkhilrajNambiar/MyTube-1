@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
@@ -24,6 +25,23 @@ class CommentsFragment : Fragment(R.layout.fragment_comments) {
 
     lateinit var commentsAdapter: CommentsAdapter
     lateinit var viewModel: VideosViewModel
+    lateinit var onBackPressedCallback: OnBackPressedCallback
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // to close only the comments when we press back rather than going back to home screen
+        // OnBackPressedCallback(enabled:Boolean) is not lifecycle aware
+        // so we need to remove this callback in the onDestroyView
+        // else it will be called when we press back some other time
+        // and we crash as the associated fragmentManager has already been destroyed
+        onBackPressedCallback = object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().popBackStack()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
@@ -43,4 +61,9 @@ class CommentsFragment : Fragment(R.layout.fragment_comments) {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        onBackPressedCallback.isEnabled = false
+        onBackPressedCallback.remove()
+    }
 }
