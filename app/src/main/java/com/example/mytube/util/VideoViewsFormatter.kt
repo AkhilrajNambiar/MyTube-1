@@ -6,6 +6,8 @@ import android.view.View
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import com.example.mytube.R
+import com.example.mytube.models.Thumbnails
+import com.example.mytube.models.ThumbnailsXX
 import java.time.LocalDateTime
 
 class VideoViewsFormatter {
@@ -127,6 +129,25 @@ class VideoViewsFormatter {
         fun returnYearFromDate(string: String): Int {
             val date = LocalDateTime.parse(string.slice(0 until string.length - 1))
             return date.year
+        }
+
+        fun obtainThumbnailUrl(thumb: ThumbnailsXX): String {
+            if (thumb.maxres.url.isNotEmpty()) {
+                return thumb.maxres.url
+            }
+            else if (thumb.standard.url.isNotEmpty()) {
+                return thumb.standard.url
+            }
+            else if (thumb.high.url.isNotEmpty()) {
+                return thumb.high.url
+            }
+            else if (thumb.medium.url.isNotEmpty()) {
+                return thumb.medium.url
+            }
+            else if (thumb.default.url.isNotEmpty()){
+                return thumb.default.url
+            }
+            return "https://www.labnol.org/images/2008/1.jpg"
         }
 
     }

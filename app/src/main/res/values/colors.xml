@@ -10,4 +10,6 @@
     <color name="red">#FF0000</color>
     <color name="darkred">#FF2222</color>
     <color name="gray1">#FF999999</color>
+    <color name="transparent_black">#CC000000</color>
+    <color name="very_light_gray">#FFEEEEEE</color>
 </resources>

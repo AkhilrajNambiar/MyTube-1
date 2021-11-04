@@ -33,6 +33,8 @@ class VideosRepository(val db: SearchDatabase) {
 
     suspend fun getChannelPlaylists(channelId: String) = api.getChannelPlaylists(channelId = channelId)
 
+    suspend fun getAllPlaylistsForChannel(channelId: String, nextPageId: String?) = api.getAllPlaylistsForChannel(channelId = channelId, nextPageId = nextPageId)
+
     suspend fun getPlaylistItems(id: String, nextPageId: String?) = api.getPlaylistItems(id = id, nextPageId = nextPageId)
 
     suspend fun getVideosRelatedToCurrentVideo(videoId: String, nextPageId: String?) = api.getVideosRelatedToCurrentVideo(relatedToVideoId = videoId, pageToken = nextPageId)

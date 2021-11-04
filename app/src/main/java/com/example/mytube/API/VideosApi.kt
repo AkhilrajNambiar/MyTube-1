@@ -117,10 +117,20 @@ interface VideosApi {
     suspend fun getChannelPlaylists(
         @Query("part") partSnippet: String = "snippet",
         @Query("part") partContentDetails: String = "contentDetails",
-        @Query("maxResults") maxResults: Int = 50,
+        @Query("maxResults") maxResults: Int = 10,
         @Query("channelId") channelId: String,
         @Query("key") key: String = API_KEY
     ): Response<ChannelPlaylists>
+
+    @GET("playlists")
+    suspend fun getAllPlaylistsForChannel(
+        @Query("part") partSnippet: String = "snippet",
+        @Query("part") partContentDetails: String = "contentDetails",
+        @Query("pageToken") nextPageId: String?,
+        @Query("maxResults") maxResults: Int = 10,
+        @Query("channelId") channelId: String,
+        @Query("key") key: String = API_KEY
+    ): Response<Playlists>
 
     @GET("playlistItems")
     suspend fun getPlaylistItems(

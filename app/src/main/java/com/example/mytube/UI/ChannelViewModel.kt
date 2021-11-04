@@ -12,6 +12,7 @@ import androidx.lifecycle.*
 import com.example.mytube.MytubeApplication
 import com.example.mytube.models.*
 import com.example.mytube.repository.VideosRepository
+import com.example.mytube.util.Constants.Companion.DATE_DESCENDING
 import com.example.mytube.util.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -36,11 +37,17 @@ class ChannelViewModel(
     private var _playListItemsResponse = MutableLiveData<Resource<PlaylistItems>>()
     val playlistItemsResponse: LiveData<Resource<PlaylistItems>> = _playListItemsResponse
 
+    private var _playlistItemsForDetailScreen = MutableLiveData<Resource<PlaylistItems>>()
+    val playlistItemsForDetailScreen: LiveData<Resource<PlaylistItems>> = _playlistItemsForDetailScreen
+
     private var _recentChannelVideos = MutableLiveData<Resource<PlaylistItems>>()
     val recentChannelVideos: LiveData<Resource<PlaylistItems>> = _recentChannelVideos
 
     private var _popularVideosOfChannel = MutableLiveData<Resource<PopularVideos>>()
     val popularVideosOfChannel: LiveData<Resource<PopularVideos>> = _popularVideosOfChannel
+
+    private var _allPopularVideosOfChannel = MutableLiveData<Resource<PopularVideos>>()
+    val allPopularVideosOfChannel: LiveData<Resource<PopularVideos>> = _allPopularVideosOfChannel
 
     private var _singleVideo = MutableLiveData<Resource<VideosList>>()
     val singleVideo: LiveData<Resource<VideosList>> = _singleVideo
@@ -48,9 +55,29 @@ class ChannelViewModel(
     private var _recyclerViewVideo = MutableLiveData<Resource<VideosList>>()
     val recyclerViewVideo: LiveData<Resource<VideosList>> = _recyclerViewVideo
 
+    private var _allPlaylistsResponse = MutableLiveData<Resource<Playlists>>()
+    val allPlaylistsResponse: LiveData<Resource<Playlists>> = _allPlaylistsResponse
+
+    var currentChannelVideosSortFormat = DATE_DESCENDING
+    val currentChannelVideos = MutableLiveData<List<ChannelHomePlaylistItem>>()
+
     val recentUploads = mutableListOf<PlaylistItem>()
     val recentUploadIds = mutableListOf<String>()
     var nextRecentUploadsId = ""
+
+    val popularUploads = mutableListOf<ItemXXXXX>()
+    val popularUploadIds = mutableListOf<String>()
+    var nextPopularUploadsId = ""
+
+    val playlistItems = mutableListOf<PlaylistItem>()
+    val playlistItemIds = mutableListOf<String>()
+    var nextPlaylistItemId = ""
+
+    val allPlaylists = mutableListOf<SinglePlaylist>()
+    val allPlaylistIds = mutableListOf<String>()
+    var nextPlaylistPage = ""
+
+    lateinit var equatableLists: MutableList<Equatable>
 
     // All the network calls
     fun getCompleteChannelDetails(channelId: String) = viewModelScope.launch(Dispatchers.IO) {
@@ -110,15 +137,34 @@ class ChannelViewModel(
         }
     }
 
+    fun getAllPlaylistsForChannel(channelId: String, nextPageId: String?) = viewModelScope.launch(Dispatchers.IO) {
+        _allPlaylistsResponse.postValue(Resource.Loading())
+        try {
+            if (hasInternetConnection()) {
+                val response = repository.getAllPlaylistsForChannel(channelId, nextPageId)
+                _allPlaylistsResponse.postValue(handleAllPlaylistsResponse(response))
+            }
+            else {
+                _allPlaylistsResponse.postValue(Resource.Error("No Internet connection for channel playlists!"))
+            }
+        }
+        catch (t: Throwable) {
+            when(t) {
+                is IOException -> _allPlaylistsResponse.postValue(Resource.Error("IOException for channel playlists"))
+                else -> _allPlaylistsResponse.postValue(Resource.Error(t.stackTraceToString()))
+            }
+        }
+    }
+
     fun setUpChannelHomeSection(item: ItemXXX?, playlistId: String, channelId: String) = viewModelScope.launch(Dispatchers.IO) {
         val recentUploads = viewModelScope.async(Dispatchers.IO) {
             getPlaylistItems(playlistId, null)
         }
-        Log.d("playlists", "${recentUploads.await()}")
+        Log.d("playlistsAwait", "${recentUploads.await()}")
         val popularUploads = viewModelScope.async(Dispatchers.IO) {
             getPopularVideosOfChannel(channelId, null)
         }
-        Log.d("playlists", "${popularUploads.await()}")
+        Log.d("playlistsAwait", "${popularUploads.await()}")
     }
 
     fun getPlaylistItemsForSmallChannels(playlistId: String) = viewModelScope.launch(Dispatchers.IO) {
@@ -138,6 +184,23 @@ class ChannelViewModel(
             when (t) {
                 is IOException -> _playListItemsResponse.postValue(Resource.Error("IOException for playlist items"))
                 else -> _playListItemsResponse.postValue(Resource.Error(t.stackTraceToString()))
+            }
+        }
+    }
+
+    fun getPlaylistItemsForDetailScreen(playlistId: String, nextPageId: String?) = viewModelScope.launch(Dispatchers.IO) {
+        _playlistItemsForDetailScreen.postValue(Resource.Loading())
+        try {
+            if (hasInternetConnection()) {
+                val response = repository.getPlaylistItems(playlistId, nextPageId)
+                _playlistItemsForDetailScreen.postValue(handlePlaylistItemsResponse(response))
+            } else {
+                _playlistItemsForDetailScreen.postValue(Resource.Error("No Internet connection for playlist items!"))
+            }
+        } catch (t: Throwable) {
+            when (t) {
+                is IOException -> _playlistItemsForDetailScreen.postValue(Resource.Error("IOException for playlist items"))
+                else -> _playlistItemsForDetailScreen.postValue(Resource.Error(t.stackTraceToString()))
             }
         }
     }
@@ -195,6 +258,25 @@ class ChannelViewModel(
             when(t) {
                 is IOException -> _popularVideosOfChannel.postValue(Resource.Error("IOException to get popular videos of channel"))
                 else -> _popularVideosOfChannel.postValue(Resource.Error(t.stackTraceToString()))
+            }
+        }
+    }
+
+    fun getAllPopularVideosOfChannel(channelId: String, pageToken: String?) = viewModelScope.launch(Dispatchers.IO) {
+        _allPopularVideosOfChannel.postValue(Resource.Loading())
+        try {
+            if (hasInternetConnection()) {
+                val response = repository.getPoplarVideosOfChannel(channelId, pageToken)
+                _allPopularVideosOfChannel.postValue(handlePopularVideosOfChannel(response))
+            }
+            else {
+                _allPopularVideosOfChannel.postValue(Resource.Error("No Internet Connection to get popular videos of channel"))
+            }
+        }
+        catch (t: Throwable) {
+            when(t) {
+                is IOException -> _allPopularVideosOfChannel.postValue(Resource.Error("IOException to get popular videos of channel"))
+                else -> _allPopularVideosOfChannel.postValue(Resource.Error(t.stackTraceToString()))
             }
         }
     }
@@ -265,6 +347,17 @@ class ChannelViewModel(
     private fun handleChannelPlaylistsResponse(
         response: Response<ChannelPlaylists>
     ): Resource<ChannelPlaylists> {
+        if (response.isSuccessful) {
+            response.body()?.let {
+                return Resource.Success(it)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+    private fun handleAllPlaylistsResponse(
+        response: Response<Playlists>
+    ): Resource<Playlists> {
         if (response.isSuccessful) {
             response.body()?.let {
                 return Resource.Success(it)

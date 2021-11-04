@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/gray_part"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/very_light_gray"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/playlist_title_in_detail_screen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textSize="22sp"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Playlist Name is Over here!"/>
+
+        <TextView
+            android:id="@+id/playlist_channel_name_in_detail_screen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/playlist_title_in_detail_screen"
+            tools:text="Some channel"/>
+
+        <ImageView
+            android:id="@+id/shuffle_and_start"
+            android:src="@drawable/ic_shuffle"
+            android:padding="8dp"
+            android:contentDescription="@string/shuffle_and_start_a_video"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="40dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
+            app:tint="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/playlist_channel_name_in_detail_screen"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <ImageView
+            android:id="@+id/add_to_your_playlists"
+            android:src="@drawable/ic_save_to_playlist"
+            android:padding="8dp"
+            android:contentDescription="@string/add_to_your_playlists"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
+            app:tint="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/playlist_channel_name_in_detail_screen"
+            app:layout_constraintStart_toEndOf="@id/shuffle_and_start"/>
+
+        <ImageView
+            android:id="@+id/download_entire_playlist"
+            android:src="@drawable/ic_download_video"
+            android:padding="8dp"
+            android:contentDescription="@string/download_entire_playlist"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
+            app:tint="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/playlist_channel_name_in_detail_screen"
+            app:layout_constraintStart_toEndOf="@id/add_to_your_playlists"/>
+
+        <ImageView
+            android:id="@+id/share_playlist"
+            android:src="@drawable/ic_share_video"
+            android:padding="8dp"
+            android:contentDescription="@string/share_playlist"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
+            app:tint="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/playlist_channel_name_in_detail_screen"
+            app:layout_constraintStart_toEndOf="@id/download_entire_playlist"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/playlist_video_count_in_detail_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/gray_part"
+        tools:text="17 videos"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

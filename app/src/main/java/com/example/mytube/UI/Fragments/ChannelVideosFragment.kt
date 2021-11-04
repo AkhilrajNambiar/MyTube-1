@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
+import android.widget.PopupMenu
 import android.widget.ProgressBar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.NestedScrollView
@@ -21,6 +22,9 @@ import com.example.mytube.UI.VideoActivity
 import com.example.mytube.adapters.PlaylistVideosAdapter
 import com.example.mytube.adapters.RelatedVideosAdapter
 import com.example.mytube.models.ChannelHomePlaylistItem
+import com.example.mytube.util.Constants
+import com.example.mytube.util.Constants.Companion.DATE_DESCENDING
+import com.example.mytube.util.Constants.Companion.MOST_POPULAR
 import com.example.mytube.util.Resource
 
 class ChannelVideosFragment : Fragment(R.layout.fragment_channel_videos) {
@@ -48,6 +52,40 @@ class ChannelVideosFragment : Fragment(R.layout.fragment_channel_videos) {
         val sortVideosBy = view.findViewById<ConstraintLayout>(R.id.sort_videos)
         recyclerView = view.findViewById(R.id.channel_videos_recycler_view)
         val progressBar = view.findViewById<ProgressBar>(R.id.channel_videos_progress_bar)
+
+        sortVideosBy.setOnClickListener {
+            val popup = PopupMenu(requireContext(), sortVideosBy)
+
+            popup.inflate(R.menu.channel_videos_sort_by)
+            popup.setOnMenuItemClickListener {
+                when(it.itemId) {
+                    R.id.most_popular -> {
+                        if (viewModel.currentChannelVideosSortFormat != MOST_POPULAR){
+                            viewModel.currentChannelVideos.value = listOf()
+                            viewModel.currentChannelVideosSortFormat = MOST_POPULAR
+                            viewModel.getAllPopularVideosOfChannel(channelId, null)
+                        }
+                        else {
+                            viewModel.getAllPopularVideosOfChannel(channelId, null)
+                        }
+                        true
+                    }
+                    R.id.date_added_descending -> {
+                        if (viewModel.currentChannelVideosSortFormat != DATE_DESCENDING) {
+                            viewModel.currentChannelVideos.value = listOf()
+                            viewModel.currentChannelVideosSortFormat = DATE_DESCENDING
+                            viewModel.getRecentChannelVideos(recentUploadsPlaylist, null)
+                        }
+                        else {
+                            viewModel.getRecentChannelVideos(recentUploadsPlaylist, null)
+                        }
+                        true
+                    }
+                    else -> true
+                }
+            }
+            popup.show()
+        }
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -94,7 +132,7 @@ class ChannelVideosFragment : Fragment(R.layout.fragment_channel_videos) {
                                 videoPostedTime = item.snippet.publishedAt
                             )
                         }
-                        videosAdapter.differ.submitList(recentUploads)
+                        viewModel.currentChannelVideos.value = recentUploads
                     }
                 }
                 is Resource.Error -> {
@@ -106,6 +144,36 @@ class ChannelVideosFragment : Fragment(R.layout.fragment_channel_videos) {
                     Log.d("channelVideos", "Loading")
                 }
             }
+        })
+
+        viewModel.allPopularVideosOfChannel.observe(viewLifecycleOwner, Observer { resource ->
+            when(resource) {
+                is Resource.Success -> {
+                    hideProgressBar(progressBar)
+                    resource.data?.let {
+                        for (video in it.items) {
+                            if (!viewModel.popularUploadIds.contains(video.id.videoId)) {
+                                viewModel.popularUploads.add(video)
+                                viewModel.popularUploadIds.add(video.id.videoId)
+                            }
+                        }
+                        viewModel.nextPopularUploadsId = it.nextPageToken
+                        val popularVideos = viewModel.popularUploads.map { pop ->
+                            ChannelHomePlaylistItem(
+                                videoId = pop.id.videoId,
+                                videoTitle = pop.snippet.title,
+                                videoPostedTime = pop.snippet.publishedAt,
+                                videoThumbnailUrl = pop.snippet.thumbnails.high.url
+                            )
+                        }
+                        viewModel.currentChannelVideos.value = popularVideos
+                    }
+                }
+            }
+        })
+
+        viewModel.currentChannelVideos.observe(viewLifecycleOwner, Observer { ll ->
+            videosAdapter.differ.submitList(ll)
         })
     }
 
@@ -138,21 +206,40 @@ class ChannelVideosFragment : Fragment(R.layout.fragment_channel_videos) {
             val totalItems = manager.itemCount
             val scrolledItems = manager.findFirstVisibleItemPosition()
             if (isScrolling && totalItems == currentItems + scrolledItems && viewModel.recentUploads.size <= totalVideos) {
-                viewModel.getRecentChannelVideos(recentUploadsPlaylist, viewModel.nextRecentUploadsId)
+                if (viewModel.currentChannelVideosSortFormat == MOST_POPULAR) {
+                    viewModel.getAllPopularVideosOfChannel(channelId, viewModel.nextPopularUploadsId)
+                }
+                else if (viewModel.currentChannelVideosSortFormat == DATE_DESCENDING) {
+                    viewModel.getRecentChannelVideos(recentUploadsPlaylist, viewModel.nextRecentUploadsId)
+                }
                 isScrolling = false
                 Log.d("scrolling", "Total items : $totalVideos")
                 Log.d("scrolling", "channel videos scrolled")
                 Log.d("scrolling", "NextPageid: ${viewModel.nextRecentUploadsId}")
             }
             else {
-                videosAdapter.differ.submitList(viewModel.recentUploads.map {
-                    ChannelHomePlaylistItem(
-                        videoId = it.contentDetails.videoId,
-                        videoThumbnailUrl = it.snippet.thumbnails.high.url,
-                        videoTitle = it.snippet.title,
-                        videoPostedTime = it.snippet.publishedAt
-                    )
-                })
+                if (viewModel.currentChannelVideosSortFormat == DATE_DESCENDING) {
+                    val recent = viewModel.recentUploads.map {
+                        ChannelHomePlaylistItem(
+                            videoId = it.contentDetails.videoId,
+                            videoThumbnailUrl = it.snippet.thumbnails.high.url,
+                            videoTitle = it.snippet.title,
+                            videoPostedTime = it.snippet.publishedAt
+                        )
+                    }
+                    viewModel.currentChannelVideos.value = recent
+                }
+                else if (viewModel.currentChannelVideosSortFormat == MOST_POPULAR) {
+                    val pop = viewModel.popularUploads.map {
+                        ChannelHomePlaylistItem(
+                            videoId = it.id.videoId,
+                            videoThumbnailUrl = it.snippet.thumbnails.high.url,
+                            videoTitle = it.snippet.title,
+                            videoPostedTime = it.snippet.publishedAt
+                        )
+                    }
+                    viewModel.currentChannelVideos.value = pop
+                }
                 recyclerView.setPadding(0,0,0,0)
             }
         }

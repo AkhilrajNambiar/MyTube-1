@@ -56,8 +56,7 @@ class CommentsFragment : Fragment(R.layout.fragment_comments) {
         }
         commentsAdapter.differ.submitList(viewModel.commentsForVideo)
         closeComments.setOnClickListener {
-            val action = CommentsFragmentDirections.actionCommentsFragmentToVideoDataFragment()
-            findNavController().navigate(action)
+            findNavController().navigateUp()
         }
     }
 

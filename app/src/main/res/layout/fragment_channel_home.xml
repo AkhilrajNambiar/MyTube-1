@@ -47,7 +47,7 @@
                         android:layout_height="80dp"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
-                        app:cardCornerRadius="60dp"
+                        app:cardCornerRadius="40dp"
                         app:cardElevation="0dp">
 
                         <ImageView

@@ -47,7 +47,7 @@ class ChannelHomeFragment : Fragment(R.layout.fragment_channel_home) {
         viewModel = (activity as ChannelDetailsActivity).viewModel
         channelId = (activity as ChannelDetailsActivity).channelId
         viewModel.getCompleteChannelDetails(channelId)
-        Log.d("playlists","channelId: ${channelId}")
+        Log.d("playlists1","channelId: ${channelId}")
         sectionAdapter = SectionAdapter(viewModel)
         return inflater.inflate(R.layout.fragment_channel_home, container, false)
     }
@@ -89,7 +89,7 @@ class ChannelHomeFragment : Fragment(R.layout.fragment_channel_home) {
                             channelSubs.text = "${VideoViewsFormatter.viewsFormatter(channel.statistics.subscriberCount)} subscribers"
                         }
                         channelImageUrl = channel.snippet.thumbnails.medium.url
-                        Log.d("playlists", "channelName: ${channel.snippet.title}, channelSubs: ${channel.statistics.subscriberCount}")
+                        Log.d("playlists1", "channelName: ${channel.snippet.title}, channelSubs: ${channel.statistics.subscriberCount}")
                         Glide.with(requireContext()).load(channel.snippet.thumbnails.medium.url).into(channelLogo)
                         channelTitle.text = channel.snippet.title
                         if (channel.snippet.description.isNotEmpty()) {
@@ -145,10 +145,10 @@ class ChannelHomeFragment : Fragment(R.layout.fragment_channel_home) {
                     }
                 }
                 is Resource.Error -> {
-                    Log.d("playlists", resource.message.toString())
+                    Log.d("playlists1", resource.message.toString())
                 }
                 is Resource.Loading -> {
-                    Log.d("playlists", "Loading")
+                    Log.d("playlists1", "Loading")
                 }
             }
         })
@@ -156,7 +156,7 @@ class ChannelHomeFragment : Fragment(R.layout.fragment_channel_home) {
             when(resource) {
                 is Resource.Success -> {
                     resource.data?.let {
-                        Log.d("playlists", "playlistItems ${it.items.toString()}")
+                        Log.d("playlists1", "playlistItems ${it.items.toString()}")
                         var counter = 0
                         nextPageToken = it.nextPageToken
                         for (item in it.items) {
@@ -184,15 +184,15 @@ class ChannelHomeFragment : Fragment(R.layout.fragment_channel_home) {
                             sectionAdapter.differ.submitList(section.toSet().toList())
                         }
                         catch (e: Exception) {
-                            Log.e("playlists", e.stackTraceToString())
+                            Log.e("playlistsError", e.stackTraceToString())
                         }
                     }
                 }
                 is Resource.Error -> {
-                    Log.d("playlists", resource.message.toString())
+                    Log.d("playlists1", resource.message.toString())
                 }
                 is Resource.Loading -> {
-                    Log.d("playlists", "Loading")
+                    Log.d("playlists1", "Loading")
                 }
             }
         })

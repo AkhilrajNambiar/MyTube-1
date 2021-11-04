@@ -18,6 +18,9 @@
             android:padding="16dp"
             android:contentDescription="@string/go_back"
             android:src="@drawable/ic_go_back"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -45,6 +48,9 @@
             android:padding="16dp"
             android:contentDescription="@string/search_mytube"
             android:src="@drawable/ic_search"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 

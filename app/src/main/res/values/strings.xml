@@ -24,6 +24,7 @@
     <string name="subscribe">subscribe</string>
     <string name="comments">Comments</string>
     <string name="commenting_username_and_posted_date">%s . %s</string>
+    <string name="playlist_video_count">%d videos</string>
     <plurals name="dayCount">
         <item quantity="one"> day ago</item>
         <item quantity="other"> days ago</item>
@@ -72,4 +73,11 @@
     <string name="default_channel_description">More about this channel</string>
     <string name="load_remaining_videos">Load remaining videos</string>
     <string name="sort_by">Sort by</string>
+    <string name="most_popular">Most Popular</string>
+    <string name="date_added_descending">Date added (newest)</string>
+    <string name="no_playlists">This channel has no playlists</string>
+    <string name="shuffle_and_start_a_video">Shuffle the playlist and start a video</string>
+    <string name="add_to_your_playlists">Add to  your playlists</string>
+    <string name="download_entire_playlist">Download this playlist</string>
+    <string name="share_playlist">Share this playlist</string>
 </resources>

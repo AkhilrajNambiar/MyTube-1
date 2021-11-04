@@ -87,13 +87,11 @@ class RepliesFragment : Fragment(R.layout.fragment_replies) {
         repliesCount2.text = resources.getString(R.string.replies, VideoViewsFormatter.viewsFormatter(comment.snippet.totalReplyCount.toString()))
 
         goBackToTopLevelComment.setOnClickListener {
-            val action = RepliesFragmentDirections.actionRepliesFragmentToCommentsFragment()
-            findNavController().navigate(action)
+            findNavController().navigateUp()
         }
 
         closeComments.setOnClickListener {
-            val action = RepliesFragmentDirections.actionRepliesFragmentToVideoDataFragment()
-            findNavController().navigate(action)
+            findNavController().popBackStack(R.id.videoDataFragment, false)
         }
 
         viewModel.commentRepliesResponse.observe(viewLifecycleOwner, Observer { resource ->

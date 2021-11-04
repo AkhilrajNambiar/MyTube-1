@@ -1,8 +1,10 @@
 package com.example.mytube.UI
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -77,7 +79,19 @@ class ChannelDetailsActivity : AppCompatActivity() {
         channelTitle = intent.getStringExtra("channelTitle")!!
 
         val channelName = findViewById<TextView>(R.id.channel_name)
+        val goBack = findViewById<ImageView>(R.id.go_back)
+        val search = findViewById<ImageView>(R.id.search)
+
         channelName.text = channelTitle
+
+        goBack.setOnClickListener {
+            finish()
+        }
+
+        search.setOnClickListener {
+            val intent = Intent(this, SearchActivity::class.java)
+            startActivity(intent)
+        }
 
         viewModel.recyclerViewVideo.observe(this, Observer { resource ->
             when(resource) {
