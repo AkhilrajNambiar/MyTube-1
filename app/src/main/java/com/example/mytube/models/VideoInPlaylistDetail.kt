@@ -1,4 +1,4 @@
-package com.example.mytube.adapters
+package com.example.mytube.models
 
 import com.example.mytube.models.Equatable
 import java.io.Serializable

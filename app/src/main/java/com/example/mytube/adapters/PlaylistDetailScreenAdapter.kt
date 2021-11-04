@@ -16,10 +16,9 @@ import com.bumptech.glide.Glide
 import com.example.mytube.R
 import com.example.mytube.UI.ChannelViewModel
 import com.example.mytube.UI.VideoActivity
-import com.example.mytube.models.AboutVideo
 import com.example.mytube.models.Equatable
 import com.example.mytube.models.SinglePlaylist
-import java.io.Serializable
+import com.example.mytube.models.VideoInPlaylistDetail
 
 class PlaylistDetailScreenAdapter(val viewModel: ChannelViewModel): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

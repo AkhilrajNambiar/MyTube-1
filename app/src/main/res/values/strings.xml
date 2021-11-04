@@ -69,6 +69,7 @@
     <string name="save_to_watch_later">Save to Watch Later</string>
     <string name="download_video">Download video</string>
     <string name="share_video">Share</string>
+    <string name="channel_video_count">%s videos</string>
     <string name="channel_banner_image">Channel Banner Image</string>
     <string name="default_channel_description">More about this channel</string>
     <string name="load_remaining_videos">Load remaining videos</string>
@@ -80,4 +81,5 @@
     <string name="add_to_your_playlists">Add to  your playlists</string>
     <string name="download_entire_playlist">Download this playlist</string>
     <string name="share_playlist">Share this playlist</string>
+    <string name="no_related_channels">This Channel has no related channels</string>
 </resources>

@@ -169,6 +169,12 @@ class ChannelVideosFragment : Fragment(R.layout.fragment_channel_videos) {
                         viewModel.currentChannelVideos.value = popularVideos
                     }
                 }
+                is Resource.Error -> {
+                    Log.e("channelPopularVideos", resource.message.toString())
+                }
+                is Resource.Loading -> {
+                    Log.d("channelPopularVideos", "loading")
+                }
             }
         })
 

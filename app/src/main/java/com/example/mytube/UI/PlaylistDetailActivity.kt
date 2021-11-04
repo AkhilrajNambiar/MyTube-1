@@ -15,10 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mytube.R
 import com.example.mytube.adapters.PlaylistDetailScreenAdapter
-import com.example.mytube.adapters.VideoInPlaylistDetail
+import com.example.mytube.models.VideoInPlaylistDetail
 import com.example.mytube.db.SearchDatabase
-import com.example.mytube.models.Equatable
-import com.example.mytube.models.PlaylistItem
 import com.example.mytube.models.SinglePlaylist
 import com.example.mytube.repository.VideosRepository
 import com.example.mytube.util.Resource

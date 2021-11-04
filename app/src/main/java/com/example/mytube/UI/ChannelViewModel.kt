@@ -28,6 +28,9 @@ class ChannelViewModel(
     private var _channelResponse = MutableLiveData<Resource<ChannelFullDetails>>()
     val channelResponse: LiveData<Resource<ChannelFullDetails>> = _channelResponse
 
+    private var _relatedChannelResponse = MutableLiveData<Resource<ChannelFullDetails>>()
+    val relatedChannelResponse: LiveData<Resource<ChannelFullDetails>> = _relatedChannelResponse
+
     private var _channelSectionsResponse = MutableLiveData<Resource<ChannelSections>>()
     val channelSectionsResponse: LiveData<Resource<ChannelSections>> = _channelSectionsResponse
 
@@ -77,6 +80,10 @@ class ChannelViewModel(
     val allPlaylistIds = mutableListOf<String>()
     var nextPlaylistPage = ""
 
+    val relatedChannels = mutableListOf<ChannelFullDetails>()
+    val relatedChannelIds = mutableListOf<String>()
+    var hasRelatedChannels = false
+
     lateinit var equatableLists: MutableList<Equatable>
 
     // All the network calls
@@ -95,6 +102,25 @@ class ChannelViewModel(
             when(t) {
                 is IOException -> _channelResponse.postValue(Resource.Error("IOException has occured!"))
                 else -> _channelResponse.postValue(Resource.Error(t.stackTraceToString()))
+            }
+        }
+    }
+
+    fun getRelatedChannelsDetails(channelId: String) = viewModelScope.launch(Dispatchers.IO) {
+        _relatedChannelResponse.postValue(Resource.Loading())
+        try {
+            if (hasInternetConnection()) {
+                val response = repository.getCompleteChannelDetails(channelId)
+                _relatedChannelResponse.postValue(handleChannelResponse(response))
+            }
+            else {
+                _relatedChannelResponse.postValue(Resource.Error("No Internet Connection to get related channels!"))
+            }
+        }
+        catch (t: Throwable) {
+            when(t) {
+                is IOException -> _relatedChannelResponse.postValue(Resource.Error("IOException has occured to get related channels!"))
+                else -> _relatedChannelResponse.postValue(Resource.Error(t.stackTraceToString()))
             }
         }
     }
