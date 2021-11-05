@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/remove_from_watch_history"
+        android:title="@string/remove_from_watch_history"/>
+
+    <item
+        android:id="@+id/save_to_watch_later"
+        android:title="@string/save_to_watch_later"/>
+
+    <item
+        android:id="@+id/save_to_playlist"
+        android:title="@string/save_to_playlist"/>
+
+    <item
+        android:id="@+id/download_video"
+        android:title="@string/download_video"/>
+    <item
+        android:id="@+id/share_video_option"
+        android:title="@string/share_video"/>
+</menu>

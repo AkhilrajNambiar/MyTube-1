@@ -1,14 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".UI.Fragments.LibraryFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Library" />
+        android:id="@+id/recent_placeholder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/recent_videos"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="8dp"
+        android:paddingTop="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
-</FrameLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/most_recent_videos_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="8dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/recent_placeholder"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <View
+        android:id="@+id/library_divider_1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray1"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/most_recent_videos_recycler_view" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/history_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:padding="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackground"
+        app:layout_constraintTop_toBottomOf="@id/library_divider_1">
+
+        <ImageView
+            android:id="@+id/video_history_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_history"
+            android:paddingHorizontal="16dp"
+            app:tint="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/video_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="8dp"
+            android:textSize="16sp"
+            android:text="@string/history"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toEndOf="@id/video_history_image"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/video_history_image"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/downloaded_videos_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackground"
+        app:layout_constraintTop_toBottomOf="@id/history_tab">
+
+        <ImageView
+            android:id="@+id/downloaded_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_downloaded"
+            android:paddingHorizontal="16dp"
+            app:tint="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/downloaded_videos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/downloaded_videos"
+            android:paddingHorizontal="8dp"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toEndOf="@id/downloaded_image"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/downloaded_image"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/watch_later_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackground"
+        app:layout_constraintTop_toBottomOf="@id/downloaded_videos_tab">
+
+        <ImageView
+            android:id="@+id/watch_later_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_watch_later"
+            android:paddingHorizontal="16dp"
+            app:tint="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/watch_later_videos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/watch_later_videos"
+            android:paddingHorizontal="8dp"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toEndOf="@id/watch_later_image"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/watch_later_image"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/liked_videos_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackground"
+        app:layout_constraintTop_toBottomOf="@id/watch_later_tab">
+
+        <ImageView
+            android:id="@+id/liked_videos_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_like_video"
+            android:paddingHorizontal="16dp"
+            app:tint="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/liked_videos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/liked_videos"
+            android:paddingHorizontal="8dp"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toEndOf="@id/liked_videos_image"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/liked_videos_image"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/library_divider_2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray1"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/liked_videos_tab" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,15 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".UI.Fragments.AboutChannelFragment">
+    android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="About Channel Fragment"
-        android:gravity="center"/>
+        android:id="@+id/main_view"
+        tools:context=".UI.Fragments.AboutChannelFragment"
+        android:padding="16dp">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/description_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/channel_description_label"
+            android:fontFamily="@font/quicksand_bold"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:paddingBottom="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/channel_description_full"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            android:paddingBottom="16dp"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/description_label" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/description_barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierAllowsGoneWidgets="true"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="channel_description_full, description_label"/>
+
+        <TextView
+            android:id="@+id/more_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/more_info"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:fontFamily="@font/quicksand_bold"
+            android:paddingBottom="8dp"
+            app:layout_constraintTop_toBottomOf="@id/description_barrier"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+
+        <ImageView
+            android:id="@+id/channel_link_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_earth_with_lines"
+            app:tint="@color/black"
+            android:importantForAccessibility="no"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/more_info"/>
+
+        <TextView
+            android:id="@+id/channel_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/link_blue"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@id/channel_link_image"
+            app:layout_constraintTop_toTopOf="@id/channel_link_image"
+            app:layout_constraintBottom_toBottomOf="@id/channel_link_image"
+            tools:text="https:www.youtube.com"/>
+
+
+        <ImageView
+            android:id="@+id/channel_location_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_earth"
+            android:layout_marginTop="8dp"
+            android:importantForAccessibility="no"
+            app:tint="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/channel_link_image"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/channel_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toEndOf="@id/channel_location_image"
+            app:layout_constraintTop_toTopOf="@id/channel_location_image"
+            app:layout_constraintBottom_toBottomOf="@id/channel_location_image"
+            tools:text="India"/>
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:barrierAllowsGoneWidgets="true"
+            app:constraint_referenced_ids="channel_location_image, channel_location, channel_link"/>
+
+        <ImageView
+            android:id="@+id/join_date_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_info"
+            android:layout_marginTop="8dp"
+            android:importantForAccessibility="no"
+            app:tint="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/barrier_location"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/join_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toEndOf="@id/join_date_image"
+            app:layout_constraintTop_toTopOf="@id/join_date_image"
+            app:layout_constraintBottom_toBottomOf="@id/join_date_image"
+            tools:text="Joined on dd-mm-yyyy"/>
+
+        <ImageView
+            android:id="@+id/views_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_view_up"
+            app:tint="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/join_date_image"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/channel_views"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@id/views_image"
+            app:layout_constraintTop_toTopOf="@id/views_image"
+            app:layout_constraintBottom_toBottomOf="@id/views_image"
+            tools:text="56,67,23,829 views"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

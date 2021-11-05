@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi
 import com.example.mytube.API.RetrofitInstance.Companion.api
 import com.example.mytube.db.SearchDatabase
 import com.example.mytube.db.SearchItem
+import com.example.mytube.db.WatchHistoryItem
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.*
@@ -46,6 +47,14 @@ class VideosRepository(val db: SearchDatabase) {
     suspend fun deleteSearchedItem(item: String) = db.getDao().delete(SearchItem(item))
 
     fun getSearchHistory() = db.getDao().getAllSearchedItems()
+
+    suspend fun insertVideoToWatchHistory(item: WatchHistoryItem) = db.getWatchHistoryDao().insert(item)
+
+    suspend fun deleteVideoInWatchHistory(item: WatchHistoryItem) = db.getWatchHistoryDao().delete(item)
+
+    fun getMostRecentVideos() = db.getWatchHistoryDao().getMostRecentWatchItems()
+
+    fun getCompleteWatchHistory() = db.getWatchHistoryDao().getCompleteWatchHistory()
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun findMillisDifference(str1: String) : Map<String, Int>{

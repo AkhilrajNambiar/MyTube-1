@@ -5,11 +5,13 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import android.provider.MediaStore
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import com.example.mytube.MytubeApplication
 import com.example.mytube.db.SearchItem
+import com.example.mytube.db.WatchHistoryItem
 import com.example.mytube.models.*
 import com.example.mytube.repository.VideosRepository
 import com.example.mytube.util.Resource
@@ -325,6 +327,18 @@ class VideosViewModel(
     fun deleteSearchItem(item: String) = viewModelScope.launch {
         repository.deleteSearchedItem(item)
     }
+
+    fun insertVideoIntoWatchHistory(video: WatchHistoryItem) = viewModelScope.launch {
+        repository.insertVideoToWatchHistory(video)
+    }
+
+    fun deleteVideoFromWatchHistory(video: WatchHistoryItem) = viewModelScope.launch {
+        repository.deleteVideoInWatchHistory(video)
+    }
+
+    fun getRecentlyWatchedVideos() = repository.getMostRecentVideos()
+
+    fun getCompleteWatchHistory() = repository.getCompleteWatchHistory()
 
     private fun hasInternetConnection(): Boolean {
         val connectivityManager = getApplication<MytubeApplication>().getSystemService(

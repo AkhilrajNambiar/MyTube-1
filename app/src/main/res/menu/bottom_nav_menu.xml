@@ -4,14 +4,6 @@
         android:title="@string/home"
         android:icon="@drawable/ic_home"/>
 
-    <item android:id="@+id/notificationsFragment"
-        android:title="@string/notif"
-        android:icon="@drawable/ic_notifications"/>
-
-    <item android:id="@+id/subscriptionsFragment"
-        android:title="@string/playlists"
-        android:icon="@drawable/ic_subscriptions"/>
-
     <item android:id="@+id/libraryFragment"
         android:title="@string/library"
         android:icon="@drawable/ic_library"/>

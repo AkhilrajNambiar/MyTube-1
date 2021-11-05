@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/recent_video_card"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/recent_video_thumbnail"
+        android:layout_width="150dp"
+        android:layout_height="80dp"
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/recent_video_thumbnail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <TextView
+        android:id="@+id/recent_video_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:paddingTop="4dp"
+        android:scrollHorizontally="false"
+        app:layout_constraintTop_toBottomOf="@id/recent_video_thumbnail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/more_video_options"
+        tools:text="Hello video 21 "/>
+
+    <ImageView
+        android:id="@+id/more_video_options"
+        android:layout_width="21dp"
+        android:layout_height="30dp"
+        android:paddingVertical="4dp"
+        android:src="@drawable/ic_video_options"
+        android:contentDescription="@string/video_options"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:tint="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recent_video_thumbnail"/>
+
+    <TextView
+        android:id="@+id/recent_video_channel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/light_black"
+        android:textSize="13sp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:scrollHorizontally="false"
+        app:layout_constraintTop_toBottomOf="@id/recent_video_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/more_video_options"
+        tools:text="Hello video 21 "/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

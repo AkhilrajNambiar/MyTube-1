@@ -80,13 +80,14 @@ class ChannelHomeFragment : Fragment(R.layout.fragment_channel_home) {
                     resource.data?.let { channelList ->
                         val channel = channelList.items[0]
                         if (channel.brandingSettings.image.bannerExternalUrl.isNotEmpty()) {
+                            Log.d("channelBranding", channel.brandingSettings.image.bannerExternalUrl)
                             Glide.with(requireContext()).load(channel.brandingSettings.image.bannerExternalUrl).into(channelBanner)
                         }
                         else {
                             mainLayout.removeView(channelBanner)
                         }
                         if (!channel.statistics.hiddenSubscriberCount) {
-                            channelSubs.text = "${VideoViewsFormatter.viewsFormatter(channel.statistics.subscriberCount)} subscribers"
+                            channelSubs.text = resources.getString(R.string.subscribers, VideoViewsFormatter.viewsFormatter(channel.statistics.subscriberCount))
                         }
                         channelImageUrl = channel.snippet.thumbnails.medium.url
                         Log.d("playlists1", "channelName: ${channel.snippet.title}, channelSubs: ${channel.statistics.subscriberCount}")

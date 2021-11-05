@@ -27,6 +27,7 @@ import com.example.mytube.UI.VideosViewModel
 import com.example.mytube.adapters.RelatedVideosAdapter
 import com.example.mytube.adapters.SearchedVideosAdapter
 import com.example.mytube.adapters.VideosAdapter
+import com.example.mytube.db.WatchHistoryItem
 import com.example.mytube.models.AboutVideo
 import com.example.mytube.util.Resource
 import com.example.mytube.util.VideoViewsFormatter
@@ -91,6 +92,16 @@ class VideoDataFragment : Fragment(R.layout.fragment_video_data) {
                         viewModel.getCommentsForVideo(videoId)
                         viewModel.getVideosRelatedToCurrentVideo(videoId = listOf(video.snippet.title, video.snippet.channelTitle).random(), null)
 
+                        // Adding video to search history
+                        val recentVideo = WatchHistoryItem(
+                            videoId = videoId,
+                            videoTitle = video.snippet.title,
+                            videoThumbnailUrl = video.snippet.thumbnails.maxres?.url ?: video.snippet.thumbnails.standard?.url ?: video.snippet.thumbnails.high?.url ?: video.snippet.thumbnails.medium?.url ?: video.snippet.thumbnails.defaultThumb!!.url,
+                            videoChannelName = video.snippet.channelTitle,
+                            videoViews = video.statistics.viewCount,
+                            videoWatchedTime = System.currentTimeMillis()
+                        )
+                        viewModel.insertVideoIntoWatchHistory(recentVideo)
 
                         videoTitle.text = video.snippet.title
                         videoViews.text = "${VideoViewsFormatter.viewsFormatter((video.statistics.viewCount).toString())} views . "

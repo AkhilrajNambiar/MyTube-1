@@ -20,7 +20,9 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:src="@drawable/default_banner"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            tools:src="@drawable/banner_temp"/>
 
         <LinearLayout
             android:id="@+id/channel_logo_title_and_brief_description"
@@ -108,6 +110,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:maxLines="1"
                 android:text="@string/default_channel_description"
                 android:scrollHorizontally="false"

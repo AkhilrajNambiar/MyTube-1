@@ -15,11 +15,6 @@
             app:destination="@id/videoActivity" />
     </fragment>
     <fragment
-        android:id="@+id/notificationsFragment"
-        android:name="com.example.mytube.UI.Fragments.NotificationsFragment"
-        android:label="fragment_notifications"
-        tools:layout="@layout/fragment_notifications" />
-    <fragment
         android:id="@+id/libraryFragment"
         android:name="com.example.mytube.UI.Fragments.LibraryFragment"
         android:label="fragment_library"
@@ -27,15 +22,9 @@
         <action
             android:id="@+id/action_libraryFragment_to_videoActivity"
             app:destination="@id/videoActivity" />
-    </fragment>
-    <fragment
-        android:id="@+id/subscriptionsFragment"
-        android:name="com.example.mytube.UI.Fragments.PlaylistsFragment"
-        android:label="fragment_subscriptions"
-        tools:layout="@layout/fragment_playlists" >
         <action
-            android:id="@+id/action_subscriptionsFragment_to_videoActivity"
-            app:destination="@id/videoActivity" />
+            android:id="@+id/action_libraryFragment_to_watchHistoryFragment"
+            app:destination="@id/watchHistoryFragment" />
     </fragment>
     <activity
         android:id="@+id/videoActivity"
@@ -52,4 +41,9 @@
         android:name="com.example.mytube.UI.Fragments.SearchResultsFragment"
         android:label="fragment_search_results"
         tools:layout="@layout/fragment_search_results" />
+    <fragment
+        android:id="@+id/watchHistoryFragment"
+        android:name="com.example.mytube.UI.Fragments.WatchHistoryFragment"
+        android:label="fragment_watch_history"
+        tools:layout="@layout/fragment_watch_history" />
 </navigation>

@@ -18,13 +18,13 @@
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/activity_video.xml" value="0.25" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/comment_item.xml" value="0.25" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/comment_reply_item.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/fragment_about_channel.xml" value="0.19010416666666666" />
+        <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/fragment_about_channel.xml" value="0.33" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/fragment_channel_home.xml" value="0.22" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/fragment_channel_playlists.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/fragment_channel_videos.xml" value="0.33" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/fragment_comments.xml" value="0.22" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/fragment_home.xml" value="0.25" />
-        <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/fragment_library.xml" value="0.151268115942029" />
+        <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/fragment_library.xml" value="0.25" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/fragment_notifications.xml" value="0.151268115942029" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/fragment_related_channels.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/fragment_replies.xml" value="0.22" />
@@ -32,17 +32,21 @@
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/fragment_subscriptions.xml" value="0.151268115942029" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/fragment_video_data.xml" value="0.1" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/fragment_video_view.xml" value="0.20380434782608695" />
+        <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/fragment_watch_history.xml" value="0.33" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/playlist_channel_item.xml" value="0.22" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/playlist_detail_heading_item.xml" value="0.22" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/playlist_item.xml" value="0.21" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/playlist_video_item.xml" value="0.18115942028985507" />
+        <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/recent_video_item.xml" value="0.5" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/search_history_item.xml" value="0.1" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/section_recycler_view.xml" value="0.18115942028985507" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/video_description_sheet.xml" value="0.15" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/video_item.xml" value="0.151268115942029" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/video_options_custom.xml" value="0.25" />
+        <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/layout/watch_history_item.xml" value="0.18342391304347827" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/menu/bottom_nav_menu.xml" value="0.18645833333333334" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/menu/channel_videos_sort_by.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/menu/video_history_options.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/menu/video_options_menu.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/nambi/AndroidStudioProjects/MyTube/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2203125" />
       </map>

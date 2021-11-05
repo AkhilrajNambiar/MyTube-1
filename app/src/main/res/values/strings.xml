@@ -19,6 +19,8 @@
     <string name="open_dropdown">Open video description</string>
     <string name="like">Like</string>
     <string name="save">Save</string>
+    <string name="view_count">%s views</string>
+    <string name="joined_on">Joined %s</string>
     <string name="download">Download</string>
     <string name="share">Share</string>
     <string name="subscribe">subscribe</string>
@@ -61,6 +63,8 @@
     <string name="close_description">Close description</string>
     <string name="likes">Likes</string>
     <string name="views">Views</string>
+    <string name="custom_channel_link">http://www.youtube.com/c/%s</string>
+    <string name="default_channel_link">http://www.youtube.com/channel/%s</string>
     <string name="description">Description</string>
     <string name="retry">Retry</string>
     <string name="network_error">Network error image</string>
@@ -82,4 +86,13 @@
     <string name="download_entire_playlist">Download this playlist</string>
     <string name="share_playlist">Share this playlist</string>
     <string name="no_related_channels">This Channel has no related channels</string>
+    <string name="channel_description_label">Description</string>
+    <string name="more_info">More info</string>
+    <string name="recent_videos">Recent</string>
+    <string name="recent_video_thumbnail">Recent Video Thumbnail</string>
+    <string name="remove_from_watch_history">Remove from watch history</string>
+    <string name="history">History</string>
+    <string name="downloaded_videos">Downloads</string>
+    <string name="watch_later_videos">Watch later</string>
+    <string name="liked_videos">Liked videos</string>
 </resources>

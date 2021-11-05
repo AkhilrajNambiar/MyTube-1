@@ -12,4 +12,6 @@
     <color name="gray1">#FF999999</color>
     <color name="transparent_black">#CC000000</color>
     <color name="very_light_gray">#FFEEEEEE</color>
+    <color name="link_blue">#FF065fd4</color>
+    <color name="light_black">#FF555555</color>
 </resources>
