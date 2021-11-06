@@ -109,13 +109,24 @@ class WatchLaterAdapter(val viewModel: VideosViewModel, val lifecycleOwner: Life
         private val videoChannelName = itemView.findViewById<TextView>(R.id.video_channel_watch_later)
         private val videoCard = itemView.findViewById<ConstraintLayout>(R.id.watch_later_video_card)
         private val options = itemView.findViewById<ImageView>(R.id.video_options_watch_later)
-        fun bind(video: WatchLaterItem) {
+        fun bind(video: WatchLaterItem, viewModel: VideosViewModel) {
             Glide.with(itemView)
                 .load(video.videoThumbnailUrl)
                 .into(videoThumbnail)
             videoTitle.text = video.videoTitle
             videoChannelName.text = video.videoChannelName
             videoCard.setOnClickListener {
+                val watchedVideo = WatchLaterItem(
+                    videoId = video.videoId,
+                    videoTitle = video.videoTitle,
+                    videoChannelName = video.videoChannelName,
+                    videoPublishedDate = video.videoPublishedDate,
+                    videoAddedTime = video.videoAddedTime,
+                    videoViews = video.videoViews,
+                    videoThumbnailUrl = video.videoThumbnailUrl,
+                    videoWatchedAfterAddingToWatchLater = true
+                )
+                viewModel.updateWatchedVideos(watchedVideo)
                 val intent = Intent(itemView.context, VideoActivity::class.java)
                 intent.putExtra("videoId", video.videoId)
                 itemView.context.startActivity(intent)
@@ -170,7 +181,7 @@ class WatchLaterAdapter(val viewModel: VideosViewModel, val lifecycleOwner: Life
         }
         else {
             val bodyHolder = holder as BodyViewHolder
-            bodyHolder.bind(item as WatchLaterItem)
+            bodyHolder.bind(item as WatchLaterItem, viewModel = viewModel)
         }
     }
 

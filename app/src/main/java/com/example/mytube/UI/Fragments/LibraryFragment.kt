@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
@@ -19,6 +20,7 @@ import com.example.mytube.UI.MainActivity
 import com.example.mytube.UI.VideosViewModel
 import com.example.mytube.adapters.PlaylistVideosAdapter
 import com.example.mytube.adapters.RecentVideosAdapter
+import org.w3c.dom.Text
 
 class LibraryFragment : Fragment(R.layout.fragment_library) {
     lateinit var viewModel: VideosViewModel
@@ -39,6 +41,11 @@ class LibraryFragment : Fragment(R.layout.fragment_library) {
         val historyTab = view.findViewById<ConstraintLayout>(R.id.history_tab)
         val watchLaterTab = view.findViewById<ConstraintLayout>(R.id.watch_later_tab)
         val likedVideosTab = view.findViewById<ConstraintLayout>(R.id.liked_videos_tab)
+        val unwatchedVideosCount = view.findViewById<TextView>(R.id.unwatched_videos_count)
+
+        viewModel.getCountOfUnwatchedVideos().observe(viewLifecycleOwner, Observer {
+            unwatchedVideosCount.text = resources.getString(R.string.unwatched_videos_count, it)
+        })
 
         historyTab.setOnClickListener {
             val action = LibraryFragmentDirections.actionLibraryFragmentToWatchHistoryFragment()

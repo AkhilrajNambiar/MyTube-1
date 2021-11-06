@@ -77,6 +77,8 @@ class VideosRepository(val db: SearchDatabase) {
 
     fun getCountOfUnwatchedVideos() = db.getWatchLaterDao().getCountOfVideosNotWatchedTillNow()
 
+    suspend fun updateWatchedVideos(item: WatchLaterItem) = db.getWatchLaterDao().update(item)
+
     @RequiresApi(Build.VERSION_CODES.O)
     fun findMillisDifference(str1: String) : Map<String, Int>{
         // Converting the Time in string form to Time in LocalDateTime form

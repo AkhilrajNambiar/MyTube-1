@@ -366,6 +366,10 @@ class VideosViewModel(
 
     fun getCountOfUnwatchedVideos() = repository.getCountOfUnwatchedVideos()
 
+    fun updateWatchedVideos(video: WatchLaterItem) = viewModelScope.launch {
+        repository.updateWatchedVideos(video)
+    }
+
     private fun hasInternetConnection(): Boolean {
         val connectivityManager = getApplication<MytubeApplication>().getSystemService(
             Context.CONNECTIVITY_SERVICE

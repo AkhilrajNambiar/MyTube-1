@@ -28,11 +28,11 @@ import com.example.mytube.util.VideoViewsFormatter.Companion.viewsFormatter
 class RelatedVideosAdapter(val viewModel: VideosViewModel): RecyclerView.Adapter<RelatedVideosAdapter.VideosViewHolder>() {
 
     inner class VideosViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        val image = itemView.findViewById<ImageView>(R.id.video_thumbnail)
-        val title = itemView.findViewById<TextView>(R.id.video_title)
-        val subtitle = itemView.findViewById<TextView>(R.id.video_subtitle)
-        val channelLogo = itemView.findViewById<ImageView>(R.id.channel_logo)
-        val videoCard = itemView.findViewById<LinearLayout>(R.id.video_card)
+        private val image = itemView.findViewById<ImageView>(R.id.video_thumbnail)
+        private val title = itemView.findViewById<TextView>(R.id.video_title)
+        private val subtitle = itemView.findViewById<TextView>(R.id.video_subtitle)
+        private val channelLogo = itemView.findViewById<ImageView>(R.id.channel_logo)
+        private val videoCard = itemView.findViewById<LinearLayout>(R.id.video_card)
         @RequiresApi(Build.VERSION_CODES.O)
         fun bind(video: AboutVideo) {
             Glide.with(itemView).load(video.snippet.thumbnails.maxres?.url ?: video.snippet.thumbnails.standard?.url ?: video.snippet.thumbnails.high?.url ?: video.snippet.thumbnails.medium?.url ?: video.snippet.thumbnails.defaultThumb?.url).into(image)

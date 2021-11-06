@@ -99,4 +99,5 @@
     <string name="date_added_ascending">Date added (oldest)</string>
     <string name="date_published_descending">Date published (newest)</string>
     <string name="date_published_ascending">Date published (oldest)</string>
+    <string name="unwatched_videos_count">%d unwatched videos</string>
 </resources>

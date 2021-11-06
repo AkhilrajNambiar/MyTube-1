@@ -11,6 +11,9 @@ interface WatchLaterDao {
     @Delete
     suspend fun delete(video: WatchLaterItem)
 
+    @Update
+    suspend fun update(video: WatchLaterItem)
+
     @Query("select * from watchLater order by videoViews desc")
     fun getMostPopularWatchLaterVideos(): LiveData<List<WatchLaterItem>>
 

@@ -26,14 +26,14 @@ class WatchLaterFragment : Fragment(R.layout.fragment_watch_later) {
     lateinit var recyclerView: RecyclerView
     lateinit var watchLaterAdapter: WatchLaterAdapter
     lateinit var watchLaterVideoCount: WatchLaterVideoCount
-    lateinit var equatableList: MutableList<Equatable>
+    lateinit var equatableList: MutableSet<Equatable>
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         viewModel = (activity as MainActivity).viewModel
-        equatableList = mutableListOf()
+        equatableList = mutableSetOf()
         return inflater.inflate(R.layout.fragment_watch_later, container, false)
     }
 
