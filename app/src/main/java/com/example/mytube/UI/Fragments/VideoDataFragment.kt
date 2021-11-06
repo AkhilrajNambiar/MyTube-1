@@ -1,10 +1,12 @@
 package com.example.mytube.UI.Fragments
 
-import android.content.ActivityNotFoundException
-import android.content.Intent
+import android.app.DownloadManager
+import android.content.*
+import android.content.Context.DOWNLOAD_SERVICE
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -28,10 +30,14 @@ import com.example.mytube.adapters.RelatedVideosAdapter
 import com.example.mytube.adapters.SearchedVideosAdapter
 import com.example.mytube.adapters.VideosAdapter
 import com.example.mytube.db.WatchHistoryItem
+import com.example.mytube.db.WatchLaterItem
 import com.example.mytube.models.AboutVideo
 import com.example.mytube.util.Resource
 import com.example.mytube.util.VideoViewsFormatter
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.youtube.player.internal.c
+import java.io.File
 
 class VideoDataFragment : Fragment(R.layout.fragment_video_data) {
 
@@ -40,6 +46,7 @@ class VideoDataFragment : Fragment(R.layout.fragment_video_data) {
     lateinit var video: AboutVideo
     lateinit var videoId: String
     var totalRelatedVideos: Int = 0
+    var downloadId: Long = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,6 +72,9 @@ class VideoDataFragment : Fragment(R.layout.fragment_video_data) {
         val videoDislikes = view.findViewById<TextView>(R.id.dislike_text)
         val videoTitle = view.findViewById<TextView>(R.id.video_title_in_video_screen)
         val shareVideo = view.findViewById<LinearLayout>(R.id.share_video)
+        val saveToWatchLater = view.findViewById<LinearLayout>(R.id.save_video)
+        val saveImage = view.findViewById<ImageView>(R.id.save_image)
+        val saveText = view.findViewById<TextView>(R.id.save_text)
         val dropdown = view.findViewById<ImageView>(R.id.description_dropdown)
         val relatedVideos = view.findViewById<RecyclerView>(R.id.related_videos_recycler_view)
         val channelInfo = view.findViewById<LinearLayout>(R.id.channel_info)
@@ -103,12 +113,30 @@ class VideoDataFragment : Fragment(R.layout.fragment_video_data) {
                         )
                         viewModel.insertVideoIntoWatchHistory(recentVideo)
 
+                        // Adding video to watch later
+                        saveToWatchLater.setOnClickListener {
+                            saveImage.setImageResource(R.drawable.ic_added_to_playlist)
+                            val watchLaterVideo = WatchLaterItem(
+                                videoId = videoId,
+                                videoTitle = video.snippet.title,
+                                videoThumbnailUrl = video.snippet.thumbnails.maxres?.url ?: video.snippet.thumbnails.standard?.url ?: video.snippet.thumbnails.high?.url ?: video.snippet.thumbnails.medium?.url ?: video.snippet.thumbnails.defaultThumb!!.url,
+                                videoChannelName = video.snippet.channelTitle,
+                                videoViews = video.statistics.viewCount.toLong(),
+                                videoAddedTime = System.currentTimeMillis(),
+                                videoPublishedDate = VideoViewsFormatter.getMillisecondsFromLocalTime(video.snippet.publishedAt)
+                            )
+                            viewModel.insertVideoIntoWatchLater(watchLaterVideo)
+                            Snackbar.make(view, "Video added to watch later!", LENGTH_LONG).show()
+                        }
+
                         videoTitle.text = video.snippet.title
                         videoViews.text = "${VideoViewsFormatter.viewsFormatter((video.statistics.viewCount).toString())} views . "
                         val videoPublishedTime = viewModel.findMillisDifference(video.snippet.publishedAt)
                         videoPublishedDate.text = VideoViewsFormatter.timeFormatter(videoPublishedTime, view.context).toString()
                         videoLikes.text = VideoViewsFormatter.viewsFormatter((video.statistics.likeCount).toString())
                         videoDislikes.text = VideoViewsFormatter.viewsFormatter((video.statistics.dislikeCount).toString())
+
+                        val folder = File(Environment.DIRECTORY_DOWNLOADS)
 
                         relatedVideosAdapter = RelatedVideosAdapter(viewModel)
                         relatedVideos.apply {

@@ -12,6 +12,7 @@ import androidx.lifecycle.*
 import com.example.mytube.MytubeApplication
 import com.example.mytube.db.SearchItem
 import com.example.mytube.db.WatchHistoryItem
+import com.example.mytube.db.WatchLaterItem
 import com.example.mytube.models.*
 import com.example.mytube.repository.VideosRepository
 import com.example.mytube.util.Resource
@@ -328,6 +329,8 @@ class VideosViewModel(
         repository.deleteSearchedItem(item)
     }
 
+    // Watch history methods
+
     fun insertVideoIntoWatchHistory(video: WatchHistoryItem) = viewModelScope.launch {
         repository.insertVideoToWatchHistory(video)
     }
@@ -339,6 +342,29 @@ class VideosViewModel(
     fun getRecentlyWatchedVideos() = repository.getMostRecentVideos()
 
     fun getCompleteWatchHistory() = repository.getCompleteWatchHistory()
+
+    // Watch Later methods
+    fun insertVideoIntoWatchLater(video: WatchLaterItem) = viewModelScope.launch {
+        repository.insertVideoToWatchLater(video)
+    }
+
+    fun deleteVideoFromWatchLater(video: WatchLaterItem) = viewModelScope.launch {
+        repository.deleteVideoFromWatchLater(video)
+    }
+
+    fun getRecentlyAddedWatchLaterVideos() = repository.getRecentlyAddedWatchLaterVideos()
+
+    fun getOldestAddedWatchLaterVideos() = repository.getOldestAddedWatchLaterVideos()
+
+    fun getMostPopularWatchLaterVideos() = repository.getMostPopularWatchLaterVideos()
+
+    fun getRecentlyPublishedWatchLaterVideos() = repository.getRecentlyPublishedWatchLaterVideos()
+
+    fun getOldestPublishedWatchLaterVideos() = repository.getOldestPublishedWatchLaterVideos()
+
+    fun getCountOfWatchLaterVideos() = repository.getCountOfWatchLaterVideos()
+
+    fun getCountOfUnwatchedVideos() = repository.getCountOfUnwatchedVideos()
 
     private fun hasInternetConnection(): Boolean {
         val connectivityManager = getApplication<MytubeApplication>().getSystemService(

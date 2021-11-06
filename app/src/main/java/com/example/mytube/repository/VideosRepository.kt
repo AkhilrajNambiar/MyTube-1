@@ -6,6 +6,7 @@ import com.example.mytube.API.RetrofitInstance.Companion.api
 import com.example.mytube.db.SearchDatabase
 import com.example.mytube.db.SearchItem
 import com.example.mytube.db.WatchHistoryItem
+import com.example.mytube.db.WatchLaterItem
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.*
@@ -48,6 +49,7 @@ class VideosRepository(val db: SearchDatabase) {
 
     fun getSearchHistory() = db.getDao().getAllSearchedItems()
 
+    // Watch History
     suspend fun insertVideoToWatchHistory(item: WatchHistoryItem) = db.getWatchHistoryDao().insert(item)
 
     suspend fun deleteVideoInWatchHistory(item: WatchHistoryItem) = db.getWatchHistoryDao().delete(item)
@@ -55,6 +57,25 @@ class VideosRepository(val db: SearchDatabase) {
     fun getMostRecentVideos() = db.getWatchHistoryDao().getMostRecentWatchItems()
 
     fun getCompleteWatchHistory() = db.getWatchHistoryDao().getCompleteWatchHistory()
+
+    // Watch Later
+    suspend fun insertVideoToWatchLater(item: WatchLaterItem) = db.getWatchLaterDao().insert(item)
+
+    suspend fun deleteVideoFromWatchLater(item: WatchLaterItem) = db.getWatchLaterDao().delete(item)
+
+    fun getMostPopularWatchLaterVideos() = db.getWatchLaterDao().getMostPopularWatchLaterVideos()
+
+    fun getRecentlyPublishedWatchLaterVideos() = db.getWatchLaterDao().getMostRecentlyPublishedVideos()
+
+    fun getOldestPublishedWatchLaterVideos() = db.getWatchLaterDao().getOldestPublishedVideos()
+
+    fun getRecentlyAddedWatchLaterVideos() = db.getWatchLaterDao().getMostRecentlyAddedVideos()
+
+    fun getOldestAddedWatchLaterVideos() = db.getWatchLaterDao().getMosOldestAddedVideos()
+
+    fun getCountOfWatchLaterVideos() = db.getWatchLaterDao().getCountOfWatchLaterVideos()
+
+    fun getCountOfUnwatchedVideos() = db.getWatchLaterDao().getCountOfVideosNotWatchedTillNow()
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun findMillisDifference(str1: String) : Map<String, Int>{

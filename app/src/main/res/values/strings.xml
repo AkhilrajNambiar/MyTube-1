@@ -95,4 +95,8 @@
     <string name="downloaded_videos">Downloads</string>
     <string name="watch_later_videos">Watch later</string>
     <string name="liked_videos">Liked videos</string>
+    <string name="sort">Sort</string>
+    <string name="date_added_ascending">Date added (oldest)</string>
+    <string name="date_published_descending">Date published (newest)</string>
+    <string name="date_published_ascending">Date published (oldest)</string>
 </resources>

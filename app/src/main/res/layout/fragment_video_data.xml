@@ -183,7 +183,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/dowload_video"
+                android:id="@+id/download_video"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -201,7 +201,7 @@
                     app:tint="@color/black" />
 
                 <TextView
-                    android:id="@+id/dowload_text"
+                    android:id="@+id/download_text"
                     android:textColor="@color/black"
                     android:text="@string/download"
                     android:layout_width="wrap_content"

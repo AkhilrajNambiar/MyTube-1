@@ -73,40 +73,6 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/downloaded_videos_tab"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:background="?attr/selectableItemBackground"
-        app:layout_constraintTop_toBottomOf="@id/history_tab">
-
-        <ImageView
-            android:id="@+id/downloaded_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_downloaded"
-            android:paddingHorizontal="16dp"
-            app:tint="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <TextView
-            android:id="@+id/downloaded_videos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/downloaded_videos"
-            android:paddingHorizontal="8dp"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toEndOf="@id/downloaded_image"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/downloaded_image"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/watch_later_tab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -114,7 +80,7 @@
         android:clickable="true"
         android:focusable="true"
         android:background="?attr/selectableItemBackground"
-        app:layout_constraintTop_toBottomOf="@id/downloaded_videos_tab">
+        app:layout_constraintTop_toBottomOf="@id/history_tab">
 
         <ImageView
             android:id="@+id/watch_later_image"

@@ -9,6 +9,7 @@ import com.example.mytube.R
 import com.example.mytube.models.Thumbnails
 import com.example.mytube.models.ThumbnailsXX
 import java.time.LocalDateTime
+import java.time.ZoneId
 
 class VideoViewsFormatter {
     companion object {
@@ -149,6 +150,12 @@ class VideoViewsFormatter {
             }
             return "https://www.labnol.org/images/2008/1.jpg"
         }
-
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun getMillisecondsFromLocalTime(timer: String): Long {
+            val timeString = timer.slice(0 until timer.length - 1)
+            val time = LocalDateTime.parse(timeString)
+            val zonedTime = time.atZone(ZoneId.of("Asia/Calcutta"))
+            return zonedTime.toInstant().toEpochMilli()
+        }
     }
 }

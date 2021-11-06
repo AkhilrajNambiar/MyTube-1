@@ -42,10 +42,6 @@ class RelatedVideosAdapter(val viewModel: VideosViewModel): RecyclerView.Adapter
             val views = viewsFormatter(video.statistics.viewCount.toString())
             videoCard.setOnClickListener {
                 val intent = Intent(itemView.context, VideoActivity::class.java)
-//                val bundle = Bundle().apply {
-//                    putSerializable("video", video)
-//                }
-//                intent.putExtra("video", bundle)
                 intent.putExtra("videoId", video.id)
                 itemView.context.startActivity(intent)
             }

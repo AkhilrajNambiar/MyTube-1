@@ -37,12 +37,15 @@ class LibraryFragment : Fragment(R.layout.fragment_library) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         val historyTab = view.findViewById<ConstraintLayout>(R.id.history_tab)
-        val downloadsTab = view.findViewById<ConstraintLayout>(R.id.downloaded_videos_tab)
         val watchLaterTab = view.findViewById<ConstraintLayout>(R.id.watch_later_tab)
         val likedVideosTab = view.findViewById<ConstraintLayout>(R.id.liked_videos_tab)
 
         historyTab.setOnClickListener {
             val action = LibraryFragmentDirections.actionLibraryFragmentToWatchHistoryFragment()
+            findNavController().navigate(action)
+        }
+        watchLaterTab.setOnClickListener {
+            val action = LibraryFragmentDirections.actionLibraryFragmentToWatchLaterFragment()
             findNavController().navigate(action)
         }
 
@@ -51,9 +54,9 @@ class LibraryFragment : Fragment(R.layout.fragment_library) {
         recyclerView.apply {
             adapter = recentVideosAdapter
         }
-
         viewModel.getRecentlyWatchedVideos().observe(viewLifecycleOwner, Observer {
             recentVideosAdapter.differ.submitList(it)
         })
+
     }
 }

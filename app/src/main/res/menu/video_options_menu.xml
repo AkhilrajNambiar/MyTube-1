@@ -7,9 +7,6 @@
         android:id="@+id/save_to_playlist"
         android:title="@string/save_to_playlist" />
     <item
-        android:id="@+id/download_video"
-        android:title="@string/download_video" />
-    <item
         android:id="@+id/share_video_option"
         android:title="@string/share_video" />
 </menu>

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mytube.R
+import com.example.mytube.UI.VideoActivity
 import com.example.mytube.UI.VideosViewModel
 import com.example.mytube.db.WatchHistoryItem
 
@@ -29,6 +30,11 @@ class RecentVideosAdapter(val viewModel:VideosViewModel): RecyclerView.Adapter<R
                 .into(videoThumbnail)
             videoTitle.text = video.videoTitle
             videoChannelName.text = video.videoChannelName
+            videoCard.setOnClickListener {
+                val intent = Intent(itemView.context, VideoActivity::class.java)
+                intent.putExtra("videoId", video.videoId)
+                itemView.context.startActivity(intent)
+            }
             videoOptions.setOnClickListener {
                 val popup = PopupMenu(itemView.context, videoThumbnail)
                 popup.inflate(R.menu.video_history_options)
