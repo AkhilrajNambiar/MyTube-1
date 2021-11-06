@@ -29,12 +29,14 @@ import com.example.mytube.UI.VideosViewModel
 import com.example.mytube.adapters.RelatedVideosAdapter
 import com.example.mytube.adapters.SearchedVideosAdapter
 import com.example.mytube.adapters.VideosAdapter
+import com.example.mytube.db.LikedVideoItem
 import com.example.mytube.db.WatchHistoryItem
 import com.example.mytube.db.WatchLaterItem
 import com.example.mytube.models.AboutVideo
 import com.example.mytube.util.Resource
 import com.example.mytube.util.VideoViewsFormatter
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.youtube.player.internal.c
 import java.io.File
@@ -47,6 +49,8 @@ class VideoDataFragment : Fragment(R.layout.fragment_video_data) {
     lateinit var videoId: String
     var totalRelatedVideos: Int = 0
     var downloadId: Long = 0
+    lateinit var likedVideos: List<LikedVideoItem>
+    lateinit var likedVideoIds: List<String>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,6 +73,8 @@ class VideoDataFragment : Fragment(R.layout.fragment_video_data) {
         val videoViews = view.findViewById<TextView>(R.id.video_views)
         val videoPublishedDate = view.findViewById<TextView>(R.id.video_published_date)
         val videoLikes = view.findViewById<TextView>(R.id.like_text)
+        val videoLikeBox = view.findViewById<LinearLayout>(R.id.like_video)
+        val videoLikeImage = view.findViewById<ImageView>(R.id.like_image)
         val videoDislikes = view.findViewById<TextView>(R.id.dislike_text)
         val videoTitle = view.findViewById<TextView>(R.id.video_title_in_video_screen)
         val shareVideo = view.findViewById<LinearLayout>(R.id.share_video)
@@ -102,6 +108,23 @@ class VideoDataFragment : Fragment(R.layout.fragment_video_data) {
                         viewModel.getCommentsForVideo(videoId)
                         viewModel.getVideosRelatedToCurrentVideo(videoId = listOf(video.snippet.title, video.snippet.channelTitle).random(), null)
 
+                        // Setting up the initial like image and like text
+                        viewModel.getLikedVideos().observe(viewLifecycleOwner, Observer { likedVideos ->
+                            val videoIds = likedVideos.map {
+                                it.videoId
+                            }
+                            this@VideoDataFragment.likedVideos = likedVideos
+                            this@VideoDataFragment.likedVideoIds = videoIds
+                            if (videoIds.contains(videoId)) {
+                                videoLikeImage.setImageResource(R.drawable.ic_liked_already)
+                                videoLikes.text = VideoViewsFormatter.viewsFormatter((video.statistics.likeCount + 1).toString())
+                            }
+                            else {
+                                videoLikeImage.setImageResource(R.drawable.ic_like_video)
+                                videoLikes.text = VideoViewsFormatter.viewsFormatter((video.statistics.likeCount).toString())
+                            }
+                        })
+
                         // Adding video to search history
                         val recentVideo = WatchHistoryItem(
                             videoId = videoId,
@@ -115,6 +138,7 @@ class VideoDataFragment : Fragment(R.layout.fragment_video_data) {
 
                         // Adding video to watch later
                         saveToWatchLater.setOnClickListener {
+                            saveText.text = resources.getString(R.string.saved)
                             saveImage.setImageResource(R.drawable.ic_added_to_playlist)
                             val watchLaterVideo = WatchLaterItem(
                                 videoId = videoId,
@@ -129,11 +153,37 @@ class VideoDataFragment : Fragment(R.layout.fragment_video_data) {
                             Snackbar.make(view, "Video added to watch later!", LENGTH_LONG).show()
                         }
 
+                        // Adding video to liked videos
+                        videoLikeBox.setOnClickListener {
+                            // If video is already liked
+                            if (likedVideoIds.contains(videoId)) {
+                                val position = likedVideoIds.indexOf(videoId)
+                                viewModel.deleteVideoFromLikedVideos(likedVideos[position])
+                                videoLikes.text = VideoViewsFormatter.viewsFormatter(video.statistics.likeCount.toString())
+                                videoLikeImage.setImageResource(R.drawable.ic_like_video)
+                                Snackbar.make(view, "Video removed from Liked Videos", LENGTH_SHORT).show()
+                            }
+                            else {
+                                // If video is not liked
+                                videoLikes.text = VideoViewsFormatter.viewsFormatter((video.statistics.likeCount + 1).toString())
+                                videoLikeImage.setImageResource(R.drawable.ic_liked_already)
+                                val likedVideo = LikedVideoItem(
+                                    videoId = videoId,
+                                    videoTitle = video.snippet.title,
+                                    videoThumbnailUrl = video.snippet.thumbnails.maxres?.url ?: video.snippet.thumbnails.standard?.url ?: video.snippet.thumbnails.high?.url ?: video.snippet.thumbnails.medium?.url ?: video.snippet.thumbnails.defaultThumb!!.url,
+                                    videoChannelName = video.snippet.channelTitle,
+                                    videoAddedTime = System.currentTimeMillis(),
+                                    likeCount = (video.statistics.likeCount + 1).toLong()
+                                )
+                                viewModel.insertVideoToLikedVideos(likedVideo)
+                                Snackbar.make(view, "Video added to Liked Videos", LENGTH_SHORT).show()
+                            }
+                        }
+
                         videoTitle.text = video.snippet.title
                         videoViews.text = "${VideoViewsFormatter.viewsFormatter((video.statistics.viewCount).toString())} views . "
                         val videoPublishedTime = viewModel.findMillisDifference(video.snippet.publishedAt)
                         videoPublishedDate.text = VideoViewsFormatter.timeFormatter(videoPublishedTime, view.context).toString()
-                        videoLikes.text = VideoViewsFormatter.viewsFormatter((video.statistics.likeCount).toString())
                         videoDislikes.text = VideoViewsFormatter.viewsFormatter((video.statistics.dislikeCount).toString())
 
                         val folder = File(Environment.DIRECTORY_DOWNLOADS)

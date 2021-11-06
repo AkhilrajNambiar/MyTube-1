@@ -100,4 +100,7 @@
     <string name="date_published_descending">Date published (newest)</string>
     <string name="date_published_ascending">Date published (oldest)</string>
     <string name="unwatched_videos_count">%d unwatched videos</string>
+    <string name="remove_from_liked_videos">Remove from liked videos</string>
+    <string name="saved">Saved</string>
+    <string name="remove_from_watch_later">Remove from Watch later</string>
 </resources>

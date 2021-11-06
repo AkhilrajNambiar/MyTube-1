@@ -3,10 +3,7 @@ package com.example.mytube.repository
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.mytube.API.RetrofitInstance.Companion.api
-import com.example.mytube.db.SearchDatabase
-import com.example.mytube.db.SearchItem
-import com.example.mytube.db.WatchHistoryItem
-import com.example.mytube.db.WatchLaterItem
+import com.example.mytube.db.*
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.*
@@ -78,6 +75,16 @@ class VideosRepository(val db: SearchDatabase) {
     fun getCountOfUnwatchedVideos() = db.getWatchLaterDao().getCountOfVideosNotWatchedTillNow()
 
     suspend fun updateWatchedVideos(item: WatchLaterItem) = db.getWatchLaterDao().update(item)
+
+    // Liked videos
+
+    suspend fun insertVideoToLikedVideos(item: LikedVideoItem) = db.getLikedVideosDao().insert(item)
+
+    suspend fun deleteVideoFromLikedVideos(item: LikedVideoItem) = db.getLikedVideosDao().delete(item)
+
+    suspend fun updateLikedVideoStatus(item: LikedVideoItem) = db.getLikedVideosDao().update(item)
+
+    fun getLikedVideos() = db.getLikedVideosDao().getLikedVideos()
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun findMillisDifference(str1: String) : Map<String, Int>{

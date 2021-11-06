@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/date_added_descending"
+        android:title="@string/date_added_descending"/>
+
+    <item
+        android:id="@+id/date_added_ascending"
+        android:title="@string/date_added_ascending"/>
+
+    <item
+        android:id="@+id/most_popular_watch_later"
+        android:title="@string/most_popular"/>
+
+    <item
+        android:id="@+id/date_published_descending"
+        android:title="@string/date_published_descending"/>
+
+    <item
+        android:id="@+id/date_published_ascending"
+        android:title="@string/date_published_ascending"/>
+</menu>

@@ -25,10 +25,14 @@ import com.example.mytube.R
 import com.example.mytube.UI.SearchResultsActivity
 import com.example.mytube.UI.VideoActivity
 import com.example.mytube.UI.VideosViewModel
+import com.example.mytube.db.WatchLaterItem
 import com.example.mytube.models.AboutVideo
+import com.example.mytube.util.VideoViewsFormatter
 import com.example.mytube.util.VideoViewsFormatter.Companion.viewsFormatter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.dialog.MaterialDialogs
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import kotlin.math.absoluteValue
 
 class VideosAdapter(val viewModel: VideosViewModel): RecyclerView.Adapter<VideosAdapter.VideosViewHolder>() {
@@ -67,7 +71,20 @@ class VideosAdapter(val viewModel: VideosViewModel): RecyclerView.Adapter<Videos
                 popUpMenu.setOnMenuItemClickListener {
                     when(it.itemId) {
                         R.id.save_to_watch_later -> {
-                            TODO("Yet to be implemented")
+                            val watchLaterVideo = WatchLaterItem(
+                                videoId = video.id,
+                                videoTitle = video.snippet.title,
+                                videoThumbnailUrl = video.snippet.thumbnails.maxres?.url ?: video.snippet.thumbnails.standard?.url ?: video.snippet.thumbnails.high?.url ?: video.snippet.thumbnails.medium?.url ?: video.snippet.thumbnails.defaultThumb!!.url,
+                                videoChannelName = video.snippet.channelTitle,
+                                videoViews = video.statistics.viewCount.toLong(),
+                                videoAddedTime = System.currentTimeMillis(),
+                                videoPublishedDate = VideoViewsFormatter.getMillisecondsFromLocalTime(video.snippet.publishedAt)
+                            )
+                            viewModel.insertVideoIntoWatchLater(watchLaterVideo)
+                            Snackbar.make(itemView, "Video added to watch later!",
+                                BaseTransientBottomBar.LENGTH_LONG
+                            ).show()
+                            true
                         }
                         R.id.save_to_playlist -> {
                             TODO("Yet to be implemented")

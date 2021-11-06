@@ -1,6 +1,8 @@
 package com.example.mytube.adapters
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,8 +21,6 @@ import com.example.mytube.UI.VideoActivity
 import com.example.mytube.UI.VideosViewModel
 import com.example.mytube.db.WatchLaterItem
 import com.example.mytube.models.Equatable
-import com.example.mytube.models.SinglePlaylist
-import com.example.mytube.models.VideoInPlaylistDetail
 import com.example.mytube.models.WatchLaterVideoCount
 
 class WatchLaterAdapter(val viewModel: VideosViewModel, val lifecycleOwner: LifecycleOwner): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -48,7 +48,7 @@ class WatchLaterAdapter(val viewModel: VideosViewModel, val lifecycleOwner: Life
             // Sorting the watch later videos based on options selected
             sorter.setOnClickListener {
                 val popup = PopupMenu(itemView.context, grayPart)
-                popup.inflate(R.menu.watch_later_video_options)
+                popup.inflate(R.menu.watch_later_sort_options)
                 popup.setOnMenuItemClickListener {
                     when(it.itemId) {
                         R.id.most_popular_watch_later -> {
@@ -130,6 +130,35 @@ class WatchLaterAdapter(val viewModel: VideosViewModel, val lifecycleOwner: Life
                 val intent = Intent(itemView.context, VideoActivity::class.java)
                 intent.putExtra("videoId", video.videoId)
                 itemView.context.startActivity(intent)
+            }
+            options.setOnClickListener {
+                val popup = PopupMenu(itemView.context, options)
+                popup.inflate(R.menu.watch_later_video_options)
+                popup.setOnMenuItemClickListener {
+                    when(it.itemId) {
+                        R.id.remove_from_watch_later -> {
+                            viewModel.deleteVideoFromWatchLater(video)
+                            true
+                        }
+                        R.id.share_video_option -> {
+                            val intent = Intent(Intent.ACTION_SEND)
+                            intent.type = "text/plain"
+                            intent.putExtra(Intent.EXTRA_TEXT, "https://www.youtube.com/watch?v=${video.videoId}")
+                            try {
+                                //If sharing apps like whatsapp and gmail are available
+                                itemView.context.startActivity(intent)
+                            }
+                            catch (e: ActivityNotFoundException) {
+                                // else go to google playstore for downloading whatsapp in this case
+                                val intent2 = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.whatsapp"))
+                                itemView.context.startActivity(intent2)
+                            }
+                            true
+                        }
+                        else -> false
+                    }
+                }
+                popup.show()
             }
         }
     }

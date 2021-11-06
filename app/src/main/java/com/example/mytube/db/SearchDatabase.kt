@@ -9,14 +9,17 @@ import androidx.room.TypeConverters
 @Database(entities = [
     SearchItem::class,
     WatchHistoryItem::class,
-    WatchLaterItem::class
-], version = 6, exportSchema = false)
+    WatchLaterItem::class,
+    LikedVideoItem::class
+], version = 8, exportSchema = false)
 abstract class SearchDatabase: RoomDatabase() {
     abstract fun getDao(): SearchHistoryDao
 
     abstract fun getWatchHistoryDao(): WatchHistoryDao
 
     abstract fun getWatchLaterDao(): WatchLaterDao
+
+    abstract fun getLikedVideosDao(): LikedVideosDao
 
     companion object{
         private var INSTANCE: SearchDatabase? = null

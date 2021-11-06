@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_libraryFragment_to_watchLaterFragment"
             app:destination="@id/watchLaterFragment" />
+        <action
+            android:id="@+id/action_libraryFragment_to_likedVideosFragment"
+            app:destination="@id/likedVideosFragment" />
     </fragment>
     <activity
         android:id="@+id/videoActivity"
@@ -54,4 +57,9 @@
         android:name="com.example.mytube.UI.Fragments.WatchLaterFragment"
         android:label="fragment_watch_later"
         tools:layout="@layout/fragment_watch_later" />
+    <fragment
+        android:id="@+id/likedVideosFragment"
+        android:name="com.example.mytube.UI.Fragments.LikedVideosFragment"
+        android:label="fragment_liked_videos"
+        tools:layout="@layout/fragment_liked_videos" />
 </navigation>

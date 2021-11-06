@@ -10,6 +10,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import com.example.mytube.MytubeApplication
+import com.example.mytube.db.LikedVideoItem
 import com.example.mytube.db.SearchItem
 import com.example.mytube.db.WatchHistoryItem
 import com.example.mytube.db.WatchLaterItem
@@ -69,6 +70,9 @@ class VideosViewModel(
     val channels = mutableMapOf<String, Channels>()
     var commentsForVideo = mutableListOf<Item>()
     var commentReplies = MutableLiveData<MutableList<ItemX>>()
+
+    var equatableLikedVideos: MutableSet<Equatable> = mutableSetOf()
+    var equatableWatchLaterVideos: MutableSet<Equatable> = mutableSetOf()
 
     init {
         getPopularVideos()
@@ -369,6 +373,22 @@ class VideosViewModel(
     fun updateWatchedVideos(video: WatchLaterItem) = viewModelScope.launch {
         repository.updateWatchedVideos(video)
     }
+
+    // Liked Videos
+
+    fun insertVideoToLikedVideos(video: LikedVideoItem) = viewModelScope.launch {
+        repository.insertVideoToLikedVideos(video)
+    }
+
+    fun deleteVideoFromLikedVideos(video: LikedVideoItem) = viewModelScope.launch {
+        repository.deleteVideoFromLikedVideos(video)
+    }
+
+    fun updateLikedVideoStatus(video: LikedVideoItem) = viewModelScope.launch {
+        repository.updateLikedVideoStatus(video)
+    }
+
+    fun getLikedVideos() = repository.getLikedVideos()
 
     private fun hasInternetConnection(): Boolean {
         val connectivityManager = getApplication<MytubeApplication>().getSystemService(

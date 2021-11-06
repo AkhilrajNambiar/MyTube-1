@@ -55,6 +55,10 @@ class LibraryFragment : Fragment(R.layout.fragment_library) {
             val action = LibraryFragmentDirections.actionLibraryFragmentToWatchLaterFragment()
             findNavController().navigate(action)
         }
+        likedVideosTab.setOnClickListener {
+            val action = LibraryFragmentDirections.actionLibraryFragmentToLikedVideosFragment()
+            findNavController().navigate(action)
+        }
 
         recentVideosAdapter = RecentVideosAdapter(viewModel)
         recyclerView = view.findViewById(R.id.most_recent_videos_recycler_view)
