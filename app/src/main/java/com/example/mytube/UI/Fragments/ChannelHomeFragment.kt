@@ -1,5 +1,6 @@
 package com.example.mytube.UI.Fragments
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -20,6 +21,7 @@ import com.bumptech.glide.Glide
 import com.example.mytube.R
 import com.example.mytube.UI.ChannelDetailsActivity
 import com.example.mytube.UI.ChannelViewModel
+import com.example.mytube.UI.VideoActivity
 import com.example.mytube.UI.VideosViewModel
 import com.example.mytube.adapters.SectionAdapter
 import com.example.mytube.models.*
@@ -126,7 +128,19 @@ class ChannelHomeFragment : Fragment(R.layout.fragment_channel_home) {
                         title.text = video.snippet.title
                         subtitle.text = resources.getString(R.string.video_subtitle2, video.snippet.channelTitle, VideoViewsFormatter.viewsFormatter(video.statistics.viewCount.toString()), VideoViewsFormatter.timeFormatter(viewModel.findMillisDifference(video.snippet.publishedAt), requireContext()))
                         Glide.with(requireContext()).load(channelImageUrl).into(channelLogo2)
+
+                        videoCard.setOnClickListener {
+                            val intent = Intent(requireContext(), VideoActivity::class.java)
+                            intent.putExtra("videoId", video.id)
+                            startActivity(intent)
+                        }
                     }
+                }
+                is Resource.Error -> {
+                    Log.e("channelTrailer", resource.message.toString())
+                }
+                is Resource.Loading -> {
+                    Log.d("channelTrailer", "loading")
                 }
             }
         })

@@ -109,12 +109,16 @@ class WatchLaterAdapter(val viewModel: VideosViewModel, val lifecycleOwner: Life
         private val videoChannelName = itemView.findViewById<TextView>(R.id.video_channel_watch_later)
         private val videoCard = itemView.findViewById<ConstraintLayout>(R.id.watch_later_video_card)
         private val options = itemView.findViewById<ImageView>(R.id.video_options_watch_later)
+        private val videoAlreadyWatched = itemView.findViewById<ImageView>(R.id.watched_this_video)
         fun bind(video: WatchLaterItem, viewModel: VideosViewModel) {
             Glide.with(itemView)
                 .load(video.videoThumbnailUrl)
                 .into(videoThumbnail)
             videoTitle.text = video.videoTitle
             videoChannelName.text = video.videoChannelName
+            if (video.videoWatchedAfterAddingToWatchLater) {
+                videoAlreadyWatched.visibility = View.VISIBLE
+            }
             videoCard.setOnClickListener {
                 val watchedVideo = WatchLaterItem(
                     videoId = video.videoId,

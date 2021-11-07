@@ -67,6 +67,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/video_title_watch_later"/>
 
+            <ImageView
+                android:id="@+id/watched_this_video"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_checked"
+                android:layout_marginTop="10dp"
+                android:visibility="invisible"
+                app:tint="@color/nice_green"
+                android:contentDescription="@string/video_already_watched"
+                app:layout_constraintTop_toBottomOf="@id/video_channel_watch_later"
+                app:layout_constraintStart_toStartOf="@id/video_channel_watch_later"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView

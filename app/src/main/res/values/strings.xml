@@ -103,4 +103,5 @@
     <string name="remove_from_liked_videos">Remove from liked videos</string>
     <string name="saved">Saved</string>
     <string name="remove_from_watch_later">Remove from Watch later</string>
+    <string name="video_already_watched">Video has been watched</string>
 </resources>
