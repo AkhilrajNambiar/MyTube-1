@@ -9,6 +9,8 @@ But for all those who don't have Android Studio on their PCs, I am attaching a v
 [Overall working of Mytube](https://drive.google.com/file/d/1bu-MhOQtV_7ntj0mqCQZDe_tOmbYe3FM/view?usp=sharing "MyTube overall")
 
 
-The following video just shows the comments and replies section that was implemented for a video.
+The following video just shows the comments and replies section that was implemented for the videos.
 
 [Comments for a video](https://drive.google.com/file/d/1bw81cNB40TS0j6CRecYFdHdgyalu5Q7-/view?usp=sharing "MyTube extras")
+
+The Home screen fragment by default shows a mix of trending videos in India and USA.
